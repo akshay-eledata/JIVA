@@ -1,0 +1,19 @@
+// Signin Page Constants (using pixels)
+export const SIGNIN_CONSTANTS = {
+  CONTAINER_WIDTH: '600px',
+  CONTAINER_PADDING: '150px 120px',
+  CONTAINER_HEIGHT: '850px',
+  CONTAINER_GAP: '8px',
+  TITLE_MARGIN_TOP: '0',
+  TITLE_MARGIN_BOTTOM: '12px',
+  FIELD_MARGIN_BOTTOM: '12px',
+  LABEL_MARGIN_BOTTOM: '8px',
+  BUTTON_MARGIN_TOP: '8px',
+  OR_MARGIN_TOP: '24px',
+  OR_MARGIN_BOTTOM: '24px',
+  OR_PADDING: '0 12px',
+  SOCIAL_BUTTONS_GAP: '16px',
+  SIGN_UP_LINK_MARGIN_TOP: '32px',
+  TERMS_PADDING_TOP: '100px',
+} as const;
+
