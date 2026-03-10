@@ -12,6 +12,7 @@ import {
     FormControl,
     Grid,
 } from '@mui/material';
+import ConsultationModal from '../../Component/ConsultationModal/ConsultationModal';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import BiomarkerIcon from '../../assets/Biomarker.svg';
@@ -334,12 +335,19 @@ const RecommendationSection: React.FC = () => {
 
 const VitalityMap: React.FC = () => {
     const [showAlert, setShowAlert] = useState(true);
-    const [selectedBiomarker, setSelectedBiomarker] = useState(3); // Default to the 4th card (index 3)
+    const [selectedBiomarker, setSelectedBiomarker] = useState(3);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
 
     return (
         <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto', }}>
+            {/* Consultation Modal */}
+            <ConsultationModal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
+
             {/* Header Section */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 5, mt: 2 }}>
                 <Box>
@@ -349,7 +357,6 @@ const VitalityMap: React.FC = () => {
                             fontSize: '44px',
                             fontWeight: 800,
                             color: '#1A212B',
-                            fontFamily: 'Inter, sans-serif',
                             lineHeight: '52px',
                             letterSpacing: '-0.02em',
                         }}
@@ -360,7 +367,6 @@ const VitalityMap: React.FC = () => {
                         sx={{
                             fontSize: '16px',
                             color: '#667085',
-                            fontFamily: 'Inter, sans-serif',
                             mt: 0.5,
                             fontWeight: 500,
                         }}
@@ -770,7 +776,6 @@ const VitalityMap: React.FC = () => {
                                     fontSize: '28px',
                                     fontWeight: 700,
                                     color: '#1A212B',
-                                    fontFamily: 'Inter, sans-serif',
                                     textAlign: 'left'
                                 }}
                             >

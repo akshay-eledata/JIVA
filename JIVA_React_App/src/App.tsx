@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -19,13 +19,7 @@ import './App.css';
 import AutoImmunity from './pages/AutoImmunity/AutoImmunity';
 import RheumatoidFactor from './pages/RheumatoidFactor/RheumatoidFactor';
 import YourHealth from './pages/YourHealth/YourHealth';
-
-const theme = createTheme({
-  typography: {
-    fontFamily: '"Inter"',
-  },
-});
-
+import theme from './theme';
 
 const App: React.FC = () => {
   const location = useLocation();

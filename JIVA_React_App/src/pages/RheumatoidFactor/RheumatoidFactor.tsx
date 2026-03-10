@@ -94,7 +94,6 @@ const RheumatoidFactor: React.FC = () => {
                                 mb: 8,
                                 fontWeight: 400,
                                 opacity: 0.9,
-                                fontFamily: 'Inter',
                                 textAlign: 'left',
                                 maxWidth: '550px'
                             }}>
@@ -107,7 +106,7 @@ const RheumatoidFactor: React.FC = () => {
                                     <Typography sx={{ color: '#69E0C6', fontFamily: 'source sans pro', fontWeight: 600, fontSize: '18px', }}>
                                         In Range
                                     </Typography>
-                                    <Typography sx={{ color: '#9AA8BC', fontSize: '18px', fontFamily: 'Inter' }}>
+                                    <Typography sx={{ color: '#9AA8BC', fontSize: '18px' }}>
                                         &lt;10 IU/ml
                                     </Typography>
                                 </Box>
@@ -118,7 +117,6 @@ const RheumatoidFactor: React.FC = () => {
                                     mb: 8,
                                     fontWeight: 400,
                                     opacity: 0.9,
-                                    fontFamily: 'Inter',
                                     textAlign: 'left',
                                     maxWidth: '550px'
                                 }}>
@@ -128,9 +126,9 @@ const RheumatoidFactor: React.FC = () => {
                         )}
 
                         <Box sx={{ mt: 'auto' }}>
-                            <Typography sx={{ color: '#728197', fontSize: '16px', fontFamily: 'Inter' }}>
+                            <Typography sx={{ color: '#728197', fontSize: '16px' }}>
                                 This result is based on the lab test from January 2025
-                                <Link href="#" sx={{ color: '#101828', fontWeight: 700, textDecoration: 'none', ml: 1, '&:hover': { textDecoration: 'underline' } }}>
+                                <Link href="#" sx={{ color: '#444648', fontWeight: 600, fontFamily: 'source sans pro', textDecoration: 'underline', ml: 1, }}>
                                     View More
                                 </Link>
                             </Typography>
@@ -159,16 +157,16 @@ const RheumatoidFactor: React.FC = () => {
                                 <Box sx={{ display: 'flex', alignItems: 'center', height: '50%', position: 'relative', }}>
                                     <Box sx={{ position: 'absolute', left: 4, top: 8, bottom: 4, width: '6px', backgroundColor: '#9AA8BC', borderRadius: '4px' }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, pl: { xs: 2.5, md: 4 } }}>
-                                        <Typography sx={{ color: '#69E0C6', fontWeight: 600, fontSize: '16px', fontFamily: 'Inter' }}>In Range</Typography>
-                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px', fontFamily: 'Inter' }}>&lt;10 IU/ml</Typography>
+                                        <Typography sx={{ color: '#69E0C6', fontWeight: 600, fontSize: '16px' }}>In Range</Typography>
+                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px' }}>&lt;10 IU/ml</Typography>
                                     </Box>
                                 </Box>
 
                                 <Box sx={{ display: 'flex', alignItems: 'center', height: '40%', position: 'relative' }}>
                                     <Box sx={{ position: 'absolute', left: 4, top: 4, bottom: -16, width: '6px', backgroundColor: '#CBD4E1', borderRadius: '4px' }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, pl: { xs: 2.5, md: 4 } }}>
-                                        <Typography sx={{ color: '#F1696E', fontWeight: 600, fontSize: '16px', fontFamily: 'Inter' }}>Above Range</Typography>
-                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px', fontFamily: 'Inter' }}>&lt;10 IU/ml</Typography>
+                                        <Typography sx={{ color: '#F1696E', fontWeight: 600, fontSize: '16px' }}>Above Range</Typography>
+                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px' }}>&lt;10 IU/ml</Typography>
                                     </Box>
                                 </Box>
                             </Box>
@@ -222,7 +220,6 @@ const RheumatoidFactor: React.FC = () => {
                                                 colors: '#667085',
                                                 fontSize: '14px',
                                                 fontWeight: 500,
-                                                fontFamily: 'Inter'
                                             }
                                         },
                                         axisBorder: { show: false },
@@ -262,7 +259,6 @@ const RheumatoidFactor: React.FC = () => {
                                         offsetY: -15,
                                         style: {
                                             fontSize: '14px',
-                                            fontFamily: 'Inter',
                                             fontWeight: 600,
                                             colors: ['#101828']
                                         },

@@ -64,7 +64,6 @@ const AutoImmunity: React.FC = () => {
                                     WebkitBackgroundClip: 'text',
                                     WebkitTextFillColor: 'transparent',
                                     mb: 4,
-                                    fontFamily: 'Inter',
                                     textAlign: 'left',
 
                                 }}
@@ -78,7 +77,6 @@ const AutoImmunity: React.FC = () => {
                                     mb: 8,
                                     fontWeight: 400,
                                     opacity: 0.9,
-                                    fontFamily: 'Inter, sans-serif',
                                     textAlign: 'left',
                                 }}
                             >
@@ -236,26 +234,26 @@ const AutoImmunity: React.FC = () => {
                                     <rect x="70" y="55" width="30" height="195" rx="10" fill="url(#rangeGradTeal)" />
                                     <rect x="73" y="60" width="24" height="185" rx="6" fill="url(#preciseStripes)" />
                                     <circle cx="85" cy="65" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                                    <text x="85" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3', fontFamily: 'Inter' }}>Jan 15</text>
+                                    <text x="85" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3' }}>Jan 15</text>
 
                                     <text x="125" y="25" textAnchor="middle" style={{ fontSize: '14px', fontWeight: 800, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>88</text>
                                     <rect x="110" y="35" width="30" height="215" rx="10" fill="url(#rangeGradTeal)" />
                                     <rect x="113" y="40" width="24" height="205" rx="6" fill="url(#preciseStripes)" />
                                     <circle cx="125" cy="45" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                                    <text x="125" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3', fontFamily: 'Inter' }}>Sep 25</text>
+                                    <text x="125" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3' }}>Sep 25</text>
 
                                     {/* Group 2 (OUT OF RANGE) - Jan 15 & Sep 25 */}
                                     <text x="275" y="125" textAnchor="middle" style={{ fontSize: '14px', fontWeight: 800, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>16</text>
                                     <rect x="260" y="135" width="30" height="115" rx="10" fill="#475467" opacity="0.8" />
                                     <rect x="263" y="140" width="24" height="105" rx="6" fill="url(#preciseStripes)" />
                                     <circle cx="275" cy="145" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                                    <text x="275" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3', fontFamily: 'Inter' }}>Jan 15</text>
+                                    <text x="275" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3' }}>Jan 15</text>
 
                                     <text x="315" y="135" textAnchor="middle" style={{ fontSize: '14px', fontWeight: 800, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>16</text>
                                     <rect x="300" y="145" width="30" height="105" rx="10" fill="#475467" opacity="0.8" />
                                     <rect x="303" y="150" width="24" height="95" rx="6" fill="url(#preciseStripes)" />
                                     <circle cx="315" cy="155" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                                    <text x="315" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3', fontFamily: 'Inter' }}>Sep 25</text>
+                                    <text x="315" y="275" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#98A2B3' }}>Sep 25</text>
 
                                     {/* Baseline */}
                                     <line x1="30" y1="250" x2="380" y2="250" stroke="#F2F4F7" strokeWidth="2" />

@@ -60,7 +60,6 @@ const ActionPlan: React.FC = () => {
                 margin: '0 auto',
                 padding: '40px 32px',
                 textAlign: 'center',
-                fontFamily: 'Inter, sans-serif'
             }}
         >
             {/* Title */}

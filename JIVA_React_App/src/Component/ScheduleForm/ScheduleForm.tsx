@@ -25,7 +25,7 @@ const ScheduleForm: React.FC = () => {
 
             {/* Scheduling Guidelines */}
             <Box>
-                <Typography sx={{ fontSize: '18px', fontWeight: 700, mb: 1.5, color: '#4A5565', fontFamily: 'Inter, sans-serif' }}>
+                <Typography sx={{ fontSize: '18px', fontWeight: 700, mb: 1.5, color: '#4A5565' }}>
                     Scheduling Guidelines
                 </Typography>
                 <Box
@@ -59,7 +59,7 @@ const ScheduleForm: React.FC = () => {
 
             {/* Schedule Appointments */}
             <Box>
-                <Typography sx={{ fontSize: '18px', fontWeight: 700, mb: 1.5, color: '#4A5565', fontFamily: 'Inter, sans-serif' }}>
+                <Typography sx={{ fontSize: '18px', fontWeight: 700, mb: 1.5, color: '#4A5565' }}>
                     Schedule Appointments
                 </Typography>
                 <Box
@@ -87,7 +87,6 @@ const ScheduleForm: React.FC = () => {
                                     borderRadius: '12px',
                                     height: '44px',
                                     boxShadow: 'none',
-                                    fontFamily: 'Inter, sans-serif',
                                     '& .MuiOutlinedInput-notchedOutline': {
                                         borderColor: '#E5E7EB',
                                         borderWidth: '1px solid',

@@ -50,7 +50,6 @@ const StepContainer: React.FC<StepContainerProps> = ({
             {/* Page Title */}
             <Typography
                 sx={{
-                    fontFamily: 'Inter, sans-serif',
                     fontSize: '40px',
                     fontWeight: 700,
                     lineHeight: '50px',
@@ -161,7 +160,6 @@ const StepContainer: React.FC<StepContainerProps> = ({
                         color: isBackDisabled ? '#99A1AF' : '#006045',
                         borderRadius: '12px',
                         textTransform: 'none',
-                        fontFamily: 'Inter, sans-serif',
                         fontSize: '14px',
                         fontWeight: 500,
                         padding: '10px 24px',
@@ -191,7 +189,6 @@ const StepContainer: React.FC<StepContainerProps> = ({
                         color: '#FFFFFF',
                         textTransform: 'none',
                         borderRadius: '12px',
-                        fontFamily: 'Inter, sans-serif',
                         fontSize: '14px',
                         fontWeight: 500,
                         padding: '10px 24px',

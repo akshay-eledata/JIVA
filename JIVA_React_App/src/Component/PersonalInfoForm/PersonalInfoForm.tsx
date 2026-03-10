@@ -67,7 +67,6 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                         lineHeight: '1.25',
                         color: '#728197',
                         marginBottom: '16px',
-                        fontFamily: 'Inter, sans-serif',
                         textAlign: 'left',
                     }}
                 >
@@ -159,7 +158,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                 {/* Form Fields - Row 2 */}
                 <Box sx={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
                     <Box sx={{ width: '280px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 500, mb: 1.5, color: '#101828', fontFamily: 'Inter, sans-serif' }}>
+                        <Typography sx={{ fontSize: '14px', fontWeight: 500, mb: 1.5, color: '#101828' }}>
                             Select State
                         </Typography>
                         <Select
@@ -184,7 +183,6 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                                     textAlign: 'left',
                                     paddingLeft: '12px !important',
                                     color: '#666666',
-                                    fontFamily: 'Inter, sans-serif',
                                     fontSize: '14px',
                                 },
                                 '& .MuiSelect-icon': {
@@ -194,13 +192,13 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                             }}
                         >
                             <MenuItem value="" disabled>
-                                <Typography sx={{ color: '#999', textAlign: 'left', width: '100%', fontFamily: 'Inter, sans-serif', fontSize: '14px' }}>English (US)</Typography>
+                                <Typography sx={{ color: '#999', textAlign: 'left', width: '100%', fontSize: '14px' }}>English (US)</Typography>
                             </MenuItem>
                             <MenuItem value="state1">State 1</MenuItem>
                         </Select>
                     </Box>
                     <Box sx={{ width: '280px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 500, mb: 1.5, color: '#101828', fontFamily: 'Inter, sans-serif' }}>
+                        <Typography sx={{ fontSize: '14px', fontWeight: 500, mb: 1.5, color: '#101828' }}>
                             Select City
                         </Typography>
                         <Select
@@ -225,7 +223,6 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                                     textAlign: 'left',
                                     paddingLeft: '12px !important',
                                     color: '#666666',
-                                    fontFamily: 'Inter, sans-serif',
                                     fontSize: '14px',
                                 },
                                 '& .MuiSelect-icon': {
@@ -235,13 +232,13 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                             }}
                         >
                             <MenuItem value="" disabled>
-                                <Typography sx={{ color: '#999', textAlign: 'left', width: '100%', fontFamily: 'Inter, sans-serif', fontSize: '14px' }}>English (US)</Typography>
+                                <Typography sx={{ color: '#999', textAlign: 'left', width: '100%', fontSize: '14px' }}>English (US)</Typography>
                             </MenuItem>
                             <MenuItem value="city1">City 1</MenuItem>
                         </Select>
                     </Box>
                     <Box sx={{ width: '166px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 500, mb: 1.5, color: '#101828', fontFamily: 'Inter, sans-serif' }}>
+                        <Typography sx={{ fontSize: '14px', fontWeight: 500, mb: 1.5, color: '#101828' }}>
                             Zip
                         </Typography>
                         <TextField
@@ -266,12 +263,10 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                                     '& input': {
                                         textAlign: 'left',
                                         padding: '10px 12px',
-                                        fontFamily: 'Inter, sans-serif',
                                         fontSize: '14px',
                                     },
                                     '& input::placeholder': {
                                         textAlign: 'left',
-                                        fontFamily: 'Inter, sans-serif',
                                         fontSize: '14px',
                                     }
                                 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+import RedArrow from '../../assets/Red-arrow.svg';
 
 interface BiomarkerRowProps {
     name: string;
@@ -8,6 +9,9 @@ interface BiomarkerRowProps {
     statusLabel: string;
     statusColor: string;
     miniChart?: React.ReactNode;
+    batch?: string;
+    qty?: string;
+    isOverview?: boolean;
 }
 
 const BiomarkerRow: React.FC<BiomarkerRowProps> = ({
@@ -16,18 +20,22 @@ const BiomarkerRow: React.FC<BiomarkerRowProps> = ({
     sublabel,
     statusLabel,
     statusColor,
-    miniChart
+    miniChart,
+    batch = "-",
+    qty = "-",
+    isOverview = false
 }) => {
     return (
         <Box sx={{
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
             py: 2,
+            px: 2,
             borderBottom: '1px solid #EAECF0',
             width: '100%'
         }}>
-            <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
+            {/* Product Name Column */}
+            <Box sx={{ display: 'flex', gap: 2.5, alignItems: 'center', flex: 1 }}>
                 {miniChart ? (
                     miniChart
                 ) : (
@@ -35,14 +43,15 @@ const BiomarkerRow: React.FC<BiomarkerRowProps> = ({
                         sx={{
                             width: '40px',
                             height: '40px',
-                            backgroundColor: '#F2F4F7',
+                            backgroundColor: '#9AA8BC4D',
                             borderRadius: '8px',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            flexShrink: 0
                         }}
                     >
-                        {/* Placeholder for mini chart or icon */}
+                        {/* Placeholder */}
                     </Box>
                 )}
                 <Box>
@@ -51,48 +60,109 @@ const BiomarkerRow: React.FC<BiomarkerRowProps> = ({
                             fontSize: '16px',
                             fontWeight: 600,
                             color: '#1A212B',
-                            fontFamily: 'source sans pro'
+                            textAlign: 'left',
+                            fontFamily: 'Source Sans Pro'
                         }}
                     >
                         {name}
                     </Typography>
                     {sublabel && (
-                        <Typography sx={{ fontSize: '14px', color: '#667085', fontWeight: 400, fontFamily: 'source sans pro' }}>
+                        <Typography sx={{
+                            fontSize: '14px',
+                            color: '#9AA8BC',
+                            fontWeight: 600,
+                            textAlign: 'left',
+                            mt: 0.5,
+                            fontFamily: 'Source Sans Pro'
+                        }}>
                             {sublabel}
                         </Typography>
                     )}
                 </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Box sx={{
-                    px: 1.5,
-                    py: 0.5,
-                    borderRadius: '16px',
-                    backgroundColor: statusColor === 'green' ? '#ECFDF3' : '#FEF3F2',
-                    border: `1px solid ${statusColor === 'green' ? '#ABEFC6' : '#FECDCA'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1
-                }}>
-                    <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: statusColor === 'green' ? '#12B76A' : '#F04438' }} />
-                    <Typography sx={{ color: statusColor === 'green' ? '#067647' : '#B42318', fontSize: '13px', fontWeight: 600 }}>
-                        {statusLabel}
-                    </Typography>
-                </Box>
+            {/* Columns Container */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {isOverview ? (
+                    <>
+                        {/* Overview Mode Columns */}
+                        <Box sx={{ width: '140px', display: 'flex', justifyContent: 'center' }}>
+                            <Box sx={{
+                                px: 1.5,
+                                py: 0.5,
+                                borderRadius: '16px',
+                                backgroundColor: '#D1FAE5',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1
+                            }}>
+                                <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#115E59' }} />
+                                <Typography sx={{ color: '#115E59', fontSize: '13px', fontWeight: 600 }}>
+                                    {statusLabel}
+                                </Typography>
+                            </Box>
+                        </Box>
 
-                <Box sx={{ display: 'flex', gap: 4 }}>
-                    <Box sx={{ textAlign: 'right', minWidth: '80px' }}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#475467' }}>
-                            {valueLabel}
-                        </Typography>
-                    </Box>
-                    <Box sx={{ textAlign: 'right', minWidth: '80px' }}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#475467' }}>
-                            {valueLabel}
-                        </Typography>
-                    </Box>
-                </Box>
+                        <Box sx={{ width: '140px', display: 'flex', justifyContent: 'center' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#728197' }} />
+                                <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#001940', fontFamily: 'Source Sans Pro' }}>
+                                    25 IU/ml
+                                </Typography>
+                                <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#F04438', display: 'flex', alignItems: 'center', fontFamily: 'Source Sans Pro' }}>
+                                    <img src={RedArrow} alt="Up" style={{ width: 12, height: 12 }} />
+                                    <span style={{ color: '#001940' }}>3</span>
+                                </Typography>
+                            </Box>
+                        </Box>
+
+                        <Box sx={{ width: '140px', display: 'flex', justifyContent: 'center' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#728197' }} />
+                                <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#001940', fontFamily: 'Source Sans Pro' }}>
+                                    25 IU/ml
+                                </Typography>
+                                <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#F04438', display: 'flex', alignItems: 'center', fontFamily: 'Source Sans Pro' }}>
+                                    <img src={RedArrow} alt="Up" style={{ width: 12, height: 12 }} />
+                                    <span style={{ color: '#001940' }}>3</span>
+                                </Typography>
+                            </Box>
+                        </Box>
+                    </>
+                ) : (
+                    <>
+                        {/* Detailed Mode Columns */}
+                        {/* Batch Column (Status Chip) */}
+                        <Box sx={{ width: '140px', display: 'flex', justifyContent: 'center' }}>
+                            <Box sx={{
+                                px: 1.5,
+                                py: 0.5,
+                                borderRadius: '16px',
+                                backgroundColor: '#D1FAE5',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1
+                            }}>
+                                <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#115E59' }} />
+                                <Typography sx={{ color: '#115E59', fontSize: '13px', fontWeight: 600 }}>
+                                    {statusLabel}
+                                </Typography>
+                            </Box>
+                        </Box>
+
+                        {/* Qty Column (Value Label) */}
+                        <Box sx={{ width: '100px', display: 'flex', justifyContent: 'center' }}>
+                            <Typography sx={{
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: '#001940',
+                                fontFamily: 'Source Sans Pro'
+                            }}>
+                                {valueLabel}
+                            </Typography>
+                        </Box>
+                    </>
+                )}
             </Box>
         </Box>
     );

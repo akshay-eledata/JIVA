@@ -48,7 +48,6 @@ const StepLayout: React.FC<StepLayoutProps> = ({
             {/* Page Title */}
             <Typography
                 sx={{
-                    fontFamily: 'Inter, sans-serif',
                     fontSize: '40px',
                     fontWeight: 700,
                     lineHeight: '50px',
@@ -148,7 +147,6 @@ const StepLayout: React.FC<StepLayoutProps> = ({
                         boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.05)',
                         borderRadius: '8px',
                         textTransform: 'none',
-                        fontFamily: 'Inter, sans-serif',
                         fontSize: '14px',
                         fontWeight: 500,
                         lineHeight: '20px',
@@ -175,7 +173,6 @@ const StepLayout: React.FC<StepLayoutProps> = ({
                         color: '#FFFFFF',
                         textTransform: 'none',
                         borderRadius: '12px',
-                        fontFamily: 'Inter, sans-serif',
                         fontSize: '14px',
                         fontWeight: 600,
                         padding: '10px 24px',

@@ -89,7 +89,6 @@ const AboutYouForm: React.FC = () => {
                         fontWeight: 700,
                         lineHeight: '125%',
                         color: '#4A5565',
-                        fontFamily: 'Inter, sans-serif',
                     }}
                 >
                     About You
@@ -98,7 +97,6 @@ const AboutYouForm: React.FC = () => {
                     sx={{
                         fontSize: '14px',
                         color: '#9CA3AF',
-                        fontFamily: 'Inter, sans-serif',
                     }}
                 >
                     1/15
@@ -152,7 +150,6 @@ const AboutYouForm: React.FC = () => {
                                     fontSize: '14px',
                                     fontWeight: 500,
                                     color: '#101828',
-                                    fontFamily: 'Inter, sans-serif',
                                 }}
                             >
                                 {q.question}
@@ -213,7 +210,6 @@ const AboutYouForm: React.FC = () => {
                                                     fontWeight: 500,
                                                     lineHeight: '16px',
                                                     color: '#101828',
-                                                    fontFamily: 'Inter, sans-serif',
                                                 }}
                                             >
                                                 {option}

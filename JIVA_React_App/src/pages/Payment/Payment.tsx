@@ -47,7 +47,6 @@ const Payment: React.FC = () => {
       {/* Title */}
       <Typography
         sx={{
-          fontFamily: PAYMENT_CONSTANTS.TITLE_FONT_FAMILY,
           fontWeight: PAYMENT_CONSTANTS.TITLE_FONT_WEIGHT,
           fontSize: PAYMENT_CONSTANTS.TITLE_FONT_SIZE,
           lineHeight: PAYMENT_CONSTANTS.TITLE_LINE_HEIGHT,
@@ -67,7 +66,6 @@ const Payment: React.FC = () => {
       {/* Subtitle */}
       <Typography
         sx={{
-          fontFamily: PAYMENT_CONSTANTS.SUBTITLE_FONT_FAMILY,
           fontWeight: PAYMENT_CONSTANTS.SUBTITLE_FONT_WEIGHT,
           fontSize: PAYMENT_CONSTANTS.SUBTITLE_FONT_SIZE,
           lineHeight: PAYMENT_CONSTANTS.SUBTITLE_LINE_HEIGHT,
@@ -104,7 +102,6 @@ const Payment: React.FC = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: PAYMENT_CONSTANTS.SECTION_GAP }}>
           <Typography
             sx={{
-              fontFamily: 'Inter, sans-serif',
               fontWeight: 700,
               fontSize: '16px',
               lineHeight: '24px',
@@ -127,7 +124,6 @@ const Payment: React.FC = () => {
                   <InputAdornment position="start">
                     <Typography
                       sx={{
-                        fontFamily: PAYMENT_CONSTANTS.LABEL_FONT_FAMILY,
                         fontWeight: PAYMENT_CONSTANTS.LABEL_FONT_WEIGHT,
                         fontSize: PAYMENT_CONSTANTS.LABEL_FONT_SIZE,
                         lineHeight: PAYMENT_CONSTANTS.LABEL_LINE_HEIGHT,
@@ -157,7 +153,6 @@ const Payment: React.FC = () => {
                   },
                 },
                 '& .MuiInputBase-input': {
-                  fontFamily: PAYMENT_CONSTANTS.INPUT_FONT_FAMILY,
                   fontSize: PAYMENT_CONSTANTS.INPUT_FONT_SIZE,
                   lineHeight: PAYMENT_CONSTANTS.INPUT_LINE_HEIGHT,
                   color: PAYMENT_CONSTANTS.INPUT_TEXT_COLOR,
@@ -171,7 +166,6 @@ const Payment: React.FC = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: PAYMENT_CONSTANTS.SECTION_GAP }}>
           <Typography
             sx={{
-              fontFamily: PAYMENT_CONSTANTS.SECTION_HEADING_FONT_FAMILY,
               fontWeight: PAYMENT_CONSTANTS.SECTION_HEADING_FONT_WEIGHT,
               fontSize: PAYMENT_CONSTANTS.SECTION_HEADING_FONT_SIZE,
               lineHeight: PAYMENT_CONSTANTS.SECTION_HEADING_LINE_HEIGHT,
@@ -187,7 +181,6 @@ const Payment: React.FC = () => {
           <Box>
             <Typography
               sx={{
-                fontFamily: PAYMENT_CONSTANTS.LABEL_FONT_FAMILY,
                 fontWeight: PAYMENT_CONSTANTS.LABEL_FONT_WEIGHT,
                 fontSize: PAYMENT_CONSTANTS.LABEL_FONT_SIZE,
                 lineHeight: PAYMENT_CONSTANTS.LABEL_LINE_HEIGHT,
@@ -222,7 +215,6 @@ const Payment: React.FC = () => {
                     },
                   },
                   '& .MuiInputBase-input': {
-                    fontFamily: PAYMENT_CONSTANTS.INPUT_FONT_FAMILY,
                     fontSize: PAYMENT_CONSTANTS.INPUT_FONT_SIZE,
                     lineHeight: PAYMENT_CONSTANTS.INPUT_LINE_HEIGHT,
                     color: PAYMENT_CONSTANTS.INPUT_TEXT_COLOR,
@@ -280,7 +272,6 @@ const Payment: React.FC = () => {
                       },
                     },
                     '& .MuiInputBase-input': {
-                      fontFamily: PAYMENT_CONSTANTS.INPUT_FONT_FAMILY,
                       fontSize: PAYMENT_CONSTANTS.INPUT_FONT_SIZE,
                       lineHeight: PAYMENT_CONSTANTS.INPUT_LINE_HEIGHT,
                       color: PAYMENT_CONSTANTS.INPUT_TEXT_COLOR,
@@ -326,7 +317,6 @@ const Payment: React.FC = () => {
                         },
                       },
                       '& .MuiInputBase-input': {
-                        fontFamily: PAYMENT_CONSTANTS.INPUT_FONT_FAMILY,
                         fontSize: PAYMENT_CONSTANTS.INPUT_FONT_SIZE,
                         lineHeight: PAYMENT_CONSTANTS.INPUT_LINE_HEIGHT,
                         color: PAYMENT_CONSTANTS.INPUT_TEXT_COLOR,
@@ -361,7 +351,6 @@ const Payment: React.FC = () => {
           <Box>
             <Typography
               sx={{
-                fontFamily: PAYMENT_CONSTANTS.LABEL_FONT_FAMILY,
                 fontWeight: PAYMENT_CONSTANTS.LABEL_FONT_WEIGHT,
                 fontSize: PAYMENT_CONSTANTS.LABEL_FONT_SIZE,
                 lineHeight: PAYMENT_CONSTANTS.LABEL_LINE_HEIGHT,
@@ -394,7 +383,6 @@ const Payment: React.FC = () => {
                   },
                 },
                 '& .MuiInputBase-input': {
-                  fontFamily: PAYMENT_CONSTANTS.INPUT_FONT_FAMILY,
                   fontSize: PAYMENT_CONSTANTS.INPUT_FONT_SIZE,
                   lineHeight: PAYMENT_CONSTANTS.INPUT_LINE_HEIGHT,
                   color: PAYMENT_CONSTANTS.INPUT_TEXT_COLOR,
@@ -413,7 +401,6 @@ const Payment: React.FC = () => {
             borderRadius: PAYMENT_CONSTANTS.BUTTON_BORDER_RADIUS,
             backgroundColor: PAYMENT_CONSTANTS.BUTTON_BACKGROUND_COLOR,
             color: PAYMENT_CONSTANTS.BUTTON_TEXT_COLOR,
-            fontFamily: PAYMENT_CONSTANTS.BUTTON_FONT_FAMILY,
             fontWeight: PAYMENT_CONSTANTS.BUTTON_FONT_WEIGHT,
             fontSize: PAYMENT_CONSTANTS.BUTTON_FONT_SIZE,
             lineHeight: PAYMENT_CONSTANTS.BUTTON_LINE_HEIGHT,
