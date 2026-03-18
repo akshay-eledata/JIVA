@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, IconButton } from '@mui/material';
 import GreenTickIcon from '../../assets/GreenTick.png';
 import CloseIcon from '../../assets/CloseIcon.png';
@@ -16,6 +17,7 @@ import ReadingPaper from '../../assets/reading-paper.svg';
 import PlusIcon from '../../assets/plus.svg';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const { isScheduled } = useSchedule();
   const [showBanner, setShowBanner] = useState(true);
 
@@ -145,7 +147,6 @@ const Dashboard: React.FC = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, maxWidth: '600px', zIndex: 2 }}>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.SCHEDULE_TITLE_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.SCHEDULE_TITLE_FONT_WEIGHT,
                 fontSize: DASHBOARD_CONSTANTS.SCHEDULE_TITLE_FONT_SIZE,
                 lineHeight: DASHBOARD_CONSTANTS.SCHEDULE_TITLE_LINE_HEIGHT,
@@ -159,7 +160,6 @@ const Dashboard: React.FC = () => {
 
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.SCHEDULE_DESCRIPTION_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.SCHEDULE_DESCRIPTION_FONT_WEIGHT,
                 fontSize: DASHBOARD_CONSTANTS.SCHEDULE_DESCRIPTION_FONT_SIZE,
                 lineHeight: DASHBOARD_CONSTANTS.SCHEDULE_DESCRIPTION_LINE_HEIGHT,
@@ -177,7 +177,6 @@ const Dashboard: React.FC = () => {
                 height: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_HEIGHT,
                 backgroundColor: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_BACKGROUND_COLOR,
                 color: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_TEXT_COLOR,
-                fontFamily: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_FONT_WEIGHT,
                 fontSize: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_FONT_SIZE,
                 borderRadius: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_BORDER_RADIUS,
@@ -258,6 +257,7 @@ const Dashboard: React.FC = () => {
               </Box>
               <Box sx={{ width: '2px', height: '43px', backgroundColor: '#B1C2DC80' }} />
               <Button
+                onClick={() => navigate('/vitality-map', { state: { rescheduleIntent: true } })}
                 sx={{
                   ml: 2,
                   backgroundColor: '#006045',
@@ -332,7 +332,6 @@ const Dashboard: React.FC = () => {
       >
         <Typography
           sx={{
-            fontFamily: DASHBOARD_CONSTANTS.DISCOVER_TITLE_FONT_FAMILY,
             fontWeight: DASHBOARD_CONSTANTS.DISCOVER_TITLE_FONT_WEIGHT,
             fontSize: DASHBOARD_CONSTANTS.DISCOVER_TITLE_FONT_SIZE,
             lineHeight: DASHBOARD_CONSTANTS.DISCOVER_TITLE_LINE_HEIGHT,
@@ -346,7 +345,6 @@ const Dashboard: React.FC = () => {
 
         <Typography
           sx={{
-            fontFamily: DASHBOARD_CONSTANTS.DISCOVER_DESCRIPTION_FONT_FAMILY,
             fontWeight: DASHBOARD_CONSTANTS.DISCOVER_DESCRIPTION_FONT_WEIGHT,
             fontSize: DASHBOARD_CONSTANTS.DISCOVER_DESCRIPTION_FONT_SIZE,
             lineHeight: DASHBOARD_CONSTANTS.DISCOVER_DESCRIPTION_LINE_HEIGHT,
@@ -411,7 +409,6 @@ const Dashboard: React.FC = () => {
             </Box>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_WEIGHT,
                 fontSize: '16px',
                 lineHeight: '24px',
@@ -423,7 +420,6 @@ const Dashboard: React.FC = () => {
             </Typography>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_WEIGHT,
                 fontSize: '12px',
                 lineHeight: '18px',
@@ -476,7 +472,6 @@ const Dashboard: React.FC = () => {
             </Box>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_WEIGHT,
                 fontSize: '16px',
                 lineHeight: '24px',
@@ -488,7 +483,6 @@ const Dashboard: React.FC = () => {
             </Typography>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_WEIGHT,
                 fontSize: '12px',
                 lineHeight: '18px',
@@ -541,7 +535,6 @@ const Dashboard: React.FC = () => {
             </Box>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_WEIGHT,
                 fontSize: '16px',
                 lineHeight: '24px',
@@ -553,7 +546,6 @@ const Dashboard: React.FC = () => {
             </Typography>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_WEIGHT,
                 fontSize: '12px',
                 lineHeight: '18px',
@@ -606,7 +598,6 @@ const Dashboard: React.FC = () => {
             </Box>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_TITLE_FONT_WEIGHT,
                 fontSize: '16px',
                 lineHeight: '24px',
@@ -618,7 +609,6 @@ const Dashboard: React.FC = () => {
             </Typography>
             <Typography
               sx={{
-                fontFamily: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_FAMILY,
                 fontWeight: DASHBOARD_CONSTANTS.FEATURE_CARD_DESCRIPTION_FONT_WEIGHT,
                 fontSize: '12px',
                 lineHeight: '18px',

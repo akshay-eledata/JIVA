@@ -315,9 +315,10 @@ const YourHealth: React.FC = () => {
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, }}>
                                         <Typography sx={{
-                                            fontSize: '15px',
+                                            fontSize: '16px',
+                                            fontFamily: 'lexend',
                                             fontWeight: 600,
-                                            color: '#667085',
+                                            color: '#728197',
                                             whiteSpace: 'nowrap'
                                         }}>
                                             {card.label}
@@ -325,8 +326,9 @@ const YourHealth: React.FC = () => {
                                         <Box sx={{ width: '1px', height: '16px', backgroundColor: '#D0D5DD', mx: 1, opacity: 0.8 }} />
                                         <Typography sx={{
                                             fontSize: '22px',
-                                            fontWeight: 700,
-                                            color: '#101828',
+                                            fontWeight: 600,
+                                            fontFamily: 'lexend',
+                                            color: '#1A212B',
                                         }}>
                                             {card.count}
                                         </Typography>

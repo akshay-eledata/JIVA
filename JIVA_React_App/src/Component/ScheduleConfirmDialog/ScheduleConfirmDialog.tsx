@@ -9,16 +9,23 @@ import CloseIconAsset from '../../assets/close.svg';
 interface ScheduleConfirmDialogProps {
     open: boolean;
     onClose: () => void;
+    isReschedule?: boolean;
 }
 
-const ScheduleConfirmDialog: React.FC<ScheduleConfirmDialogProps> = ({ open, onClose }) => {
-    const { confirmSchedule } = useSchedule();
+const ScheduleConfirmDialog: React.FC<ScheduleConfirmDialogProps> = ({ open, onClose, isReschedule = false }) => {
+    const { confirmSchedule, confirmReschedule } = useSchedule();
     const navigate = useNavigate();
 
     const handleConfirm = () => {
-        confirmSchedule();
-        onClose();
-        navigate('/dashboard');
+        if (isReschedule) {
+            confirmReschedule();
+            onClose();
+            navigate('/vitality-map');
+        } else {
+            confirmSchedule();
+            onClose();
+            navigate('/dashboard');
+        }
     };
 
     return (
@@ -50,14 +57,11 @@ const ScheduleConfirmDialog: React.FC<ScheduleConfirmDialogProps> = ({ open, onC
                     color: '#101828',
                     lineHeight: '28px'
                 }}>
-                    Please Confirm your lab visit
+                    {isReschedule ? 'Please Confirm your rescheduled lab visit' : 'Please Confirm your lab visit'}
                 </Typography>
                 <IconButton
                     onClick={onClose}
-                    sx={{
-                        p: 0,
-                        color: '#667085'
-                    }}
+                    sx={{ p: 0, color: '#667085' }}
                 >
                     <img src={CloseIconAsset} alt="Close" style={{ width: '24px', height: '24px' }} />
                 </IconButton>
@@ -105,7 +109,7 @@ const ScheduleConfirmDialog: React.FC<ScheduleConfirmDialogProps> = ({ open, onC
 
             <Box sx={{ flexGrow: 1 }} />
 
-            <Box sx={{ display: 'flex', gap: '12px', justifyContent: 'space-between', mt: 'auto', }}>
+            <Box sx={{ display: 'flex', gap: '12px', justifyContent: 'space-between', mt: 'auto' }}>
                 <Button
                     onClick={onClose}
                     sx={{
@@ -138,7 +142,7 @@ const ScheduleConfirmDialog: React.FC<ScheduleConfirmDialogProps> = ({ open, onC
                         },
                     }}
                 >
-                    Confirm Schedule
+                    {isReschedule ? 'Confirm Reschedule' : 'Confirm Schedule'}
                 </Button>
             </Box>
         </Dialog>

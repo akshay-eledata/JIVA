@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSchedule } from '../../context/ScheduleContext';
+import ReadingPaperIcon from '../../assets/reading-paper.svg';
 import Chart from 'react-apexcharts';
 import {
     Box,
@@ -23,6 +26,9 @@ import ForkPlateIcon from '../../assets/fork-plate.svg';
 import StarIcon from '../../assets/Star.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
+import LabSamples from '../../assets/lab-samples.svg';
+import CheckCircleIcon from '../../assets/Check-circle.svg';
+import KitIcon from '../../assets/Kit.svg';
 
 const biomarkerData = [
     { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
@@ -334,7 +340,11 @@ const RecommendationSection: React.FC = () => {
 
 
 const VitalityMap: React.FC = () => {
-    const [showAlert, setShowAlert] = useState(true);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { isRescheduled } = useSchedule();
+    const rescheduleIntent = location.state?.rescheduleIntent || false;
+    const [showAlert, setShowAlert] = useState(!rescheduleIntent);
     const [selectedBiomarker, setSelectedBiomarker] = useState(3);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
@@ -405,82 +415,263 @@ const VitalityMap: React.FC = () => {
                 />
             </Box>
 
-            {/* Notification Alert */}
-            {showAlert && (
+            {/* Notification Alert, Retest Banner, or Post-Reschedule Scheduled Card */}
+            {isRescheduled ? (
+                // ── State 1: Reschedule confirmed → show Scheduled Lab Visit card ──
                 <Box
                     sx={{
-                        backgroundColor: '#F1F5F9', // Light blue-grey background from screenshot
-                        borderRadius: '24px',
-                        p: '24px 32px',
+                        width: '100%',
+                        minHeight: '232px',
+                        background: 'linear-gradient(90deg, #F1F5F9 0%, rgba(249, 249, 249, 0.75) 75.48%, #F9F9F9 100%)',
+                        borderRadius: '16px',
+                        padding: '24px 32px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        mb: 4,
+                        boxSizing: 'border-box',
+                        position: 'relative',
+                        overflow: 'visible',
+                    }}
+                >
+                    <Box sx={{ width: '60%' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px', mb: 4 }}>
+                            <Box
+                                sx={{
+                                    width: '48px',
+                                    height: '48px',
+                                    borderRadius: '8px',
+                                    backgroundColor: '#FFFFFF',
+                                    border: '1px solid #EAECF0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexShrink: 0,
+                                }}
+                            >
+                                <img src={CheckCircleIcon} alt="Scheduled" style={{ width: '24px', height: '24px' }} />
+                            </Box>
+                            <Box>
+                                <Typography sx={{ fontSize: '18px', fontWeight: 600, color: '#101828', lineHeight: '28px', textAlign: 'left' }}>
+                                    Scheduled Lab Visit
+                                </Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', mt: '4px' }}>
+                                    <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#1447E6', cursor: 'pointer' }}>
+                                        Visit 1
+                                    </Typography>
+                                    <Typography sx={{ fontSize: '14px', fontWeight: 400, color: '#475467' }}>
+                                        Tommrow 9:10 AM
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{ width: '2px', height: '43px', backgroundColor: '#B1C2DC80' }} />
+                            <Button
+                                onClick={() => navigate('/vitality-map', { state: { rescheduleIntent: true } })}
+                                sx={{
+                                    ml: 2,
+                                    backgroundColor: '#006045',
+                                    color: '#FFFFFF',
+                                    border: '1px solid #256111',
+                                    borderRadius: '8px',
+                                    textTransform: 'none',
+                                    fontWeight: 600,
+                                    fontSize: '14px',
+                                    height: '36px',
+                                    '&:hover': { backgroundColor: '#004d35' },
+                                }}
+                            >
+                                Reschedule Visit
+                            </Button>
+                        </Box>
+
+                        {/* Steps Timeline */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', width: '636px', position: 'relative' }}>
+                            <Box sx={{ position: 'absolute', width: '100%', top: '8.5px', left: '0', right: '0', height: '3px', background: 'linear-gradient(90deg, #484848 0%, rgba(72, 72, 72, 0.5) 25.96%, rgba(72, 72, 72, 0.25) 100%)', zIndex: 0 }} />
+                            <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
+                                <Box sx={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#FFFFFF', border: '4px solid #98A2B3' }} />
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>Visit 1</Typography>
+                            </Box>
+                            <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
+                                <Box sx={{ width: '14px', height: '14px', mt: '3px', borderRadius: '50%', backgroundColor: '#667085' }} />
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>Results</Typography>
+                            </Box>
+                            <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
+                                <Box sx={{ width: '14px', height: '14px', mt: '3px', borderRadius: '50%', backgroundColor: '#667085' }} />
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>Summary</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+
+                    <Box
+                        component="img"
+                        src={ReadingPaperIcon}
+                        alt="Reading Paper"
+                        sx={{
+                            position: 'absolute',
+                            right: '30px',
+                            top: '-20px',
+                            height: '280px',
+                            width: 'auto',
+                            objectFit: 'contain',
+                            pointerEvents: 'none',
+                        }}
+                    />
+                </Box>
+            ) : rescheduleIntent ? (
+                // ── State 2: Came from Reschedule Visit → Re-test banner with Get Test ──
+                <Box
+                    sx={{
+                        background: 'linear-gradient(90deg, #F2F2F2 36.27%, #F1F5F9 100%)',
+                        borderRadius: '32px',
+                        p: '0',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
+                        mb: 4,
                         border: '1px solid #7281971A',
                         boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+                        position: 'relative',
+                        minHeight: '200px',
+                        overflow: 'hidden'
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                        {/* Icon Background */}
-                        <Box
-                            sx={{
-                                width: '56px',
-                                height: '50px',
-                                backgroundColor: '#E2E8F0',
-                                borderRadius: '50%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                                p: '14px',
-                                boxSizing: 'border-box'
-                            }}
-                        >
+                    <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', gap: 0, flex: 1 }}>
+                        <Box sx={{ width: '300px', height: '200px', flexShrink: 0 }}>
                             <Box
                                 component="img"
-                                src={NotesIcon}
-                                alt="Notes"
-                                sx={{ width: '100%', height: '100%' }}
+                                src={LabSamples}
+                                alt="Lab Samples"
+                                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                         </Box>
-
-                        <Box sx={{ textAlign: 'left' }}>
-                            <Typography
-                                sx={{
-                                    fontSize: '14px',
-                                    fontWeight: 700,
-                                    color: '#003366', // Deep blue color for the highlight
-                                    mb: 0.5,
-                                    letterSpacing: '0.05em',
-                                    textTransform: 'uppercase'
-                                }}
-                            >
-                                HEY! YOUR LATEST HEALTH DATA IS READY...
+                        <Box sx={{ textAlign: 'left', pl: 10, flex: 1 }}>
+                            <Typography sx={{ fontSize: '36px', fontWeight: 600, color: '#525E6F', fontFamily: 'Source Sans Pro', mb: 1 }}>
+                                Re-test your out of range
                             </Typography>
-                            <Typography
-                                sx={{
-                                    fontSize: '13px',
-                                    color: '#475467',
-                                    fontWeight: 400,
-                                    lineHeight: '20px'
-                                }}
-                            >
-                                This is dashboard displaying result of latest data reviewed on September ! Check in and take action by viewing recommendations
+                            <Typography sx={{ fontSize: '16px', color: '#202020', fontFamily: 'Source Sans Pro', fontWeight: 400 }}>
+                                Add on lab test any time
                             </Typography>
                         </Box>
                     </Box>
 
-                    <IconButton
-                        onClick={() => setShowAlert(false)}
-                        sx={{ p: 0, color: '#98A2B3' }}
-                    >
-                        <Box
-                            component="img"
-                            src={CancelIcon}
-                            alt="Close"
-                            sx={{ width: '20px', height: '20px' }}
-                        />
-                    </IconButton>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2.5, pr: 8, borderLeft: '1.5px solid #EAECF0', pl: 6, py: 2 }}>
+                        <Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
+                                <Box component="img" src={CheckCircleIcon} sx={{ width: 18, height: 18 }} />
+                                <Typography sx={{ fontSize: '16px', fontWeight: 400, color: '#1A212B', fontFamily: 'Source Sans Pro' }}>
+                                    Ready for Retesting
+                                </Typography>
+                            </Box>
+                            <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
+                                {['Luteinzing Harmone', 'Prostate specific Antigen (PSA)', 'Lipase'].map((item, idx) => (
+                                    <Box component="li" key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+                                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#101828' }} />
+                                        <Typography sx={{ fontSize: '12px', color: '#1A212B', fontFamily: 'Source Sans Pro', fontWeight: 400 }}>{item}</Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+
+                        <Button
+                            variant="outlined"
+                            startIcon={<Box component="img" src={KitIcon} sx={{ width: 18, height: 16 }} />}
+                            onClick={() => navigate('/personal-info', { state: { isReschedule: true } })}
+                            sx={{
+                                border: '1px solid #256111',
+                                borderRadius: '8px',
+                                bgcolor: '#FFFFFF',
+                                color: '#256111',
+                                textTransform: 'none',
+                                fontWeight: 700,
+                                px: 2.5,
+                                py: '4px',
+                                fontSize: '14px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5,
+                            }}
+                        >
+                            Get Test
+                        </Button>
+                    </Box>
                 </Box>
+            ) : (
+                showAlert && (
+                    <Box
+                        sx={{
+                            backgroundColor: '#F1F5F9', // Light blue-grey background from screenshot
+                            borderRadius: '24px',
+                            p: '24px 32px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            border: '1px solid #7281971A',
+                            boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                            {/* Icon Background */}
+                            <Box
+                                sx={{
+                                    width: '56px',
+                                    height: '50px',
+                                    backgroundColor: '#E2E8F0',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexShrink: 0,
+                                    p: '14px',
+                                    boxSizing: 'border-box'
+                                }}
+                            >
+                                <Box
+                                    component="img"
+                                    src={NotesIcon}
+                                    alt="Notes"
+                                    sx={{ width: '100%', height: '100%' }}
+                                />
+                            </Box>
+
+                            <Box sx={{ textAlign: 'left' }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: '14px',
+                                        fontWeight: 700,
+                                        color: '#003366', // Deep blue color for the highlight
+                                        mb: 0.5,
+                                        letterSpacing: '0.05em',
+                                        textTransform: 'uppercase'
+                                    }}
+                                >
+                                    HEY! YOUR LATEST HEALTH DATA IS READY...
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize: '13px',
+                                        color: '#475467',
+                                        fontWeight: 400,
+                                        lineHeight: '20px'
+                                    }}
+                                >
+                                    This is dashboard displaying result of latest data reviewed on September ! Check in and take action by viewing recommendations
+                                </Typography>
+                            </Box>
+                        </Box>
+
+                        <IconButton
+                            onClick={() => setShowAlert(false)}
+                            sx={{ p: 0, color: '#98A2B3' }}
+                        >
+                            <Box
+                                component="img"
+                                src={CancelIcon}
+                                alt="Close"
+                                sx={{ width: '20px', height: '20px' }}
+                            />
+                        </IconButton>
+                    </Box>
+                )
             )}
             {/* Health Info Cards Grid */}
             <Box

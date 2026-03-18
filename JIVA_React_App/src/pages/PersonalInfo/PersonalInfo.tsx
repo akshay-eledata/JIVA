@@ -1,13 +1,18 @@
 import React from 'react';
 import { Box } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import PersonalInfoForm from '../../Component/PersonalInfoForm/PersonalInfoForm';
 import AboutYouForm from '../../Component/AboutYouForm/AboutYouForm';
+import RescheduleAddOnsForm from '../../Component/RescheduleAddOnsForm/RescheduleAddOnsForm';
 import ScheduleForm from '../../Component/ScheduleForm/ScheduleForm';
 import StepContainer from '../../Component/StepContainer/StepContainer';
 import ScheduleConfirmDialog from '../../Component/ScheduleConfirmDialog/ScheduleConfirmDialog';
 
 const PersonalInfo: React.FC = () => {
-    const [step, setStep] = React.useState(1); // 1: Personal Info only, 2: +About You, 3: +Schedule
+    const location = useLocation();
+    const isReschedule = (location.state as { isReschedule?: boolean })?.isReschedule ?? false;
+
+    const [step, setStep] = React.useState(1); // 1: Personal Info only, 2: +About You/Add Ons, 3: +Schedule
     const [showConfirmDialog, setShowConfirmDialog] = React.useState(false);
     const [formData, setFormData] = React.useState({
         firstName: '',
@@ -54,7 +59,7 @@ const PersonalInfo: React.FC = () => {
     return (
         <Box sx={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
             <StepContainer
-                title="Lets Get Started"
+                title={isReschedule ? 'Reschedule Your Visit' : 'Lets Get Started'}
                 currentStep={step === 1 ? 1 : 2} // Keep stepper at 1 or 2
                 steps={steps}
                 onNext={handleNext}
@@ -71,13 +76,14 @@ const PersonalInfo: React.FC = () => {
                     />
 
                     {/* Sub-steps appear BELOW */}
-                    {step === 2 && <AboutYouForm />}
+                    {step === 2 && (isReschedule ? <RescheduleAddOnsForm /> : <AboutYouForm />)}
                     {step === 3 && <ScheduleForm />}
                 </Box>
             </StepContainer>
             <ScheduleConfirmDialog
                 open={showConfirmDialog}
                 onClose={() => setShowConfirmDialog(false)}
+                isReschedule={isReschedule}
             />
         </Box>
     );
