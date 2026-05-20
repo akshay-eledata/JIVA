@@ -16,6 +16,7 @@ import {
     Grid,
 } from '@mui/material';
 import ConsultationModal from '../../Component/ConsultationModal/ConsultationModal';
+import BiomarkerCompare from '../../Component/BiomarkerCompare/BiomarkerCompare';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import BiomarkerIcon from '../../assets/Biomarker.svg';
@@ -349,6 +350,7 @@ const VitalityMap: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isCompareMode, setIsCompareMode] = useState(false);
 
     return (
         <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto', }}>
@@ -953,27 +955,60 @@ const VitalityMap: React.FC = () => {
                     pt: 4.5,
                     pb: 4.5,
                     pl: 4.5,
-                    pr: 0,
+                    pr: isCompareMode ? 4.5 : 0,
                     border: '1px solid #E4E7EC',
                     boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
                 }}
             >
-                <Box sx={{ display: 'flex', gap: 5 }}>
-                    {/* Left Column */}
-                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                        <Box sx={{ mb: 5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                {/* Header for Biomarker Section */}
+                <Box sx={{ mb: 5, display: 'flex', gap: isCompareMode ? 0 : 5, pr: isCompareMode ? 0 : 4.5 }}>
+                    <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                             <Typography
                                 sx={{
                                     fontSize: '28px',
                                     fontWeight: 700,
                                     color: '#1A212B',
+                                    fontFamily: 'Inter, sans-serif',
                                     textAlign: 'left'
                                 }}
                             >
                                 Biomarker
                             </Typography>
 
-                            {/* Header: Legend moved from right side */}
+                            {/* Toggle */}
+                            <Box sx={{ display: 'flex', border: '1px solid #E4E7EC', borderRadius: '24px', p: 0.5, alignItems: 'center', backgroundColor: '#FFFFFF' }}>
+                                <Box 
+                                    onClick={() => setIsCompareMode(false)}
+                                    sx={{ 
+                                        px: 3, py: 0.5, 
+                                        borderRadius: '20px', 
+                                        backgroundColor: !isCompareMode ? '#FFFFFF' : 'transparent',
+                                        cursor: 'pointer',
+                                        border: !isCompareMode ? '1px solid #E4E7EC' : '1px solid transparent',
+                                        boxShadow: !isCompareMode ? '0px 1px 2px rgba(0,0,0,0.05)' : 'none'
+                                    }}>
+                                    <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#1A212B' }}>
+                                        Heat Map
+                                    </Typography>
+                                </Box>
+                                <Box 
+                                    onClick={() => setIsCompareMode(true)}
+                                    sx={{ 
+                                        px: 3, py: 0.5, 
+                                        borderRadius: '20px', 
+                                        backgroundColor: isCompareMode ? '#CBD5E1' : 'transparent',
+                                        cursor: 'pointer'
+                                    }}>
+                                    <Typography sx={{ fontSize: '14px', fontWeight: 600, color: isCompareMode ? '#1A212B' : '#667085' }}>
+                                        Compare
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        {/* Legend (only in Heat Map mode) */}
+                        {!isCompareMode && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mr: 2 }}>
                                 <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#98A2B3', letterSpacing: '0.05em' }}>IN</Typography>
                                 <Box
@@ -986,7 +1021,21 @@ const VitalityMap: React.FC = () => {
                                 />
                                 <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#98A2B3', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>OUT OF RANGE</Typography>
                             </Box>
-                        </Box>
+                        )}
+                    </Box>
+
+                    {/* Placeholder to align the header properly with the two-column layout */}
+                    {!isCompareMode && (
+                        <Box sx={{ width: '420px', display: 'flex' }} />
+                    )}
+                </Box>
+
+                {isCompareMode ? (
+                    <BiomarkerCompare />
+                ) : (
+                    <Box sx={{ display: 'flex', gap: 5 }}>
+                        {/* Left Column */}
+                        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
 
                         {/* Cards Grid */}
                         <Box
@@ -1136,6 +1185,7 @@ const VitalityMap: React.FC = () => {
                         </Box>
                     </Box>
                 </Box>
+                )}
             </Box>
 
             {/* Biomarker Section Container */}

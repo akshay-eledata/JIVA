@@ -19,6 +19,7 @@ import './App.css';
 import AutoImmunity from './pages/AutoImmunity/AutoImmunity';
 import RheumatoidFactor from './pages/RheumatoidFactor/RheumatoidFactor';
 import YourHealth from './pages/YourHealth/YourHealth';
+import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
 import theme from './theme';
 
 const App: React.FC = () => {
@@ -69,6 +70,7 @@ const App: React.FC = () => {
               <Route path="/auto-immunity" element={<AutoImmunity />} />
               <Route path="/rheumatoid-factor" element={<RheumatoidFactor />} />
               <Route path="/your-health" element={<YourHealth />} />
+              <Route path="/follow-up-test" element={<FollowUpTest />} />
               <Route path="/video-player" element={<VideoPlayer />} />
 
             </Routes>
