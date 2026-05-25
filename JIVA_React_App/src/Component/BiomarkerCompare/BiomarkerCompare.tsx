@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import GreenUpArrow from '../../assets/green up-arrow.svg';
+import RedDownArrow from '../../assets/red down-arrow.svg';
 
 interface CompareItem {
     name: string;
@@ -22,7 +22,7 @@ const inRangeData: CompareItem[] = [
 ];
 
 const outOfRangeData: CompareItem[] = [
-    { name: 'Auto Immunity', value: '4.2', difference: 3, trend: 'up', width: '45%', hasBadge: true },
+    { name: 'Auto Immunity', value: '4.2', difference: 3, trend: 'up', width: '45%' },
     { name: 'Liver', value: '4.2', difference: 3, trend: 'up', width: '35%' },
     { name: 'Immune Regulation', value: '4.2', difference: 3, trend: 'up', width: '50%' },
     { name: 'Metabolic', value: '4.2', difference: 3, trend: 'up', width: '80%' },
@@ -34,7 +34,7 @@ const CompareList = ({ title, data, isOutRange }: { title: string, data: Compare
     return (
         <Box sx={{
             flex: 1,
-            border: '1px solid #E4E7EC',
+            border: '1px solid #E2E8F0',
             borderRadius: '24px',
             p: 3,
             backgroundColor: '#FFFFFF',
@@ -42,27 +42,27 @@ const CompareList = ({ title, data, isOutRange }: { title: string, data: Compare
         }}>
             {/* Header */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3, px: 1 }}>
-                <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#98A2B3' }}>{title}</Typography>
+                <Typography sx={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Source Sans Pro', color: '#64748B' }}>{title}</Typography>
                 <Box sx={{ display: 'flex', gap: 4 }}>
-                    <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#98A2B3' }}>Sep</Typography>
-                    <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#98A2B3' }}>Difference</Typography>
+                    <Typography sx={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Source Sans Pro', color: '#64748B' }}>Sep</Typography>
+                    <Typography sx={{ fontSize: '16px', fontWeight: 400, fontFamily: 'Source Sans Pro', color: '#64748B' }}>Difference</Typography>
                 </Box>
             </Box>
 
             {/* List */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 {data.map((item, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
-                        
+
                         {/* Bar */}
                         <Box sx={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
                             <Box sx={{
                                 width: item.width,
-                                height: '44px',
-                                borderRadius: '22px',
-                                background: isOutRange 
-                                    ? 'linear-gradient(90deg, #F9C3B6 0%, #F5AB9A 100%)' // Orange/Red gradient
-                                    : 'linear-gradient(90deg, #D2F2E2 0%, #BFEBDF 100%)', // Green gradient
+                                height: '40px',
+                                borderRadius: '4px 22px 22px 4px',
+                                background: isOutRange
+                                    ? 'linear-gradient(180deg, #FFD4D8 0%, #ED997F 100%)'
+                                    : 'linear-gradient(180deg, #E1FCDE 0%, #BAEBD7 100%)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 pl: 3,
@@ -71,7 +71,7 @@ const CompareList = ({ title, data, isOutRange }: { title: string, data: Compare
                                     {item.name}
                                 </Typography>
                             </Box>
-                            
+
                             {/* Badge */}
                             {item.hasBadge && (
                                 <Box sx={{
@@ -105,14 +105,14 @@ const CompareList = ({ title, data, isOutRange }: { title: string, data: Compare
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '40px', justifyContent: 'flex-end' }}>
                                 {item.trend === 'up' ? (
-                                    <ArrowUpwardIcon sx={{ fontSize: 16, color: '#12B76A', mr: 0.5 }} />
+                                    <Box component="img" src={GreenUpArrow} sx={{ width: 10, height: 12, mr: 0.5 }} />
                                 ) : (
-                                    <ArrowDownwardIcon sx={{ fontSize: 16, color: '#F04438', mr: 0.5 }} />
+                                    <Box component="img" src={RedDownArrow} sx={{ width: 10, height: 12, mr: 0.5 }} />
                                 )}
-                                <Typography sx={{ 
-                                    fontSize: '14px', 
-                                    fontWeight: 700, 
-                                    color: '#1A212B' 
+                                <Typography sx={{
+                                    fontSize: '14px',
+                                    fontWeight: 700,
+                                    color: '#1A212B'
                                 }}>
                                     {item.difference}
                                 </Typography>

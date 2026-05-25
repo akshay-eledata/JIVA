@@ -251,7 +251,7 @@ const RecommendationSection: React.FC = () => {
                 backgroundColor: '#F1F5F9',
                 borderRadius: '40px',
                 p: 5,
-                border: '1px solid #E4E7EC',
+                border: '1px solid #E2E8F0',
 
             }}
         >
@@ -398,7 +398,7 @@ const VitalityMap: React.FC = () => {
                             backgroundColor: '#FFFFFF',
                             height: '46px',
                             '& fieldset': {
-                                borderColor: '#E4E7EC', // Subtle border color
+                                borderColor: '#E2E8F0', // Subtle border color
                             },
                         },
                         '& .MuiOutlinedInput-input': {
@@ -690,7 +690,7 @@ const VitalityMap: React.FC = () => {
                         backgroundColor: '#FFFFFF',
                         borderRadius: '32px',
                         p: 3,
-                        border: '1px solid #E4E7EC',
+                        border: '1px solid #E2E8F0',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -824,7 +824,7 @@ const VitalityMap: React.FC = () => {
                         backgroundColor: '#FFFFFF',
                         borderRadius: '32px',
                         p: 3,
-                        border: '1px solid #E4E7EC',
+                        border: '1px solid #E2E8F0',
                         height: '340px',
                         display: 'flex',
                         flexDirection: 'column',
@@ -906,7 +906,7 @@ const VitalityMap: React.FC = () => {
                         backgroundColor: '#FFFFFF',
                         borderRadius: '32px',
                         p: 3,
-                        border: '1px solid #E4E7EC',
+                        border: '1px solid #E2E8F0',
                         height: '340px',
                         display: 'flex',
                         flexDirection: 'column',
@@ -956,20 +956,20 @@ const VitalityMap: React.FC = () => {
                     pb: 4.5,
                     pl: 4.5,
                     pr: isCompareMode ? 4.5 : 0,
-                    border: '1px solid #E4E7EC',
+                    border: '1px solid #E2E8F0',
                     boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
                 }}
             >
                 {/* Header for Biomarker Section */}
-                <Box sx={{ mb: 5, display: 'flex', gap: isCompareMode ? 0 : 5, pr: isCompareMode ? 0 : 4.5 }}>
+                <Box sx={{ mb: 5, display: 'flex', gap: isCompareMode ? 0 : 5, pr: isCompareMode ? 0 : 4.5, alignItems: 'flex-start' }}>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                             <Typography
                                 sx={{
-                                    fontSize: '28px',
-                                    fontWeight: 700,
+                                    fontSize: '24px',
+                                    fontWeight: 600,
                                     color: '#1A212B',
-                                    fontFamily: 'Inter, sans-serif',
+                                    fontFamily: 'Source Sans Pro',
                                     textAlign: 'left'
                                 }}
                             >
@@ -977,30 +977,28 @@ const VitalityMap: React.FC = () => {
                             </Typography>
 
                             {/* Toggle */}
-                            <Box sx={{ display: 'flex', border: '1px solid #E4E7EC', borderRadius: '24px', p: 0.5, alignItems: 'center', backgroundColor: '#FFFFFF' }}>
-                                <Box 
+                            <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#C8D0DB' }}>
+                                <Box
                                     onClick={() => setIsCompareMode(false)}
-                                    sx={{ 
-                                        px: 3, py: 0.5, 
-                                        borderRadius: '20px', 
-                                        backgroundColor: !isCompareMode ? '#FFFFFF' : 'transparent',
+                                    sx={{
+                                        px: 3, py: '6px',
+                                        borderRadius: '10px',
+                                        backgroundColor: !isCompareMode ? '#F9FAFB' : 'transparent',
                                         cursor: 'pointer',
-                                        border: !isCompareMode ? '1px solid #E4E7EC' : '1px solid transparent',
-                                        boxShadow: !isCompareMode ? '0px 1px 2px rgba(0,0,0,0.05)' : 'none'
                                     }}>
-                                    <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#1A212B' }}>
+                                    <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
                                         Heat Map
                                     </Typography>
                                 </Box>
-                                <Box 
+                                <Box
                                     onClick={() => setIsCompareMode(true)}
-                                    sx={{ 
-                                        px: 3, py: 0.5, 
-                                        borderRadius: '20px', 
-                                        backgroundColor: isCompareMode ? '#CBD5E1' : 'transparent',
+                                    sx={{
+                                        px: 3, py: '6px',
+                                        borderRadius: '10px',
+                                        backgroundColor: isCompareMode ? '#F9FAFB' : 'transparent',
                                         cursor: 'pointer'
                                     }}>
-                                    <Typography sx={{ fontSize: '14px', fontWeight: 600, color: isCompareMode ? '#1A212B' : '#667085' }}>
+                                    <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
                                         Compare
                                     </Typography>
                                 </Box>
@@ -1024,9 +1022,16 @@ const VitalityMap: React.FC = () => {
                         )}
                     </Box>
 
-                    {/* Placeholder to align the header properly with the two-column layout */}
+                    {/* Auto Immunity Header aligned with Biomarker */}
                     {!isCompareMode && (
-                        <Box sx={{ width: '420px', display: 'flex' }} />
+                        <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 0.5 }}>
+                            <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5, lineHeight: 1.2 }}>
+                                Auto Immunity
+                            </Typography>
+                            <Typography sx={{ fontSize: '16px', color: '#667085', fontWeight: 500, textAlign: 'left', pr: 4.5 }}>
+                                {isExpanded ? 'All Biomarkers' : '4 Biomarkers'}
+                            </Typography>
+                        </Box>
                     )}
                 </Box>
 
@@ -1037,154 +1042,147 @@ const VitalityMap: React.FC = () => {
                         {/* Left Column */}
                         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
 
-                        {/* Cards Grid */}
-                        <Box
-                            sx={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(4, 1fr)',
-                                gap: '16px',
-                            }}
-                        >
-                            {biomarkerData.map((item, index) => (
-                                <Box
-                                    key={index}
-                                    onClick={() => setSelectedBiomarker(index)}
-                                    sx={{
-                                        backgroundColor: item.color,
-                                        borderRadius: '16px',
-                                        p: '16px',
-                                        height: '90px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'space-between',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s ease',
-                                        position: 'relative',
-                                        boxShadow: selectedBiomarker === index ? '0px 10px 20px rgba(0,0,0,0.15), 0px 4px 6px rgba(0,0,0,0.1)' : 'none',
-                                        border: selectedBiomarker === index ? '1px solid rgba(0,0,0,0.1)' : 'none',
-                                        zIndex: selectedBiomarker === index ? 1 : 0,
-                                        '&:hover': {
-                                            transform: 'translateY(-2px)',
-                                            boxShadow: '0px 4px 12px rgba(0,0,0,0.05)'
-                                        }
-                                    }}
-                                >
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                        <Box>
-                                            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.2 }}>
-                                                {item.title}
-                                            </Typography>
-                                            <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467' }}>
-                                                {item.status}
-                                            </Typography>
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                width: '28px',
-                                                height: '28px',
-                                                backgroundColor: '#FFFFFF33',
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                flexShrink: 0
-                                            }}
-                                        >
-                                            <Box
-                                                component="img"
-                                                src={BiomarkerIcon}
-                                                alt="biomarker"
-                                                sx={{ width: '16px', height: '16px' }}
-                                            />
-                                        </Box>
-                                    </Box>
-                                </Box>
-                            ))}
-                        </Box>
-                    </Box>
-
-                    {/* Divider Line */}
-                    <Box sx={{ width: '1.5px', backgroundColor: '#EDF2F7', alignSelf: 'stretch', mx: 2 }} />
-
-                    {/* Right Column */}
-                    <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 1 }}>
-                        {/* Details Panel */}
-                        <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: '420px', pr: 0 }}>
-                            <Typography sx={{ fontSize: '28px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5 }}>
-                                Auto Immunity
-                            </Typography>
-                            <Typography sx={{ fontSize: '16px', color: '#667085', mb: 5, fontWeight: 500, textAlign: 'left', pr: 4.5 }}>
-                                {isExpanded ? 'All Biomarkers' : '4 Biomarkers'}
-                            </Typography>
-
+                            {/* Cards Grid */}
                             <Box
                                 sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: 4,
-                                    flexGrow: 1,
-                                    overflowY: isExpanded ? 'auto' : 'hidden',
-                                    '&::-webkit-scrollbar': {
-                                        width: '4px',
-                                    },
-                                    '&::-webkit-scrollbar-thumb': {
-                                        backgroundColor: '#475467',
-                                        borderRadius: '2px',
-                                    },
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(4, 1fr)',
+                                    gap: '16px',
                                 }}
                             >
-                                {(isExpanded ? [1, 2, 3, 4, 5, 6, 7, 8] : [1, 2, 3]).map((item) => (
-                                    <Box key={item} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
-                                        <Box
-                                            sx={{
-                                                width: '4px',
-                                                height: '46px',
-                                                backgroundColor: '#BAEBD7',
-                                                borderRadius: '2px',
-                                                flexShrink: 0,
-                                                mt: 0.5
-                                            }}
-                                        />
-                                        <Box>
-                                            <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2' }}>
-                                                Anti Nuclear Antibodies (ANA) Pattern
-                                            </Typography>
-                                            <Typography sx={{ fontSize: '15px', color: '#728197' }}>
-                                                <span style={{ color: '#728197', fontWeight: 600 }}>In Range</span> 410 nmol/ L
-                                            </Typography>
+                                {biomarkerData.map((item, index) => (
+                                    <Box
+                                        key={index}
+                                        onClick={() => setSelectedBiomarker(index)}
+                                        sx={{
+                                            backgroundColor: item.color,
+                                            borderRadius: '16px',
+                                            p: '16px',
+                                            height: '90px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'space-between',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease',
+                                            position: 'relative',
+                                            boxShadow: selectedBiomarker === index ? '0px 10px 20px rgba(0,0,0,0.15), 0px 4px 6px rgba(0,0,0,0.1)' : 'none',
+                                            border: selectedBiomarker === index ? '1px solid rgba(0,0,0,0.1)' : 'none',
+                                            zIndex: selectedBiomarker === index ? 1 : 0,
+                                            '&:hover': {
+                                                transform: 'translateY(-2px)',
+                                                boxShadow: '0px 4px 12px rgba(0,0,0,0.05)'
+                                            }
+                                        }}
+                                    >
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                            <Box>
+                                                <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.2 }}>
+                                                    {item.title}
+                                                </Typography>
+                                                <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467' }}>
+                                                    {item.status}
+                                                </Typography>
+                                            </Box>
+                                            <Box
+                                                sx={{
+                                                    width: '28px',
+                                                    height: '28px',
+                                                    backgroundColor: '#FFFFFF33',
+                                                    borderRadius: '50%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flexShrink: 0
+                                                }}
+                                            >
+                                                <Box
+                                                    component="img"
+                                                    src={BiomarkerIcon}
+                                                    alt="biomarker"
+                                                    sx={{ width: '16px', height: '16px' }}
+                                                />
+                                            </Box>
                                         </Box>
                                     </Box>
                                 ))}
                             </Box>
+                        </Box>
 
-                            <Box sx={{ pr: 4.5, display: 'flex' }}>
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => setIsExpanded(!isExpanded)}
+                        {/* Divider Line */}
+                        <Box sx={{ width: '1.5px', backgroundColor: '#EDF2F7', alignSelf: 'stretch', mx: 2 }} />
+
+                        {/* Right Column */}
+                        <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 1 }}>
+                            {/* Details Panel */}
+                            <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: '420px', pr: 0 }}>
+                                <Box
                                     sx={{
-                                        alignSelf: 'flex-start',
-                                        mt: 4,
-                                        textTransform: 'none',
-                                        borderRadius: '14px',
-                                        fontFamily: 'lexend',
-                                        borderColor: '#256111',
-                                        color: '#256111',
-                                        fontWeight: 500,
-                                        px: 4,
-                                        height: '50px',
-                                        fontSize: '16px',
-                                        '&:hover': {
-                                            borderColor: '#004d35',
-                                            backgroundColor: '#F3FAF7',
-                                        }
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 4,
+                                        flexGrow: 1,
+                                        overflowY: isExpanded ? 'auto' : 'hidden',
+                                        '&::-webkit-scrollbar': {
+                                            width: '4px',
+                                        },
+                                        '&::-webkit-scrollbar-thumb': {
+                                            backgroundColor: '#475467',
+                                            borderRadius: '2px',
+                                        },
                                     }}
                                 >
-                                    {isExpanded ? 'View Less' : 'Read More'}
-                                </Button>
+                                    {(isExpanded ? [1, 2, 3, 4, 5, 6, 7, 8] : [1, 2, 3]).map((item) => (
+                                        <Box key={item} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
+                                            <Box
+                                                sx={{
+                                                    width: '4px',
+                                                    height: '46px',
+                                                    backgroundColor: '#BAEBD7',
+                                                    borderRadius: '2px',
+                                                    flexShrink: 0,
+                                                    mt: 0.5
+                                                }}
+                                            />
+                                            <Box>
+                                                <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2' }}>
+                                                    Anti Nuclear Antibodies (ANA) Pattern
+                                                </Typography>
+                                                <Typography sx={{ fontSize: '15px', color: '#728197' }}>
+                                                    <span style={{ color: '#728197', fontWeight: 600 }}>In Range</span> 410 nmol/ L
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                    ))}
+                                </Box>
+
+                                <Box sx={{ pr: 4.5, display: 'flex' }}>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        sx={{
+                                            alignSelf: 'flex-start',
+                                            mt: 4,
+                                            textTransform: 'none',
+                                            borderRadius: '14px',
+                                            fontFamily: 'lexend',
+                                            borderColor: '#256111',
+                                            color: '#256111',
+                                            fontWeight: 500,
+                                            px: 4,
+                                            height: '50px',
+                                            fontSize: '16px',
+                                            '&:hover': {
+                                                borderColor: '#004d35',
+                                                backgroundColor: '#F3FAF7',
+                                            }
+                                        }}
+                                    >
+                                        {isExpanded ? 'View Less' : 'Read More'}
+                                    </Button>
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
-                </Box>
                 )}
             </Box>
 
