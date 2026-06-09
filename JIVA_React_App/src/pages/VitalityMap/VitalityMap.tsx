@@ -30,6 +30,8 @@ import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
 import LabSamples from '../../assets/lab-samples.svg';
 import CheckCircleIcon from '../../assets/Check-circle.svg';
 import KitIcon from '../../assets/Kit.svg';
+import { VITALITY_MAP_CONSTANTS } from './constants';
+import { VITALITY_MAP_LABELS } from './labels';
 
 const biomarkerData = [
     { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
@@ -252,7 +254,6 @@ const RecommendationSection: React.FC = () => {
                 borderRadius: '40px',
                 p: 5,
                 border: '1px solid #E2E8F0',
-
             }}
         >
             <Typography
@@ -264,12 +265,12 @@ const RecommendationSection: React.FC = () => {
                     mb: 4,
                 }}
             >
-                What’s Recommended?
+                {VITALITY_MAP_LABELS.RECOMMENDED_TITLE}
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 4, mb: 6 }}>
                 <Box>
-                    <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#9AA8BC', mb: 1, textAlign: 'left' }}>Select Biomarker</Typography>
+                    <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#9AA8BC', mb: 1, textAlign: 'left' }}>{VITALITY_MAP_LABELS.SELECT_BIOMARKER}</Typography>
                     <FormControl variant="outlined" size="small" sx={{ minWidth: 380 }}>
                         <Select
                             value={selectedBiomarker}
@@ -301,14 +302,13 @@ const RecommendationSection: React.FC = () => {
                         px: 4,
                         height: '48px',
                         fontSize: '16px',
-
                         '&:hover': {
                             borderColor: '#004d35',
                             backgroundColor: '#F3FAF7',
                         }
                     }}
                 >
-                    View All
+                    {VITALITY_MAP_LABELS.VIEW_ALL}
                 </Button>
             </Box>
 
@@ -339,7 +339,6 @@ const RecommendationSection: React.FC = () => {
     );
 };
 
-
 const VitalityMap: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -353,7 +352,7 @@ const VitalityMap: React.FC = () => {
     const [isCompareMode, setIsCompareMode] = useState(false);
 
     return (
-        <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto', }}>
+        <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', }}>
             {/* Consultation Modal */}
             <ConsultationModal
                 open={isModalOpen}
@@ -373,7 +372,7 @@ const VitalityMap: React.FC = () => {
                             letterSpacing: '-0.02em',
                         }}
                     >
-                        Hello Brian!
+                        {VITALITY_MAP_LABELS.HELLO}
                     </Typography>
                     <Typography
                         sx={{
@@ -383,22 +382,22 @@ const VitalityMap: React.FC = () => {
                             fontWeight: 500,
                         }}
                     >
-                        Its Tuesday, 4 June 2025
+                        {VITALITY_MAP_LABELS.DATE_STRING}
                     </Typography>
                 </Box>
 
                 {/* Search Bar */}
                 <TextField
-                    placeholder="Search..."
+                    placeholder={VITALITY_MAP_LABELS.SEARCH_PLACEHOLDER}
                     size="small"
                     sx={{
-                        width: '450px',
+                        width: VITALITY_MAP_CONSTANTS.SEARCH_WIDTH,
                         '& .MuiOutlinedInput-root': {
                             borderRadius: '24px',
                             backgroundColor: '#FFFFFF',
-                            height: '46px',
+                            height: VITALITY_MAP_CONSTANTS.SEARCH_HEIGHT,
                             '& fieldset': {
-                                borderColor: '#E2E8F0', // Subtle border color
+                                borderColor: '#E2E8F0',
                             },
                         },
                         '& .MuiOutlinedInput-input': {
@@ -419,14 +418,13 @@ const VitalityMap: React.FC = () => {
 
             {/* Notification Alert, Retest Banner, or Post-Reschedule Scheduled Card */}
             {isRescheduled ? (
-                // ── State 1: Reschedule confirmed → show Scheduled Lab Visit card ──
                 <Box
                     sx={{
                         width: '100%',
-                        minHeight: '232px',
+                        minHeight: VITALITY_MAP_CONSTANTS.BANNER_MIN_HEIGHT,
                         background: 'linear-gradient(90deg, #F1F5F9 0%, rgba(249, 249, 249, 0.75) 75.48%, #F9F9F9 100%)',
-                        borderRadius: '16px',
-                        padding: '24px 32px',
+                        borderRadius: VITALITY_MAP_CONSTANTS.BANNER_RADIUS,
+                        padding: VITALITY_MAP_CONSTANTS.BANNER_PADDING,
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
@@ -455,14 +453,14 @@ const VitalityMap: React.FC = () => {
                             </Box>
                             <Box>
                                 <Typography sx={{ fontSize: '18px', fontWeight: 600, color: '#101828', lineHeight: '28px', textAlign: 'left' }}>
-                                    Scheduled Lab Visit
+                                    {VITALITY_MAP_LABELS.SCHEDULED_LAB_VISIT}
                                 </Typography>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', mt: '4px' }}>
                                     <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#1447E6', cursor: 'pointer' }}>
-                                        Visit 1
+                                        {VITALITY_MAP_LABELS.VISIT_1}
                                     </Typography>
                                     <Typography sx={{ fontSize: '14px', fontWeight: 400, color: '#475467' }}>
-                                        Tommrow 9:10 AM
+                                        {VITALITY_MAP_LABELS.VISIT_TIME}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -482,24 +480,24 @@ const VitalityMap: React.FC = () => {
                                     '&:hover': { backgroundColor: '#004d35' },
                                 }}
                             >
-                                Reschedule Visit
+                                {VITALITY_MAP_LABELS.BUTTON_RESCHEDULE}
                             </Button>
                         </Box>
 
                         {/* Steps Timeline */}
-                        <Box sx={{ display: 'flex', alignItems: 'center', width: '636px', position: 'relative' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', width: VITALITY_MAP_CONSTANTS.STEPS_TIMELINE_WIDTH, position: 'relative' }}>
                             <Box sx={{ position: 'absolute', width: '100%', top: '8.5px', left: '0', right: '0', height: '3px', background: 'linear-gradient(90deg, #484848 0%, rgba(72, 72, 72, 0.5) 25.96%, rgba(72, 72, 72, 0.25) 100%)', zIndex: 0 }} />
                             <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
                                 <Box sx={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#FFFFFF', border: '4px solid #98A2B3' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>Visit 1</Typography>
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>{VITALITY_MAP_LABELS.STEPS_VISIT_1}</Typography>
                             </Box>
                             <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
                                 <Box sx={{ width: '14px', height: '14px', mt: '3px', borderRadius: '50%', backgroundColor: '#667085' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>Results</Typography>
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>{VITALITY_MAP_LABELS.STEPS_RESULTS}</Typography>
                             </Box>
                             <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
                                 <Box sx={{ width: '14px', height: '14px', mt: '3px', borderRadius: '50%', backgroundColor: '#667085' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>Summary</Typography>
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>{VITALITY_MAP_LABELS.STEPS_SUMMARY}</Typography>
                             </Box>
                         </Box>
                     </Box>
@@ -520,11 +518,10 @@ const VitalityMap: React.FC = () => {
                     />
                 </Box>
             ) : rescheduleIntent ? (
-                // ── State 2: Came from Reschedule Visit → Re-test banner with Get Test ──
                 <Box
                     sx={{
                         background: 'linear-gradient(90deg, #F2F2F2 36.27%, #F1F5F9 100%)',
-                        borderRadius: '32px',
+                        borderRadius: VITALITY_MAP_CONSTANTS.RETEST_BANNER_RADIUS,
                         p: '0',
                         display: 'flex',
                         alignItems: 'center',
@@ -533,12 +530,12 @@ const VitalityMap: React.FC = () => {
                         border: '1px solid #7281971A',
                         boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
                         position: 'relative',
-                        minHeight: '200px',
+                        minHeight: VITALITY_MAP_CONSTANTS.RETEST_BANNER_MIN_HEIGHT,
                         overflow: 'hidden'
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', gap: 0, flex: 1 }}>
-                        <Box sx={{ width: '300px', height: '200px', flexShrink: 0 }}>
+                        <Box sx={{ width: VITALITY_MAP_CONSTANTS.RETEST_IMAGE_WIDTH, height: '200px', flexShrink: 0 }}>
                             <Box
                                 component="img"
                                 src={LabSamples}
@@ -548,10 +545,10 @@ const VitalityMap: React.FC = () => {
                         </Box>
                         <Box sx={{ textAlign: 'left', pl: 10, flex: 1 }}>
                             <Typography sx={{ fontSize: '36px', fontWeight: 600, color: '#525E6F', fontFamily: 'Source Sans Pro', mb: 1 }}>
-                                Re-test your out of range
+                                {VITALITY_MAP_LABELS.RETEST_TITLE}
                             </Typography>
                             <Typography sx={{ fontSize: '16px', color: '#202020', fontFamily: 'Source Sans Pro', fontWeight: 400 }}>
-                                Add on lab test any time
+                                {VITALITY_MAP_LABELS.RETEST_SUBTITLE}
                             </Typography>
                         </Box>
                     </Box>
@@ -561,7 +558,7 @@ const VitalityMap: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
                                 <Box component="img" src={CheckCircleIcon} sx={{ width: 18, height: 18 }} />
                                 <Typography sx={{ fontSize: '16px', fontWeight: 400, color: '#1A212B', fontFamily: 'Source Sans Pro' }}>
-                                    Ready for Retesting
+                                    {VITALITY_MAP_LABELS.READY_RETEST}
                                 </Typography>
                             </Box>
                             <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
@@ -593,7 +590,7 @@ const VitalityMap: React.FC = () => {
                                 gap: 0.5,
                             }}
                         >
-                            Get Test
+                            {VITALITY_MAP_LABELS.BUTTON_GET_TEST}
                         </Button>
                     </Box>
                 </Box>
@@ -601,9 +598,9 @@ const VitalityMap: React.FC = () => {
                 showAlert && (
                     <Box
                         sx={{
-                            backgroundColor: '#F1F5F9', // Light blue-grey background from screenshot
-                            borderRadius: '24px',
-                            p: '24px 32px',
+                            backgroundColor: '#F1F5F9',
+                            borderRadius: VITALITY_MAP_CONSTANTS.ALERT_BORDER_RADIUS,
+                            p: VITALITY_MAP_CONSTANTS.ALERT_PADDING,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
@@ -612,18 +609,17 @@ const VitalityMap: React.FC = () => {
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                            {/* Icon Background */}
                             <Box
                                 sx={{
-                                    width: '56px',
+                                    width: VITALITY_MAP_CONSTANTS.ALERT_ICON_SIZE,
                                     height: '50px',
                                     backgroundColor: '#E2E8F0',
-                                    borderRadius: '50%',
+                                    borderRadius: VITALITY_MAP_CONSTANTS.ALERT_ICON_BG_RADIUS,
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     flexShrink: 0,
-                                    p: '14px',
+                                    p: VITALITY_MAP_CONSTANTS.ALERT_ICON_PADDING,
                                     boxSizing: 'border-box'
                                 }}
                             >
@@ -640,13 +636,13 @@ const VitalityMap: React.FC = () => {
                                     sx={{
                                         fontSize: '14px',
                                         fontWeight: 700,
-                                        color: '#003366', // Deep blue color for the highlight
+                                        color: '#003366',
                                         mb: 0.5,
                                         letterSpacing: '0.05em',
                                         textTransform: 'uppercase'
                                     }}
                                 >
-                                    HEY! YOUR LATEST HEALTH DATA IS READY...
+                                    {VITALITY_MAP_LABELS.ALERT_HEADER}
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -656,7 +652,7 @@ const VitalityMap: React.FC = () => {
                                         lineHeight: '20px'
                                     }}
                                 >
-                                    This is dashboard displaying result of latest data reviewed on September ! Check in and take action by viewing recommendations
+                                    {VITALITY_MAP_LABELS.ALERT_BODY}
                                 </Typography>
                             </Box>
                         </Box>
@@ -680,7 +676,7 @@ const VitalityMap: React.FC = () => {
                 sx={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: 3,
+                    gap: VITALITY_MAP_CONSTANTS.GRID_GAP,
                     mt: 4,
                 }}
             >
@@ -688,15 +684,14 @@ const VitalityMap: React.FC = () => {
                 <Box
                     sx={{
                         backgroundColor: '#FFFFFF',
-                        borderRadius: '32px',
+                        borderRadius: VITALITY_MAP_CONSTANTS.CARD_RADIUS,
                         p: 3,
                         border: '1px solid #E2E8F0',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         position: 'relative',
-                        height: '340px',
-
+                        height: VITALITY_MAP_CONSTANTS.CARD_HEIGHT,
                     }}
                 >
                     <Box
@@ -714,7 +709,7 @@ const VitalityMap: React.FC = () => {
                                     radialBar: {
                                         startAngle: -85,
                                         endAngle: 85,
-                                        hollow: { size: '65%' },
+                                        hollow: { size: VITALITY_MAP_CONSTANTS.CHART_HOLLOW_SIZE },
                                         track: {
                                             background: "rgba(242, 244, 247, 1)",
                                             strokeWidth: '100%',
@@ -739,10 +734,10 @@ const VitalityMap: React.FC = () => {
                             }}
                             series={[75]}
                             type="radialBar"
-                            height={250}
+                            height={VITALITY_MAP_CONSTANTS.CHART_HEIGHT}
                         />
 
-                        {/* Figma-Style Tooltip (Hybrid CSS) */}
+                        {/* Tooltip */}
                         <Box
                             sx={{
                                 position: 'absolute',
@@ -770,15 +765,15 @@ const VitalityMap: React.FC = () => {
                             }}
                         >
                             <Typography sx={{ fontSize: '12px', color: '#D1D5DB', mb: 0.5, fontWeight: 500, textAlign: 'left' }}>
-                                Calendar Age
+                                {VITALITY_MAP_LABELS.CALENDAR_AGE}
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                 <Box sx={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3B82F6' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>35 Years</Typography>
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{VITALITY_MAP_LABELS.CALENDAR_AGE_VALUE}</Typography>
                             </Box>
                         </Box>
 
-                        {/* Centered Labels (Hybrid CSS) */}
+                        {/* Centered Labels */}
                         <Box sx={{ position: 'absolute', top: '75%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', width: '100%', pointerEvents: 'none' }}>
                             <Typography
                                 sx={{
@@ -790,10 +785,10 @@ const VitalityMap: React.FC = () => {
                                     textTransform: 'uppercase'
                                 }}
                             >
-                                BIOLOGICAL AGE
+                                {VITALITY_MAP_LABELS.BIOLOGICAL_AGE_HEADER}
                             </Typography>
                             <Typography sx={{ fontSize: '28px', fontWeight: 700, color: '#6B7280', lineHeight: 1, fontFamily: 'Source Sans Pro' }}>
-                                28.2 Years
+                                {VITALITY_MAP_LABELS.BIOLOGICAL_AGE_VALUE}
                             </Typography>
                         </Box>
                     </Box>
@@ -822,10 +817,10 @@ const VitalityMap: React.FC = () => {
                 <Box
                     sx={{
                         backgroundColor: '#FFFFFF',
-                        borderRadius: '32px',
+                        borderRadius: VITALITY_MAP_CONSTANTS.CARD_RADIUS,
                         p: 3,
                         border: '1px solid #E2E8F0',
-                        height: '340px',
+                        height: VITALITY_MAP_CONSTANTS.CARD_HEIGHT,
                         display: 'flex',
                         flexDirection: 'column',
                         position: 'relative',
@@ -837,10 +832,8 @@ const VitalityMap: React.FC = () => {
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 3, width: '100%' }}>
-                        {/* High-Precision SVG Framework */}
                         <svg width="100%" height="240" viewBox="0 0 400 240" preserveAspectRatio="none">
                             <defs>
-                                {/* Figma Gradients */}
                                 <linearGradient id="rangeGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stopColor="#81FDCA" />
                                     <stop offset="100%" stopColor="#54AD88" />
@@ -853,14 +846,11 @@ const VitalityMap: React.FC = () => {
                                     <stop offset="0%" stopColor="#90DCCE" />
                                     <stop offset="100%" stopColor="#58968A" />
                                 </linearGradient>
-
-                                {/* Exact 4x4 Slanted Lines Pattern */}
                                 <pattern id="preciseStripes" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(-45)">
                                     <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(0,0,0,0.15)" strokeWidth="3" />
                                 </pattern>
                             </defs>
 
-                            {/* 12 GRID LINES for better depth + Increased strokeWidth */}
                             {[0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165].map((y) => (
                                 <line
                                     key={y}
@@ -873,28 +863,24 @@ const VitalityMap: React.FC = () => {
                                 />
                             ))}
 
-                            {/* Bar 1: IN RANGE (Baseline: 200, Height: 114) */}
                             <text x="140" y="78" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#6B7280', fontFamily: 'Source Sans Pro' }}>88</text>
                             <rect x="122" y="86" width="36" height="114" rx="8" fill="url(#rangeGrad1)" />
                             <rect x="126" y="92" width="28" height="103" rx="4" fill="url(#preciseStripes)" />
                             <circle cx="140" cy="96" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
                             <text x="140" y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>IN RANGE</text>
 
-                            {/* Bar 2: OUT OF RANGE (Baseline: 200, Height: 152) */}
                             <text x="200" y="38" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 400, fill: '#5B5B5B', fontFamily: 'Source Sans Pro' }}>88</text>
                             <rect x="182" y="48" width="36" height="152" rx="8" fill="url(#rangeGrad2)" />
                             <rect x="186" y="54" width="28" height="141" rx="4" fill="url(#preciseStripes)" />
                             <circle cx="200" cy="58" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
                             <text x="200" y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>OUT OF RANGE</text>
 
-                            {/* Bar 3: ABNORMAL (Baseline: 200, Height: 85) */}
                             <text x="260" y="105" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#6B7280', fontFamily: 'Source Sans Pro' }}>16</text>
                             <rect x="242" y="115" width="36" height="85" rx="8" fill="url(#rangeGrad3)" />
                             <rect x="246" y="121" width="28" height="75" rx="4" fill="url(#preciseStripes)" />
                             <circle cx="260" cy="125" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
                             <text x="260" y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>ABNORMAL</text>
 
-                            {/* Main Baseline */}
                             <line x1="20" y1="200" x2="380" y2="200" stroke="#F2F4F7" strokeWidth="1.5" />
                         </svg>
                     </Box>
@@ -904,10 +890,10 @@ const VitalityMap: React.FC = () => {
                 <Box
                     sx={{
                         backgroundColor: '#FFFFFF',
-                        borderRadius: '32px',
+                        borderRadius: VITALITY_MAP_CONSTANTS.CARD_RADIUS,
                         p: 3,
                         border: '1px solid #E2E8F0',
-                        height: '340px',
+                        height: VITALITY_MAP_CONSTANTS.CARD_HEIGHT,
                         display: 'flex',
                         flexDirection: 'column',
                         textAlign: 'left',
@@ -973,7 +959,7 @@ const VitalityMap: React.FC = () => {
                                     textAlign: 'left'
                                 }}
                             >
-                                Biomarker
+                                {VITALITY_MAP_LABELS.COMPARE_TITLE}
                             </Typography>
 
                             {/* Toggle */}
@@ -1005,7 +991,7 @@ const VitalityMap: React.FC = () => {
                             </Box>
                         </Box>
 
-                        {/* Legend (only in Heat Map mode) */}
+                        {/* Legend */}
                         {!isCompareMode && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mr: 2 }}>
                                 <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#98A2B3', letterSpacing: '0.05em' }}>IN</Typography>
@@ -1041,7 +1027,6 @@ const VitalityMap: React.FC = () => {
                     <Box sx={{ display: 'flex', gap: 5 }}>
                         {/* Left Column */}
                         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-
                             {/* Cards Grid */}
                             <Box
                                 sx={{

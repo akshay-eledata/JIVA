@@ -20,13 +20,14 @@ import AutoImmunity from './pages/AutoImmunity/AutoImmunity';
 import RheumatoidFactor from './pages/RheumatoidFactor/RheumatoidFactor';
 import YourHealth from './pages/YourHealth/YourHealth';
 import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
+import Welcome from './pages/Welcome/Welcome';
 import theme from './theme';
 
 const App: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success'];
-  const authPages = ['/', '/signin', '/signup', '/success'];
+  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome'];
+  const authPages = ['/', '/signin', '/signup', '/success', '/welcome'];
   const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath);
   const shouldShowAuthLeftSide = authPages.includes(currentPath);
 
@@ -72,7 +73,7 @@ const App: React.FC = () => {
               <Route path="/your-health" element={<YourHealth />} />
               <Route path="/follow-up-test" element={<FollowUpTest />} />
               <Route path="/video-player" element={<VideoPlayer />} />
-
+              <Route path="/welcome" element={<Welcome />} />
             </Routes>
           </Box>
         </Box>

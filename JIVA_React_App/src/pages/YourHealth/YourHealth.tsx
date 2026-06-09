@@ -14,6 +14,8 @@ import CancelIcon from '../../assets/cancel.svg';
 import OvalIcon from '../../assets/Oval.svg';
 import EyeIcon from '../../assets/Eye.svg';
 import HighIcon from '../../assets/high.svg';
+import { YOUR_HEALTH_CONSTANTS, Biomarker } from './constants';
+import { YOUR_HEALTH_LABELS } from './labels';
 
 const YourHealth: React.FC = () => {
     const [view, setView] = React.useState<'overview' | 'detailed'>('overview');
@@ -28,14 +30,14 @@ const YourHealth: React.FC = () => {
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '8%',
-                barGap: '30%',
+                columnWidth: YOUR_HEALTH_CONSTANTS.CHART_BAR_WIDTH,
+                barGap: YOUR_HEALTH_CONSTANTS.CHART_BAR_GAP,
             }
         },
         dataLabels: { enabled: false },
         stroke: {
             show: true,
-            width: 3,
+            width: YOUR_HEALTH_CONSTANTS.CHART_STROKE_WIDTH,
             colors: ['transparent']
         },
         xaxis: {
@@ -44,31 +46,31 @@ const YourHealth: React.FC = () => {
             axisTicks: { show: false },
             labels: {
                 style: {
-                    colors: '#98A2B3',
-                    fontSize: '11px',
-                    fontWeight: 600,
+                    colors: YOUR_HEALTH_CONSTANTS.COLORS.TEXT_MUTED,
+                    fontSize: YOUR_HEALTH_CONSTANTS.CHART_FONT_SIZE,
+                    fontWeight: YOUR_HEALTH_CONSTANTS.CHART_FONT_WEIGHT,
                 }
             }
         },
         yaxis: {
-            min: 0,
-            max: 400,
-            tickAmount: 4,
+            min: YOUR_HEALTH_CONSTANTS.CHART_MIN_Y,
+            max: YOUR_HEALTH_CONSTANTS.CHART_MAX_Y,
+            tickAmount: YOUR_HEALTH_CONSTANTS.CHART_TICK_AMOUNT,
             labels: {
                 style: {
-                    colors: '#98A2B3',
-                    fontSize: '11px',
-                    fontWeight: 600,
+                    colors: YOUR_HEALTH_CONSTANTS.COLORS.TEXT_MUTED,
+                    fontSize: YOUR_HEALTH_CONSTANTS.CHART_FONT_SIZE,
+                    fontWeight: YOUR_HEALTH_CONSTANTS.CHART_FONT_WEIGHT,
                 }
             }
         },
         fill: {
-            opacity: 1,
-            colors: ['#2563EB', '#CBD5E1']
+            opacity: YOUR_HEALTH_CONSTANTS.CHART_OPACITY,
+            colors: [YOUR_HEALTH_CONSTANTS.COLORS.PRIMARY_BLUE, YOUR_HEALTH_CONSTANTS.COLORS.SECONDARY_SLATE]
         },
         grid: {
             show: true,
-            borderColor: '#E4E7EC',
+            borderColor: YOUR_HEALTH_CONSTANTS.COLORS.BORDER_LIGHT,
             strokeDashArray: 0,
             xaxis: { lines: { show: false } },
             yaxis: { lines: { show: true } }
@@ -78,10 +80,10 @@ const YourHealth: React.FC = () => {
             theme: 'dark',
             custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
                 return '<div class="custom-tooltip">' +
-                    '<span class="tooltip-title">July 2022</span>' +
+                    `<span class="tooltip-title">${YOUR_HEALTH_LABELS.TOOLTIP_TITLE}</span>` +
                     '<ul>' +
-                    '<li><span class="dot" style="background-color: #3B82F6"></span> 88.4</li>' +
-                    '<li><span class="dot" style="background-color: #14B8A6"></span> 77</li>' +
+                    `<li><span class="dot" style="background-color: ${YOUR_HEALTH_CONSTANTS.COLORS.TOOLTIP_DOT_BLUE}"></span> 88.4</li>` +
+                    `<li><span class="dot" style="background-color: ${YOUR_HEALTH_CONSTANTS.COLORS.TOOLTIP_DOT_TEAL}"></span> 77</li>` +
                     '</ul>' +
                     '<div class="tooltip-arrow"></div>' +
                     '</div>';
@@ -89,25 +91,9 @@ const YourHealth: React.FC = () => {
         }
     };
 
-    const chartSeries = [
-        { name: 'In Range', data: [180, 280] },
-        { name: 'Out of Range', data: [130, 120] }
-    ];
-
-    const biomarkers = [
-        { category: 'Autoimmunity', name: 'Anti Nuclear Antibodies (ANA) Pattern', sublabel: "Appropriate range <10 IU/ml", valueLabel: "25 IU/ml", statusLabel: "In Range", statusColor: "#CCFBF1", batch: "25 IU/ml", qty: "In Range", status: 'inRange' },
-        { category: 'Autoimmunity', name: 'Anti Nuclear Antibodies (ANA) Pattern', sublabel: "<10 IU/ml", valueLabel: "25 IU/ml", statusLabel: "In Range", statusColor: "#CCFBF1", batch: "25 IU/ml", qty: "In Range", status: 'inRange' },
-        { category: 'Autoimmunity', name: 'Anti Nuclear Antibodies (ANA) Pattern', sublabel: "<10 IU/ml", valueLabel: "25 IU/ml", statusLabel: "In Range", statusColor: "#CCFBF1", batch: "25 IU/ml", qty: "In Range", status: 'inRange' },
-        { category: 'Blood', name: 'Anti Nuclear Antibodies (ANA) Pattern', sublabel: "Appropriate range <10 IU/ml", valueLabel: "25 IU/ml", statusLabel: "In Range", statusColor: "#CCFBF1", batch: "25 IU/ml", qty: "In Range", status: 'inRange' },
-        { category: 'Blood', name: 'Anti Nuclear Antibodies (ANA) Pattern', sublabel: "<10 IU/ml", valueLabel: "25 IU/ml", statusLabel: "In Range", statusColor: "#CCFBF1", batch: "25 IU/ml", qty: "In Range", status: 'inRange' },
-        { category: 'Blood', name: 'Anti Nuclear Antibodies (ANA) Pattern', sublabel: "<10 IU/ml", valueLabel: "25 IU/ml", statusLabel: "In Range", statusColor: "#CCFBF1", batch: "25 IU/ml", qty: "In Range", status: 'inRange' },
-    ];
-
-    const summaryCards = [
-        { id: 'inRange', label: 'In Range', count: 18, color: '#D1FAE5', iconColor: '#10B981' },
-        { id: 'outOfRange', label: 'Out of Range', count: 8, color: '#FEE2E2', iconColor: '#EF4444' },
-        { id: 'improving', label: 'Improving', count: 17, color: '#DBEAFE', iconColor: '#3B82F6' }
-    ];
+    const chartSeries = YOUR_HEALTH_CONSTANTS.CHART_SERIES;
+    const biomarkers = YOUR_HEALTH_CONSTANTS.BIOMARKERS;
+    const summaryCards = YOUR_HEALTH_CONSTANTS.SUMMARY_CARDS;
 
     const filteredBiomarkers = view === 'detailed' ? biomarkers.filter(b => b.status === selectedTab) : biomarkers;
 
@@ -118,7 +104,7 @@ const YourHealth: React.FC = () => {
         }
         acc[curr.category].push(curr);
         return acc;
-    }, {} as Record<string, typeof biomarkers>);
+    }, {} as Record<string, Biomarker[]>);
 
     const handleSummaryClick = (id: string) => {
         setSelectedTab(id as any);
@@ -128,19 +114,19 @@ const YourHealth: React.FC = () => {
     return (
         <Box sx={{
             width: '100%',
-            maxWidth: '1300px',
-            p: '30px 16px',
-            backgroundColor: '#FFFFFF',
+            maxWidth: YOUR_HEALTH_CONSTANTS.MAX_WIDTH,
+            p: YOUR_HEALTH_CONSTANTS.PADDING,
+            backgroundColor: YOUR_HEALTH_CONSTANTS.BG_COLOR,
             minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
             margin: '0 auto'
         }}>
-            <Typography sx={{ fontSize: '48px', fontWeight: 600, color: '#1E293B', textAlign: 'left' }}>
-                Your Health
+            <Typography sx={{ fontSize: '48px', fontWeight: 600, color: YOUR_HEALTH_CONSTANTS.TEXT_COLOR, textAlign: 'left' }}>
+                {YOUR_HEALTH_LABELS.TITLE}
             </Typography>
-            <Typography sx={{ fontSize: '16px', color: '#475569', fontFamily: 'Plus Jakarta Sans', mb: 4, textAlign: 'left', fontWeight: '500' }}>
-                Tuesday August 26, 2025
+            <Typography sx={{ fontSize: '16px', color: YOUR_HEALTH_CONSTANTS.TEXT_SECONDARY, fontFamily: 'Plus Jakarta Sans', mb: 4, textAlign: 'left', fontWeight: '500' }}>
+                {YOUR_HEALTH_LABELS.DATE}
             </Typography>
 
             {view === 'overview' ? (
@@ -149,10 +135,10 @@ const YourHealth: React.FC = () => {
                     hideMiddleBorder={true}
                     title={
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                            <Typography sx={{ fontSize: '24px', fontWeight: 700, color: '#1B1B1F' }}>35%</Typography>
+                            <Typography sx={{ fontSize: '24px', fontWeight: 700, color: '#1B1B1F' }}>{YOUR_HEALTH_LABELS.PERCENT_LABEL}</Typography>
                             <img src={HighIcon} alt="High" style={{ width: 20, height: 20 }} />
-                            <Typography component="span" sx={{ fontSize: '18px', color: '#14B8A6', display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                25.3%
+                            <Typography component="span" sx={{ fontSize: '18px', color: YOUR_HEALTH_CONSTANTS.COLORS.IN_RANGE, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                {YOUR_HEALTH_LABELS.PERCENT_CHANGE}
                             </Typography>
                         </Box>
                     }
@@ -160,12 +146,12 @@ const YourHealth: React.FC = () => {
                         <Box sx={{ px: 1, pb: 0, position: 'relative' }}>
                             <Box sx={{ position: 'absolute', top: -48, right: 0, display: 'flex', gap: 3 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#14B8A6' }} />
-                                    <Typography sx={{ fontSize: '14px', color: '#1F2937', fontWeight: 500 }}>In Range</Typography>
+                                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: YOUR_HEALTH_CONSTANTS.COLORS.IN_RANGE }} />
+                                    <Typography sx={{ fontSize: '14px', color: YOUR_HEALTH_CONSTANTS.COLORS.TEXT_DARK, fontWeight: 500 }}>{YOUR_HEALTH_LABELS.IN_RANGE}</Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#F1696E' }} />
-                                    <Typography sx={{ fontSize: '14px', color: '#1F2937', fontWeight: 500 }}>Out of range</Typography>
+                                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: YOUR_HEALTH_CONSTANTS.COLORS.OUT_OF_RANGE_RED }} />
+                                    <Typography sx={{ fontSize: '14px', color: YOUR_HEALTH_CONSTANTS.COLORS.TEXT_DARK, fontWeight: 500 }}>{YOUR_HEALTH_LABELS.OUT_OF_RANGE}</Typography>
                                 </Box>
                             </Box>
                             <Chart
@@ -188,7 +174,6 @@ const YourHealth: React.FC = () => {
                                         gap: 3,
                                         borderBottom: index < 2 ? '1px solid #E4E7EC' : 'none',
                                         pb: 1.5,
-                                        // mt: index === 0 ? 0 : 1.5,
                                         cursor: 'pointer',
                                         '&:hover': {
                                             opacity: 0.7
@@ -214,7 +199,7 @@ const YourHealth: React.FC = () => {
                         mb: 4,
                         p: '32px 48px',
                         borderRadius: '32px',
-                        backgroundColor: '#F6F8FB',
+                        backgroundColor: YOUR_HEALTH_CONSTANTS.COLORS.BANNER_BG,
                         display: 'flex',
                         alignItems: 'flex-start',
                         position: 'relative',
@@ -237,24 +222,23 @@ const YourHealth: React.FC = () => {
                                 <Typography sx={{
                                     fontSize: '15px',
                                     fontWeight: 700,
-                                    color: '#001940',
+                                    color: YOUR_HEALTH_CONSTANTS.COLORS.BANNER_TEXT,
                                     fontFamily: 'source sans pro',
                                     letterSpacing: '0.02em',
                                     mb: 0.5,
                                     textAlign: 'left'
                                 }}>
-                                    HEY! YOUR KINDLY CHECK IF OTHER TEST ARE NEEDED
+                                    {YOUR_HEALTH_LABELS.BANNER_HEADER}
                                 </Typography>
                                 <Typography sx={{
                                     fontSize: '13px',
-                                    color: '#001940',
+                                    color: YOUR_HEALTH_CONSTANTS.COLORS.BANNER_TEXT,
                                     fontFamily: 'source sans pro',
                                     fontWeight: 400,
                                     maxWidth: '750px',
                                     textAlign: 'left',
-
                                 }}>
-                                    Your doctor can personalize these tests based on your medical history, lifestyle, and family risk factors. Take control of your health—book your preventive screenings today and stay ahead of potential risks.
+                                    {YOUR_HEALTH_LABELS.BANNER_DESC}
                                 </Typography>
                             </Box>
                         </Box>
@@ -287,8 +271,8 @@ const YourHealth: React.FC = () => {
                                         flex: 1,
                                         p: '14px 24px',
                                         borderRadius: '16px',
-                                        border: isActive ? '1px solid #BBF7D0' : '1px solid #EAECF0',
-                                        backgroundColor: isActive ? '#D8FDE3' : '#FFFFFF',
+                                        border: isActive ? `1px solid ${YOUR_HEALTH_CONSTANTS.COLORS.TAB_BORDER_ACTIVE}` : `1px solid ${YOUR_HEALTH_CONSTANTS.COLORS.TAB_BORDER_INACTIVE}`,
+                                        backgroundColor: isActive ? YOUR_HEALTH_CONSTANTS.COLORS.TAB_BG_ACTIVE : '#FFFFFF',
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: 2,
@@ -296,7 +280,7 @@ const YourHealth: React.FC = () => {
                                         transition: 'all 0.2s',
                                         height: '76px',
                                         '&:hover': {
-                                            backgroundColor: isActive ? '#D8FDE3' : '#F9FAFB'
+                                            backgroundColor: isActive ? YOUR_HEALTH_CONSTANTS.COLORS.TAB_BG_HOVER_ACTIVE : YOUR_HEALTH_CONSTANTS.COLORS.TAB_BG_HOVER_INACTIVE
                                         }
                                     }}
                                 >
@@ -304,12 +288,11 @@ const YourHealth: React.FC = () => {
                                         width: 48,
                                         height: 48,
                                         borderRadius: '50%',
-                                        backgroundColor: '#F8F9FA',
+                                        backgroundColor: YOUR_HEALTH_CONSTANTS.COLORS.TAB_ICON_BG,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         flexShrink: 0,
-
                                     }}>
                                         <img src={EyeIcon} alt="View" style={{ width: '100%', height: '100%' }} />
                                     </Box>
@@ -318,7 +301,7 @@ const YourHealth: React.FC = () => {
                                             fontSize: '16px',
                                             fontFamily: 'lexend',
                                             fontWeight: 600,
-                                            color: '#728197',
+                                            color: YOUR_HEALTH_CONSTANTS.COLORS.TAB_TEXT_INACTIVE,
                                             whiteSpace: 'nowrap'
                                         }}>
                                             {card.label}
@@ -328,7 +311,7 @@ const YourHealth: React.FC = () => {
                                             fontSize: '22px',
                                             fontWeight: 600,
                                             fontFamily: 'lexend',
-                                            color: '#1A212B',
+                                            color: YOUR_HEALTH_CONSTANTS.COLORS.TAB_COUNT_COLOR,
                                         }}>
                                             {card.count}
                                         </Typography>
@@ -339,11 +322,11 @@ const YourHealth: React.FC = () => {
                     </Box>
 
                     {/* Table Header */}
-                    <Box sx={{ display: 'flex', px: 2, pb: 1, borderBottom: '1px solid #EAECF0', width: '100%' }}>
-                        <Typography sx={{ fontSize: '16px', fontWeight: 500, color: '#1A212B', fontFamily: 'lexend  ', flex: 1, textAlign: 'left' }}>Product Name</Typography>
+                    <Box sx={{ display: 'flex', px: 2, pb: 1, borderBottom: `1px solid ${YOUR_HEALTH_CONSTANTS.COLORS.TABLE_BORDER}`, width: '100%' }}>
+                        <Typography sx={{ fontSize: '16px', fontWeight: 500, color: YOUR_HEALTH_CONSTANTS.COLORS.TABLE_HEADER_TEXT, fontFamily: 'lexend  ', flex: 1, textAlign: 'left' }}>{YOUR_HEALTH_LABELS.PRODUCT_NAME}</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#1A212B', fontFamily: 'lexend', width: '140px', textAlign: 'center' }}>Batch</Typography>
-                            <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#1A212B', fontFamily: 'lexend', width: '100px', textAlign: 'center' }}>Qty</Typography>
+                            <Typography sx={{ fontSize: '14px', fontWeight: 500, color: YOUR_HEALTH_CONSTANTS.COLORS.TABLE_HEADER_TEXT, fontFamily: 'lexend', width: '140px', textAlign: 'center' }}>{YOUR_HEALTH_LABELS.BATCH}</Typography>
+                            <Typography sx={{ fontSize: '14px', fontWeight: 500, color: YOUR_HEALTH_CONSTANTS.COLORS.TABLE_HEADER_TEXT, fontFamily: 'lexend', width: '100px', textAlign: 'center' }}>{YOUR_HEALTH_LABELS.QTY}</Typography>
                         </Box>
                     </Box>
                 </>
@@ -353,11 +336,11 @@ const YourHealth: React.FC = () => {
             {Object.keys(groupedBiomarkers).map((category) => (
                 <Box key={category} sx={{ mt: 4 }}>
                     <Box sx={{ mb: 1.5 }}>
-                        <Typography sx={{ fontSize: '27px', fontWeight: 700, color: '#1B1B1F', fontFamily: 'Raleway', textAlign: 'left', }}>
+                        <Typography sx={{ fontSize: '27px', fontWeight: 700, color: YOUR_HEALTH_CONSTANTS.COLORS.CATEGORY_HEADER_TEXT, fontFamily: 'Raleway', textAlign: 'left', }}>
                             {category}
                         </Typography>
-                        <Typography sx={{ fontSize: '16px', color: '#728197', textAlign: 'left', fontFamily: 'source sans pro', fontWeight: 400 }}>
-                            {groupedBiomarkers[category].length} Biomarkers
+                        <Typography sx={{ fontSize: '16px', color: YOUR_HEALTH_CONSTANTS.COLORS.CATEGORY_COUNT_TEXT, textAlign: 'left', fontFamily: 'source sans pro', fontWeight: 400 }}>
+                            {groupedBiomarkers[category].length} {YOUR_HEALTH_LABELS.BIOMARKERS_COUNT_SUFFIX}
                         </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -382,9 +365,9 @@ const YourHealth: React.FC = () => {
                                         justifyContent: 'center'
                                     }}>
                                         <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
-                                            <path d="M4 4V20H20" stroke="#9AA8BC" strokeWidth="1" strokeLinecap="square" strokeLinejoin="miter" />
-                                            <rect x="7" y="6" width="4" height="13" rx="2" fill="#9AA8BC" />
-                                            <rect x="14" y="12" width="4" height="7" rx="2" fill="#E2E8F0" />
+                                            <path d="M4 4V20H20" stroke={YOUR_HEALTH_CONSTANTS.COLORS.MINI_CHART_STROKE} strokeWidth="1" strokeLinecap="square" strokeLinejoin="miter" />
+                                            <rect x="7" y="6" width="4" height="13" rx="2" fill={YOUR_HEALTH_CONSTANTS.COLORS.MINI_CHART_RECT_FILL} />
+                                            <rect x="14" y="12" width="4" height="7" rx="2" fill={YOUR_HEALTH_CONSTANTS.COLORS.MINI_CHART_RECT_BG} />
                                         </svg>
                                     </Box>
                                 }
@@ -395,7 +378,7 @@ const YourHealth: React.FC = () => {
             ))}
             <style>{`
                 .custom-tooltip {
-                    background: #101828;
+                    background: ${YOUR_HEALTH_CONSTANTS.COLORS.TOOLTIP_BG};
                     border-radius: 8px;
                     padding: 12px;
                     color: white;
@@ -407,7 +390,7 @@ const YourHealth: React.FC = () => {
                     display: block;
                     font-size: 14px;
                     margin-bottom: 4px;
-                    color: #98A2B3;
+                    color: ${YOUR_HEALTH_CONSTANTS.COLORS.TOOLTIP_TITLE};
                     font-weight: 500;
                 }
                 .custom-tooltip ul {
@@ -435,7 +418,7 @@ const YourHealth: React.FC = () => {
                     transform: translateX(-50%) rotate(45deg);
                     width: 14px;
                     height: 14px;
-                    background: #101828;
+                    background: ${YOUR_HEALTH_CONSTANTS.COLORS.TOOLTIP_BG};
                     border-bottom-right-radius: 2px;
                 }
                 .apexcharts-tooltip {

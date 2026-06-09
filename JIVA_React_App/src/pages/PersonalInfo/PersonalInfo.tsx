@@ -7,6 +7,8 @@ import RescheduleAddOnsForm from '../../Component/RescheduleAddOnsForm/Reschedul
 import ScheduleForm from '../../Component/ScheduleForm/ScheduleForm';
 import StepContainer from '../../Component/StepContainer/StepContainer';
 import ScheduleConfirmDialog from '../../Component/ScheduleConfirmDialog/ScheduleConfirmDialog';
+import { PERSONAL_INFO_CONSTANTS } from './constants';
+import { PERSONAL_INFO_LABELS } from './labels';
 
 const PersonalInfo: React.FC = () => {
     const location = useLocation();
@@ -23,8 +25,8 @@ const PersonalInfo: React.FC = () => {
     });
 
     const steps = [
-        { label: 'Personal Info' },
-        { label: 'Schedule' },
+        { label: PERSONAL_INFO_LABELS.STEP_PERSONAL_INFO },
+        { label: PERSONAL_INFO_LABELS.STEP_SCHEDULE },
     ];
 
     const handleFormChange = (field: string, value: string) => {
@@ -44,22 +46,22 @@ const PersonalInfo: React.FC = () => {
     };
 
     const getNextLabel = () => {
-        if (step === 1) return 'Next: Add Ons';
-        if (step === 2) return 'Next: Add Ons';
-        return 'Schedule';
+        if (step === 1) return PERSONAL_INFO_LABELS.LABEL_NEXT_ADD_ONS;
+        if (step === 2) return PERSONAL_INFO_LABELS.LABEL_NEXT_ADD_ONS;
+        return PERSONAL_INFO_LABELS.LABEL_SCHEDULE;
     };
 
     const getBackLabel = () => {
-        if (step === 1) return 'Prev: Personal Info';
-        if (step === 2) return 'Prev: Personal Info';
-        if (step === 3) return 'Prev: Personal Info';
-        return 'Back';
+        if (step === 1) return PERSONAL_INFO_LABELS.LABEL_PREV_PERSONAL_INFO;
+        if (step === 2) return PERSONAL_INFO_LABELS.LABEL_PREV_PERSONAL_INFO;
+        if (step === 3) return PERSONAL_INFO_LABELS.LABEL_PREV_PERSONAL_INFO;
+        return PERSONAL_INFO_LABELS.LABEL_BACK;
     };
 
     return (
-        <Box sx={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+        <Box sx={{ width: '100%', maxWidth: PERSONAL_INFO_CONSTANTS.MAX_WIDTH, margin: '0 auto' }}>
             <StepContainer
-                title={isReschedule ? 'Reschedule Your Visit' : 'Lets Get Started'}
+                title={isReschedule ? PERSONAL_INFO_LABELS.TITLE_RESCHEDULE : PERSONAL_INFO_LABELS.TITLE_DEFAULT}
                 currentStep={step === 1 ? 1 : 2} // Keep stepper at 1 or 2
                 steps={steps}
                 onNext={handleNext}
@@ -68,7 +70,7 @@ const PersonalInfo: React.FC = () => {
                 backLabel={getBackLabel()}
                 isBackDisabled={step === 1}
             >
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: PERSONAL_INFO_CONSTANTS.GAP }}>
                     {/* Personal Info is CONSTANT at the top */}
                     <PersonalInfoForm
                         data={formData}

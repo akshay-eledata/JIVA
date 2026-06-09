@@ -13,6 +13,8 @@ import ButtonIcon from '../../assets/Button.svg';
 import TimeIcon from '../../assets/Time.svg';
 import AngleDownIcon from '../../assets/angle-down.svg';
 import UpArrowIcon from '../../assets/Up-arrow.svg';
+import { VIDEO_PLAYER_CONSTANTS } from './constants';
+import { VIDEO_PLAYER_LABELS } from './labels';
 
 const VideoPlayer: React.FC = () => {
     const [showPlaylist, setShowPlaylist] = useState(false);
@@ -58,12 +60,12 @@ const VideoPlayer: React.FC = () => {
         <Box
             sx={{
                 width: '100%',
-                maxWidth: '1300px',
+                maxWidth: VIDEO_PLAYER_CONSTANTS.MAX_WIDTH,
                 margin: '0 auto',
-                padding: '40px 24px',
+                padding: VIDEO_PLAYER_CONSTANTS.CONTAINER_PADDING,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '24px',
+                gap: VIDEO_PLAYER_CONSTANTS.CONTAINER_GAP,
             }}
         >
             {/* Video Preview Section */}
@@ -75,7 +77,6 @@ const VideoPlayer: React.FC = () => {
                     overflow: 'hidden',
                     aspectRatio: '16/9',
                     backgroundColor: '#F9FAFB',
-
                 }}
             >
                 <Box
@@ -91,21 +92,7 @@ const VideoPlayer: React.FC = () => {
                 />
 
                 {/* Video Controls Overlay */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        bottom: '20px',
-                        left: '20px',
-                        right: '20px',
-                        background: 'rgba(255, 255, 255, 0.4)',
-                        backdropFilter: 'blur(20px)',
-                        borderRadius: '16px',
-                        padding: '12px 24px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '20px',
-                    }}
-                >
+                <Box sx={VIDEO_PLAYER_CONSTANTS.CONTROL_BAR_STYLE}>
                     {/* Play Button */}
                     <IconButton sx={{ p: 0 }}>
                         <Box component="img" src={PlayIcon} sx={{ width: '16px', height: '16px' }} />
@@ -127,7 +114,7 @@ const VideoPlayer: React.FC = () => {
                                 left: 0,
                                 top: 0,
                                 bottom: 0,
-                                width: '40%', // Mock progress
+                                width: '40%',
                                 backgroundColor: '#1A212B',
                                 borderRadius: '2px',
                             }}
@@ -136,7 +123,7 @@ const VideoPlayer: React.FC = () => {
 
                     {/* Time */}
                     <Typography sx={{ fontSize: '14px', color: '#ffffff', fontWeight: 500 }}>
-                        19:41/39:04
+                        {VIDEO_PLAYER_LABELS.VIDEO_PROGRESS_MOCK}
                     </Typography>
 
                     {/* Right Controls */}
@@ -182,7 +169,7 @@ const VideoPlayer: React.FC = () => {
                             mb: 1.5,
                         }}
                     >
-                        Hatha Yoga
+                        {VIDEO_PLAYER_LABELS.VIDEO_TITLE}
                     </Typography>
                     <Box sx={{ mr: 6, }}>
                         <Typography
@@ -191,10 +178,9 @@ const VideoPlayer: React.FC = () => {
                                 fontWeight: 600,
                                 color: '#27313F',
                                 mb: 0.5,
-
                             }}
                         >
-                            Beginner • 2h 35m
+                            {VIDEO_PLAYER_LABELS.VIDEO_SUBTITLE}
                         </Typography>
                         <Typography
                             sx={{
@@ -203,10 +189,9 @@ const VideoPlayer: React.FC = () => {
                                 color: '#807E81',
                                 fontFamily: 'Lexend',
                                 pr: 6,
-
                             }}
                         >
-                            Dr. Varunveer
+                            {VIDEO_PLAYER_LABELS.VIDEO_INSTRUCTOR}
                         </Typography>
                     </Box>
                 </Box>
@@ -225,7 +210,7 @@ const VideoPlayer: React.FC = () => {
                         >
                             <Box component="img" src={WatchlistIcon} sx={{ width: '20px', height: '20px' }} />
                         </Box>
-                        <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#807E81', fontFamily: 'Gilroy Medium' }}>Watchlist</Typography>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#807E81', fontFamily: 'Gilroy Medium' }}>{VIDEO_PLAYER_LABELS.LABEL_WATCHLIST}</Typography>
                     </Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
@@ -240,7 +225,7 @@ const VideoPlayer: React.FC = () => {
                         >
                             <Box component="img" src={FrameIcon} sx={{ width: '20px', height: '20px' }} />
                         </Box>
-                        <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#807E81', fontFamily: 'Gilroy Medium' }}>Share</Typography>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#807E81', fontFamily: 'Gilroy Medium' }}>{VIDEO_PLAYER_LABELS.LABEL_SHARE}</Typography>
                     </Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
@@ -255,7 +240,7 @@ const VideoPlayer: React.FC = () => {
                         >
                             <Box component="img" src={DownloadIcon} sx={{ width: '20px', height: '20px' }} />
                         </Box>
-                        <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#1884F7', fontFamily: 'Gilroy Medium' }}>Download</Typography>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#1884F7', fontFamily: 'Gilroy Medium' }}>{VIDEO_PLAYER_LABELS.LABEL_DOWNLOAD}</Typography>
                     </Box>
                 </Stack>
             </Box>
@@ -270,7 +255,7 @@ const VideoPlayer: React.FC = () => {
                         mb: 2
                     }}
                 >
-                    Description
+                    {VIDEO_PLAYER_LABELS.DESCRIPTION_TITLE}
                 </Typography>
                 <Typography
                     sx={{
@@ -281,7 +266,7 @@ const VideoPlayer: React.FC = () => {
                         maxWidth: '100%'
                     }}
                 >
-                    Bizli, is a 2018 Bangladeshi Superhero film directed by Iftakar Chowdhury, and produced by Bobstar Films. It stars Bobby as the protagonist and Indian actress Satabdi Roy as the antagonist. The film was released countrywide on . t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.
+                    {VIDEO_PLAYER_LABELS.DESCRIPTION_TEXT}
                 </Typography>
             </Box>
 
@@ -297,13 +282,13 @@ const VideoPlayer: React.FC = () => {
                             mb: 2
                         }}
                     >
-                        Related Videos
+                        {VIDEO_PLAYER_LABELS.RELATED_VIDEOS_TITLE}
                     </Typography>
                     <Box
                         sx={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(3, 1fr)',
-                            gap: '24px'
+                            gap: VIDEO_PLAYER_CONSTANTS.GRID_GAP
                         }}
                     >
                         {relatedVideos.map((video) => (
@@ -372,7 +357,7 @@ const VideoPlayer: React.FC = () => {
                         textAlign: 'left',
                         backgroundColor: '#1A1A1A',
                         borderRadius: '12px',
-                        padding: '40px',
+                        padding: VIDEO_PLAYER_CONSTANTS.PLAYLIST_PADDING,
                     }}
                 >
                     <Typography
@@ -384,14 +369,14 @@ const VideoPlayer: React.FC = () => {
                             mb: 4
                         }}
                     >
-                        Playlists
+                        {VIDEO_PLAYER_LABELS.PLAYLISTS_TITLE}
                     </Typography>
 
                     <Box
                         sx={{
                             backgroundColor: '#0F0F0F',
                             borderRadius: '12px',
-                            padding: '40px',
+                            padding: VIDEO_PLAYER_CONSTANTS.PLAYLIST_PADDING,
                             border: '1px solid #262626',
                             display: 'flex',
                             flexDirection: 'column',
@@ -402,10 +387,10 @@ const VideoPlayer: React.FC = () => {
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <Typography sx={{ color: '#FFFFFF', fontSize: '18px', fontWeight: 600, fontFamily: 'lexend' }}>
-                                    Recommended
+                                    {VIDEO_PLAYER_LABELS.RECOMMENDED}
                                 </Typography>
                                 <Typography sx={{ color: '#999999', fontSize: '18px', fontWeight: 400, fontFamily: 'Manrope' }}>
-                                    · 5 Videos
+                                    {VIDEO_PLAYER_LABELS.VIDEO_COUNT}
                                 </Typography>
                             </Box>
                             <IconButton
@@ -444,8 +429,8 @@ const VideoPlayer: React.FC = () => {
                                     {/* Thumbnail Placeholder */}
                                     <Box
                                         sx={{
-                                            width: '160px',
-                                            height: '100px',
+                                            width: VIDEO_PLAYER_CONSTANTS.THUMBNAIL_WIDTH,
+                                            height: VIDEO_PLAYER_CONSTANTS.THUMBNAIL_HEIGHT,
                                             backgroundColor: '#1A1A1A',
                                             borderRadius: '12px',
                                             display: 'flex',
@@ -497,8 +482,6 @@ const VideoPlayer: React.FC = () => {
                                 </Box>
                             ))}
                         </Stack>
-
-                        {/* Add more padding/elements if needed to match height */}
                     </Box>
                 </Box>
             )}

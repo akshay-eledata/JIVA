@@ -9,6 +9,8 @@ import '@fontsource/raleway/800.css';
 import '@fontsource/dm-sans/400.css';
 import '@fontsource/dm-sans/500.css';
 import '@fontsource/dm-sans/700.css';
+import { RHEUMATOID_FACTOR_CONSTANTS } from './constants';
+import { RHEUMATOID_FACTOR_LABELS } from './labels';
 
 const RheumatoidFactor: React.FC = () => {
     const [currentView, setCurrentView] = useState('Why It matters');
@@ -16,8 +18,8 @@ const RheumatoidFactor: React.FC = () => {
     return (
         <Box sx={{
             width: '100%',
-            maxWidth: '1200px',
-            p: '40px 32px',
+            maxWidth: RHEUMATOID_FACTOR_CONSTANTS.MAX_WIDTH,
+            p: RHEUMATOID_FACTOR_CONSTANTS.CONTAINER_PADDING,
             backgroundColor: '#FFFFFF',
             minHeight: '100vh',
             display: 'flex',
@@ -26,10 +28,10 @@ const RheumatoidFactor: React.FC = () => {
             margin: '0 auto'
         }}>
             {/* Breadcrumb Section */}
-            <Box sx={{ width: '100%', mb: 6, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mb: RHEUMATOID_FACTOR_CONSTANTS.BREADCRUMB_MB, display: 'flex', alignItems: 'center' }}>
                 <Box sx={{
                     backgroundColor: '#F9FAFB',
-                    borderRadius: '8px',
+                    borderRadius: RHEUMATOID_FACTOR_CONSTANTS.BREADCRUMB_RADIUS,
                     px: 1.5,
                     py: 1,
                     display: 'flex',
@@ -44,8 +46,8 @@ const RheumatoidFactor: React.FC = () => {
                             '& .MuiBreadcrumbs-separator': { mx: 1 }
                         }}
                     >
-                        <Link underline="none" color="inherit" href="#">Your Health</Link>
-                        <Typography sx={{ color: '#3D22CF', fontWeight: 600, fontSize: '13px' }}>Auto Immunity</Typography>
+                        <Link underline="none" color="inherit" href="#">{RHEUMATOID_FACTOR_LABELS.BREADCRUMB_HEALTH}</Link>
+                        <Typography sx={{ color: '#3D22CF', fontWeight: 600, fontSize: '13px' }}>{RHEUMATOID_FACTOR_LABELS.BREADCRUMB_AUTO_IMMUNITY}</Typography>
                     </Breadcrumbs>
                 </Box>
             </Box>
@@ -54,7 +56,7 @@ const RheumatoidFactor: React.FC = () => {
             <Box sx={{
                 width: '100%',
                 backgroundColor: '#F1F5F9',
-                borderRadius: '40px',
+                borderRadius: RHEUMATOID_FACTOR_CONSTANTS.CARD_RADIUS,
                 border: '1px solid #B1C2DC',
                 textAlign: 'left',
                 position: 'relative',
@@ -70,10 +72,10 @@ const RheumatoidFactor: React.FC = () => {
                     }}>
                         {currentView === 'Biological Age' ? (
                             <>
-                                Biological Age <Typography component="span" sx={{ color: '#9AA8BC', fontSize: 'inherit', fontWeight: 'inherit' }}>30.5 Years</Typography>
+                                {RHEUMATOID_FACTOR_LABELS.TITLE_BIO_AGE} <Typography component="span" sx={{ color: '#9AA8BC', fontSize: 'inherit', fontWeight: 'inherit' }}>{RHEUMATOID_FACTOR_LABELS.BIO_AGE_VALUE}</Typography>
                             </>
                         ) : (
-                            'Rheumatoid Factor (RF)'
+                            RHEUMATOID_FACTOR_LABELS.TITLE_DEFAULT
                         )}
                     </Typography>
                 </Box>
@@ -97,17 +99,17 @@ const RheumatoidFactor: React.FC = () => {
                                 textAlign: 'left',
                                 maxWidth: '550px'
                             }}>
-                                Your Biological age is 7.2 years younger than your calendar age.
+                                {RHEUMATOID_FACTOR_LABELS.BIO_AGE_DESC}
                             </Typography>
                         ) : (
                             <>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 4 }}>
                                     <Box sx={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#69E0C6' }} />
                                     <Typography sx={{ color: '#69E0C6', fontFamily: 'source sans pro', fontWeight: 600, fontSize: '18px', }}>
-                                        In Range
+                                        {RHEUMATOID_FACTOR_LABELS.IN_RANGE}
                                     </Typography>
                                     <Typography sx={{ color: '#9AA8BC', fontSize: '18px' }}>
-                                        &lt;10 IU/ml
+                                        {RHEUMATOID_FACTOR_LABELS.RANGE_VALUE}
                                     </Typography>
                                 </Box>
 
@@ -120,16 +122,16 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left',
                                     maxWidth: '550px'
                                 }}>
-                                    Check for any indicators for auto immunity disorder like Rheumatoid Factor like rheumatoid Factor
+                                    {RHEUMATOID_FACTOR_LABELS.RF_DESC}
                                 </Typography>
                             </>
                         )}
 
                         <Box sx={{ mt: 'auto' }}>
                             <Typography sx={{ color: '#728197', fontSize: '16px' }}>
-                                This result is based on the lab test from January 2025
+                                {RHEUMATOID_FACTOR_LABELS.RESULT_BASE}
                                 <Link href="#" sx={{ color: '#444648', fontWeight: 600, fontFamily: 'source sans pro', textDecoration: 'underline', ml: 1, }}>
-                                    View More
+                                    {RHEUMATOID_FACTOR_LABELS.VIEW_MORE}
                                 </Link>
                             </Typography>
                         </Box>
@@ -139,7 +141,7 @@ const RheumatoidFactor: React.FC = () => {
                     <Box sx={{
                         flex: 1.4,
                         display: 'flex',
-                        minHeight: '350px',
+                        minHeight: RHEUMATOID_FACTOR_CONSTANTS.CHART_MIN_HEIGHT,
                         borderLeft: currentView === 'Biological Age' ? 'none' : { xs: 'none', md: '1px solid #C8D0DB' },
                         position: 'relative'
                     }}>
@@ -157,16 +159,16 @@ const RheumatoidFactor: React.FC = () => {
                                 <Box sx={{ display: 'flex', alignItems: 'center', height: '50%', position: 'relative', }}>
                                     <Box sx={{ position: 'absolute', left: 4, top: 8, bottom: 4, width: '6px', backgroundColor: '#9AA8BC', borderRadius: '4px' }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, pl: { xs: 2.5, md: 4 } }}>
-                                        <Typography sx={{ color: '#69E0C6', fontWeight: 600, fontSize: '16px' }}>In Range</Typography>
-                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px' }}>&lt;10 IU/ml</Typography>
+                                        <Typography sx={{ color: '#69E0C6', fontWeight: 600, fontSize: '16px' }}>{RHEUMATOID_FACTOR_LABELS.IN_RANGE}</Typography>
+                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px' }}>{RHEUMATOID_FACTOR_LABELS.RANGE_VALUE}</Typography>
                                     </Box>
                                 </Box>
 
                                 <Box sx={{ display: 'flex', alignItems: 'center', height: '40%', position: 'relative' }}>
                                     <Box sx={{ position: 'absolute', left: 4, top: 4, bottom: -16, width: '6px', backgroundColor: '#CBD4E1', borderRadius: '4px' }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, pl: { xs: 2.5, md: 4 } }}>
-                                        <Typography sx={{ color: '#F1696E', fontWeight: 600, fontSize: '16px' }}>Above Range</Typography>
-                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px' }}>&lt;10 IU/ml</Typography>
+                                        <Typography sx={{ color: '#F1696E', fontWeight: 600, fontSize: '16px' }}>{RHEUMATOID_FACTOR_LABELS.ABOVE_RANGE}</Typography>
+                                        <Typography sx={{ color: '#9AA8BC', fontSize: '14px' }}>{RHEUMATOID_FACTOR_LABELS.RANGE_VALUE}</Typography>
                                     </Box>
                                 </Box>
                             </Box>
@@ -209,7 +211,7 @@ const RheumatoidFactor: React.FC = () => {
                                         show: true,
                                         borderColor: '#EAECF0',
                                         xaxis: { lines: { show: false } },
-                                        yaxis: { lines: { show: false } }, // Disable standard lines
+                                        yaxis: { lines: { show: false } },
                                         padding: { top: 40, right: 40, bottom: 0, left: 40 }
                                     },
                                     xaxis: {
@@ -228,7 +230,7 @@ const RheumatoidFactor: React.FC = () => {
                                     },
                                     yaxis: {
                                         min: 28.7,
-                                        max: 30.2, // Narrowed range spreads the grid lines
+                                        max: 30.2,
                                         labels: { show: false },
                                         axisBorder: { show: false },
                                         axisTicks: { show: false }
@@ -240,7 +242,6 @@ const RheumatoidFactor: React.FC = () => {
                                         intersect: true,
                                         marker: { show: false },
                                         custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
-                                            // Apr is index 1 in the 2-point series {Feb, Apr}
                                             if (dataPointIndex !== 1) return null;
                                             return `<div style="background: #101828; padding: 12px; border-radius: 8px; color: white; border: none; font-family: Inter; position: relative; margin-bottom: 25px; box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08);">
                                                 <div style="font-size: 14px; font-weight: 400; text-align: left; margin-bottom: 4px; color: #D0D5DD;">June 2025</div>
@@ -299,7 +300,7 @@ const RheumatoidFactor: React.FC = () => {
                                     ]
                                 }]}
                                 type="line"
-                                height={310}
+                                height={RHEUMATOID_FACTOR_CONSTANTS.CHART_HEIGHT}
                             />
                         </Box>
                     </Box>
@@ -315,10 +316,10 @@ const RheumatoidFactor: React.FC = () => {
                         gap: 1
                     }}>
                         <Typography sx={{ color: '#FFFFFF', fontSize: '24px', fontWeight: 600, fontFamily: 'Raleway' }}>
-                            We made slight changes to how we calculate this
+                            {RHEUMATOID_FACTOR_LABELS.CALC_CHANGES}
                         </Typography>
                         <Link href="#" sx={{ color: '#FFFFFF', fontSize: '14px', fontWeight: 400, textDecoration: 'underline', opacity: 0.9 }}>
-                            Learn More
+                            {RHEUMATOID_FACTOR_LABELS.LEARN_MORE}
                         </Link>
                     </Box>
                 )}
@@ -326,9 +327,9 @@ const RheumatoidFactor: React.FC = () => {
 
             {/* Article Section */}
             <Box sx={{ width: '100%', pt: 4 }}>
-                <Grid container spacing={8}>
+                <Grid container spacing={RHEUMATOID_FACTOR_CONSTANTS.SPACING_GRID}>
                     {/* Main Article Content */}
-                    <Grid size={{ xs: 12, md: 8 }}>
+                    <Grid size={RHEUMATOID_FACTOR_CONSTANTS.ARTICLE_GRID_SIZE}>
                         <Typography
                             variant="h1"
                             sx={{
@@ -340,7 +341,7 @@ const RheumatoidFactor: React.FC = () => {
                                 textAlign: 'left',
                             }}
                         >
-                            Why It matters
+                            {RHEUMATOID_FACTOR_LABELS.ARTICLE_TITLE}
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, textAlign: 'left' }}>
                             <Typography
@@ -354,21 +355,7 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left'
                                 }}
                             >
-                                Hello there! As a marketing manager in the SaaS industry, you might be looking for innovative ways to engage your audience. I bet generative AI has crossed your mind as an option for creating content. Well, let me share from my firsthand experience.
-                            </Typography>
-                            {/* ... Rest of the article content ... */}
-                            <Typography
-                                sx={{
-                                    fontSize: '18px',
-                                    lineHeight: '1.5',
-                                    letterSpacing: '0.01em',
-                                    color: '#010D3E',
-                                    fontFamily: 'Raleway, sans-serif',
-                                    fontWeight: 400,
-                                    textAlign: 'left'
-                                }}
-                            >
-                                Google encourages high-quality blogs regardless of whether they're <Typography component="span" sx={{ color: '#3D22CF', fontWeight: 'inherit', fontSize: 'inherit' }}>written by humans or created using artificial intelligence</Typography> like ChatGPT. Here's what matters: producing original material with expertise and trustworthiness based on Google <Typography component="span" sx={{ color: '#3D22CF', fontWeight: 'inherit', fontSize: 'inherit' }}>E-E-A-T principles</Typography>.
+                                {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_1}
                             </Typography>
                             <Typography
                                 sx={{
@@ -381,7 +368,15 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left'
                                 }}
                             >
-                                This means focusing more on people-first writing rather than primarily employing AI tools to manipulate search rankings. There comes a time when many experienced professionals want to communicate their insights but get stuck due to limited writing skills – that's where <Typography component="span" sx={{ fontWeight: 700 }}>Generative AI</Typography> can step in.
+                                {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_2_PART_1}
+                                <Typography component="span" sx={{ color: '#3D22CF', fontWeight: 'inherit', fontSize: 'inherit' }}>
+                                    {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_2_SPAN_1}
+                                </Typography>
+                                {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_2_PART_2}
+                                <Typography component="span" sx={{ color: '#3D22CF', fontWeight: 'inherit', fontSize: 'inherit' }}>
+                                    {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_2_SPAN_2}
+                                </Typography>
+                                {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_2_PART_3}
                             </Typography>
                             <Typography
                                 sx={{
@@ -394,7 +389,20 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left'
                                 }}
                             >
-                                So, together, we're going explore how this technology could help us deliver valuable content without sounding robotic or defaulting into mere regurgitations of existing materials (spoiler alert – common pitfalls!). Hang tight - it'll be a fun learning journey!
+                                {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_3}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: '18px',
+                                    lineHeight: '1.5',
+                                    letterSpacing: '0.01em',
+                                    color: '#010D3E',
+                                    fontFamily: 'Raleway, sans-serif',
+                                    fontWeight: 400,
+                                    textAlign: 'left'
+                                }}
+                            >
+                                {RHEUMATOID_FACTOR_LABELS.ABOUT_PARAGRAPH_4}
                             </Typography>
 
                             <Typography
@@ -407,7 +415,7 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left',
                                 }}
                             >
-                                Summary
+                                {RHEUMATOID_FACTOR_LABELS.SUMMARY_TITLE}
                             </Typography>
                             <Typography
                                 sx={{
@@ -420,14 +428,18 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left'
                                 }}
                             >
-                                Jumping headfirst into using AI, like <Typography component="span" sx={{ color: '#3D22CF', fontWeight: 'inherit', fontSize: 'inherit' }}>ChatGPT</Typography>, without a content strategy can lead to some unfortunate results. One common pitfall I've seen is people opting for <Typography component="span" sx={{ fontWeight: 700 }}>quantity over quality</Typography> - they churn out blogs, but each one feels robotic and soulless, reading just like countless others on the internet.
+                                {RHEUMATOID_FACTOR_LABELS.SUMMARY_PARAGRAPH_1_PART_1}
+                                <Typography component="span" sx={{ color: '#3D22CF', fontWeight: 'inherit', fontSize: 'inherit' }}>
+                                    {RHEUMATOID_FACTOR_LABELS.SUMMARY_PARAGRAPH_1_SPAN_1}
+                                </Typography>
+                                {RHEUMATOID_FACTOR_LABELS.SUMMARY_PARAGRAPH_1_PART_2}
                             </Typography>
                         </Box>
                     </Grid>
 
                     {/* Sidebar: In this article */}
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <Box sx={{ position: 'sticky', top: 40 }}>
+                    <Grid size={RHEUMATOID_FACTOR_CONSTANTS.SIDEBAR_GRID_SIZE}>
+                        <Box sx={{ position: 'sticky', top: RHEUMATOID_FACTOR_CONSTANTS.STICKY_TOP }}>
                             <Typography
                                 sx={{
                                     fontSize: '20px',
@@ -438,7 +450,7 @@ const RheumatoidFactor: React.FC = () => {
                                     textAlign: 'left'
                                 }}
                             >
-                                In this article
+                                {RHEUMATOID_FACTOR_LABELS.ARTICLE_SIDEBAR_TITLE}
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3.5, pl: 3, textAlign: 'left' }}>
                                 {[
