@@ -21,13 +21,14 @@ import RheumatoidFactor from './pages/RheumatoidFactor/RheumatoidFactor';
 import YourHealth from './pages/YourHealth/YourHealth';
 import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
 import Welcome from './pages/Welcome/Welcome';
+import SelectPackages from './pages/SelectPackages/SelectPackages';
 import theme from './theme';
 
 const App: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome'];
-  const authPages = ['/', '/signin', '/signup', '/success', '/welcome'];
+  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages'];
+  const authPages = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages'];
   const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath);
   const shouldShowAuthLeftSide = authPages.includes(currentPath);
 
@@ -74,6 +75,7 @@ const App: React.FC = () => {
               <Route path="/follow-up-test" element={<FollowUpTest />} />
               <Route path="/video-player" element={<VideoPlayer />} />
               <Route path="/welcome" element={<Welcome />} />
+              <Route path="/select-packages" element={<SelectPackages />} />
             </Routes>
           </Box>
         </Box>

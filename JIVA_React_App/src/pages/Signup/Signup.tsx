@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import GoogleIcon from '../../assets/Google.png';
 import AppleIcon from '../../assets/Apple.png';
@@ -10,6 +10,7 @@ import { SIGNUP_CONSTANTS } from './constants';
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -172,6 +173,7 @@ const Signup: React.FC = () => {
 
         <Button
           fullWidth
+          onClick={() => navigate('/select-packages')}
           sx={{
             height: '40px',
             borderRadius: '8px',

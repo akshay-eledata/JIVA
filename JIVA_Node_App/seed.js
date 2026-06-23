@@ -47,7 +47,7 @@ const packages = [
 
   // ── ADD-ON PANELS ($99 each) ────────────────────────────────────────────
   {
-    name: 'Advanced Cardio-Metabolic Panel',
+    name: 'Heart (Cardiometabolic)',
     type: 'addon',
     price: 99.00,
     testCount: 11,
@@ -67,50 +67,58 @@ const packages = [
     ]
   },
   {
-    name: 'Complete Hormonal Panel',
+    name: 'Male Health',
     type: 'addon',
     price: 99.00,
-    testCount: 15,
-    description: 'Comprehensive hormonal assessment covering male and female reproductive health.',
+    testCount: 9,
+    description: 'Hormonal assessment covering male reproductive health and vitality.',
     tests: [
       'Total testosterone',
       'Free testosterone',
       'Estradiol (E2)',
-      'Progesterone',
       'FSH',
       'LH',
       'Prolactin',
       'Total PSA',
       'Free PSA',
-      'SHBG',
-      'DHEA-S',
-      'AMH',
-      'Morning cortisol',
-      'Free T3 (fT3)',
-      'Free T4 (fT4)'
+      'SHBG'
     ]
   },
   {
-    name: 'Inflammation & Immunity Panel',
+    name: 'Female Health',
     type: 'addon',
     price: 99.00,
     testCount: 10,
-    description: 'Identifies chronic inflammation and immune system dysfunction.',
+    description: 'Hormonal assessment covering female reproductive health and hormonal balance.',
     tests: [
-      'IL-6',
-      'TNF-alpha',
-      'Fibrinogen',
-      'ESR',
-      'ANA screen',
-      'Rheumatoid factor',
-      'Complement C3',
-      'Complement C4',
-      'Lymphocyte differential',
-      'D-dimer'
+      'Estradiol (E2)',
+      'Progesterone',
+      'FSH',
+      'LH',
+      'Prolactin',
+      'SHBG',
+      'DHEA-S',
+      'Total testosterone',
+      'AMH',
+      'Morning cortisol'
     ]
   },
   {
-    name: 'Nutrition & Micronutrients Panel',
+    name: 'Thyroid',
+    type: 'addon',
+    price: 99.00,
+    testCount: 5,
+    description: 'Detailed thyroid function markers assessing overall metabolic health.',
+    tests: [
+      'TSH',
+      'Free T3 (fT3)',
+      'Free T4 (fT4)',
+      'Anti-TPO antibodies',
+      'Anti-thyroglobulin (Anti-Tg)'
+    ]
+  },
+  {
+    name: 'Nutrition & Micronutrients',
     type: 'addon',
     price: 99.00,
     testCount: 13,
@@ -132,7 +140,44 @@ const packages = [
     ]
   },
   {
-    name: 'Cognitive & Neurological Panel',
+    name: 'Stress & Aging',
+    type: 'addon',
+    price: 99.00,
+    testCount: 9,
+    description: 'Measures biological aging markers and stress response indicators.',
+    tests: [
+      'Morning cortisol',
+      'DHEA-S',
+      'IGF-1',
+      'Homocysteine',
+      '8-OHdG (oxidative DNA damage)',
+      'hs-CRP',
+      'Fasting insulin',
+      'GH (fasting)',
+      'Vitamin D (25-OH) + intact PTH'
+    ]
+  },
+  {
+    name: 'Inflammation & Immunity',
+    type: 'addon',
+    price: 99.00,
+    testCount: 10,
+    description: 'Identifies chronic inflammation and immune system dysfunction.',
+    tests: [
+      'IL-6',
+      'TNF-alpha',
+      'Fibrinogen',
+      'ESR',
+      'ANA screen',
+      'Rheumatoid factor',
+      'Complement C3',
+      'Complement C4',
+      'Lymphocyte differential',
+      'D-dimer'
+    ]
+  },
+  {
+    name: 'Cognitive & Neurological',
     type: 'addon',
     price: 99.00,
     testCount: 9,
@@ -150,7 +195,7 @@ const packages = [
     ]
   },
   {
-    name: 'Advanced Digestive & Hepatic Panel',
+    name: 'Digestive & Hepatic',
     type: 'addon',
     price: 99.00,
     testCount: 10,
@@ -166,26 +211,6 @@ const packages = [
       'Fecal calprotectin',
       'PT/INR',
       'Direct & indirect bilirubin'
-    ]
-  },
-  {
-    name: 'Longevity & Cellular Aging Panel',
-    type: 'addon',
-    price: 99.00,
-    testCount: 11,
-    description: 'Measures biological aging markers and cellular health indicators.',
-    tests: [
-      'IGF-1',
-      'GH (fasting)',
-      'DHEA-S',
-      'Morning cortisol',
-      'Fasting insulin',
-      '8-OHdG (oxidative DNA damage)',
-      'hs-CRP',
-      'Homocysteine',
-      'Vitamin D (25-OH) + intact PTH',
-      'Telomere length',
-      'NAD+ levels'
     ]
   }
 ];
