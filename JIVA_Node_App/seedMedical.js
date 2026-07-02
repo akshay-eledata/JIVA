@@ -2,23 +2,38 @@ require('dotenv').config();
 const { sequelize } = require('./config/db');
 const User = require('./models/User');
 const Biomarker = require('./models/Biomarker');
+const Category = require('./models/Category');
 const ReferenceRange = require('./models/ReferenceRange');
 const TestResult = require('./models/TestResult');
 
 async function seedMedicalData() {
   try {
-    await sequelize.sync({ alter: true }); // Ensure tables exist
+    await sequelize.sync(); // Ensure tables exist
 
     console.log('Seeding Medical Data...');
 
-    // 1. Create a Biomarker
+    // 1. Create Categories
+    const [autoImmunity] = await Category.findOrCreate({ where: { name: 'AutoImmunity' } });
+    const [cardio] = await Category.findOrCreate({ where: { name: 'Cardio' } });
+    const [metabolic] = await Category.findOrCreate({ where: { name: 'Metabolic' } });
+
+    // 2. Create Biomarkers
     const ana = await Biomarker.create({
       name: 'Anti Nuclear Antibodies (ANA) Pattern',
-      category: 'AutoImmunity',
       description: 'Test for autoimmune conditions'
     });
 
-    // 2. Create Reference Range for ANA
+    const cholesterol = await Biomarker.create({
+      name: 'Total Cholesterol',
+      description: 'A measure of the total amount of cholesterol in your blood'
+    });
+
+    // 3. Associate Biomarkers with Categories (Many-to-Many helpers)
+    await ana.addCategory(autoImmunity);
+    await cholesterol.addCategory(cardio);
+    await cholesterol.addCategory(metabolic);
+
+    // 4. Create Reference Ranges
     await ReferenceRange.create({
       biomarkerId: ana.id,
       minRange: 0,
@@ -26,15 +41,30 @@ async function seedMedicalData() {
       unit: 'nmol/L'
     });
 
-    // 3. Find first user to attach results to
+    await ReferenceRange.create({
+      biomarkerId: cholesterol.id,
+      minRange: 100,
+      maxRange: 200,
+      unit: 'mg/dL'
+    });
+
+    // 5. Find first user to attach results to
     const user = await User.findOne();
     if (user) {
-      // 4. Create a "Bad" test result for this user
+      // Create a "Bad" test result for ANA
       await TestResult.create({
         userId: user.id,
         biomarkerId: ana.id,
         value: 410, // Way over the 40 max
         isNormal: false
+      });
+
+      // Create a "Good" test result for Total Cholesterol
+      await TestResult.create({
+        userId: user.id,
+        biomarkerId: cholesterol.id,
+        value: 180, // Healthy level
+        isNormal: true
       });
       console.log('Medical data seeded successfully!');
     } else {

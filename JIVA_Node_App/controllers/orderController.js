@@ -12,7 +12,7 @@ const createOrder = async (req, res) => {
       return res.status(400).json({ message: 'No packages selected' });
     }
 
-    // 1. Fetch the actual packages from the DB to verify prices
+    // 1. Fetch the actual packages from the DB to verify prices and types
     const selectedPackages = await Package.findAll({
       where: {
         id: packageIds
@@ -23,9 +23,17 @@ const createOrder = async (req, res) => {
       return res.status(400).json({ message: 'One or more invalid package IDs provided' });
     }
 
-    // 2. Calculate the total amount
-    // Reduce loops through the packages and adds up all the prices
-    const totalAmount = selectedPackages.reduce((acc, pkg) => acc + pkg.price, 0);
+    // Verify that the mandatory Basic Package is included
+    const hasBase = selectedPackages.some(pkg => pkg.type === 'base');
+    if (!hasBase) {
+      return res.status(400).json({ message: 'The Basic Package ($299) is mandatory for checkout.' });
+    }
+
+    // 2. Enforce the Pricing Rules securely
+    // The Baseline Rule: Set the price of the Basic Package to $299
+    // The Add-On Rule: Set the price of each additional package to $99
+    const addonCount = selectedPackages.filter(pkg => pkg.type === 'addon').length;
+    const totalAmount = 299.00 + (addonCount * 99.00);
 
     // 3. Create the order in the database
     // Notice how we use req.user.id! The Bouncer (middleware) put that there for us.

@@ -21,7 +21,7 @@ const SelectPackages: React.FC = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/packages');
+        const response = await fetch('http://localhost:5001/api/packages');
         if (response.ok) {
           const data = await response.json();
           const addons = data.filter((p: any) => p.type === 'addon');

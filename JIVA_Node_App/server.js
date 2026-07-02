@@ -17,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/packages', require('./routes/packageRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/test-results', require('./routes/testResultRoutes'));
 
 app.get('/', (req, res) => {
   res.send('JIVA API is running...');
