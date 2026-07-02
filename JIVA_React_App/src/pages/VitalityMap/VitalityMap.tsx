@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSchedule } from '../../context/ScheduleContext';
 import ReadingPaperIcon from '../../assets/reading-paper.svg';
@@ -345,11 +345,75 @@ const VitalityMap: React.FC = () => {
     const { isRescheduled } = useSchedule();
     const rescheduleIntent = location.state?.rescheduleIntent || false;
     const [showAlert, setShowAlert] = useState(!rescheduleIntent);
-    const [selectedBiomarker, setSelectedBiomarker] = useState(3);
+    const [selectedBiomarker, setSelectedBiomarker] = useState(0);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(true);
     const [isCompareMode, setIsCompareMode] = useState(false);
+
+    const [categoriesData, setCategoriesData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadDashboardData = async () => {
+            try {
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    navigate('/signin');
+                    return;
+                }
+
+                // Fetch grouped test results
+                const resultsRes = await fetch('http://localhost:5001/api/test-results', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (resultsRes.ok) {
+                    const data = await resultsRes.json();
+                    
+                    const mapped = Object.keys(data).map((catName) => {
+                        const tests = data[catName];
+                        const total = tests.length;
+                        const inRange = tests.filter((t: any) => t.isNormal).length;
+                        const ratio = total > 0 ? inRange / total : 0;
+                        
+                        // Select color based on ratio
+                        let color = '#D2F2E2'; // green
+                        if (ratio >= 0.75) color = '#D2F2E2';
+                        else if (ratio >= 0.5) color = '#E1F2E2';
+                        else if (ratio >= 0.25) color = '#F9E2C2';
+                        else color = '#FF8A65';
+
+                        return {
+                            name: catName,
+                            tests,
+                            statusText: `${inRange}/${total} in Range`,
+                            color
+                        };
+                    });
+                    setCategoriesData(mapped);
+                }
+            } catch (err) {
+                console.error('Error fetching Vitality Map data:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadDashboardData();
+    }, []);
+
+    // Fallback to static data if no database results
+    const activeCategories = categoriesData.length > 0 ? categoriesData : Array(16).fill(null).map((_, i) => ({
+        name: 'Auto Immunity',
+        statusText: '1/4 in Range',
+        color: i % 4 === 0 ? '#D2F2E2' : (i % 3 === 0 ? '#E1F2E2' : (i % 2 === 0 ? '#F9E2C2' : '#FF8A65')),
+        tests: [
+            { isNormal: true, value: 410, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } },
+            { isNormal: true, value: 410, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } },
+            { isNormal: true, value: 410, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } },
+            { isNormal: false, value: 1200, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } }
+        ]
+    }));
 
     return (
         <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', }}>
@@ -1008,14 +1072,14 @@ const VitalityMap: React.FC = () => {
                         )}
                     </Box>
 
-                    {/* Auto Immunity Header aligned with Biomarker */}
+                    {/* Selected Category Header aligned with Biomarker */}
                     {!isCompareMode && (
                         <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 0.5 }}>
                             <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5, lineHeight: 1.2 }}>
-                                Auto Immunity
+                                {activeCategories[selectedBiomarker]?.name || 'Auto Immunity'}
                             </Typography>
                             <Typography sx={{ fontSize: '16px', color: '#667085', fontWeight: 500, textAlign: 'left', pr: 4.5 }}>
-                                {isExpanded ? 'All Biomarkers' : '4 Biomarkers'}
+                                {isExpanded ? 'All Biomarkers' : `${activeCategories[selectedBiomarker]?.tests?.length || 0} Biomarkers`}
                             </Typography>
                         </Box>
                     )}
@@ -1035,7 +1099,7 @@ const VitalityMap: React.FC = () => {
                                     gap: '16px',
                                 }}
                             >
-                                {biomarkerData.map((item, index) => (
+                                {activeCategories.map((item, index) => (
                                     <Box
                                         key={index}
                                         onClick={() => setSelectedBiomarker(index)}
@@ -1062,10 +1126,10 @@ const VitalityMap: React.FC = () => {
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <Box>
                                                 <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.2 }}>
-                                                    {item.title}
+                                                    {item.name}
                                                 </Typography>
                                                 <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467' }}>
-                                                    {item.status}
+                                                    {item.statusText}
                                                 </Typography>
                                             </Box>
                                             <Box
@@ -1116,13 +1180,13 @@ const VitalityMap: React.FC = () => {
                                         },
                                     }}
                                 >
-                                    {(isExpanded ? [1, 2, 3, 4, 5, 6, 7, 8] : [1, 2, 3]).map((item) => (
-                                        <Box key={item} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
+                                    {((isExpanded ? activeCategories[selectedBiomarker]?.tests : activeCategories[selectedBiomarker]?.tests?.slice(0, 3)) || []).map((item: any, idx: number) => (
+                                        <Box key={idx} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
                                             <Box
                                                 sx={{
                                                     width: '4px',
                                                     height: '46px',
-                                                    backgroundColor: '#BAEBD7',
+                                                    backgroundColor: item.isNormal ? '#BAEBD7' : '#FFD2C2',
                                                     borderRadius: '2px',
                                                     flexShrink: 0,
                                                     mt: 0.5
@@ -1130,10 +1194,10 @@ const VitalityMap: React.FC = () => {
                                             />
                                             <Box>
                                                 <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2' }}>
-                                                    Anti Nuclear Antibodies (ANA) Pattern
+                                                    {item.biomarker?.name}
                                                 </Typography>
                                                 <Typography sx={{ fontSize: '15px', color: '#728197' }}>
-                                                    <span style={{ color: '#728197', fontWeight: 600 }}>In Range</span> 410 nmol/ L
+                                                    <span style={{ color: item.isNormal ? '#006045' : '#D92D20', fontWeight: 600 }}>{item.isNormal ? 'In Range' : 'Out of range'}</span> {item.value} {item.biomarker?.unit || ''}
                                                 </Typography>
                                             </Box>
                                         </Box>

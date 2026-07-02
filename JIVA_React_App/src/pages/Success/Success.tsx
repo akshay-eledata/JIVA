@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button } from '@mui/material';
 import TickCircleIcon from '../../assets/TickCircle.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
@@ -6,6 +7,7 @@ import { SUCCESS_LABELS } from './labels';
 import { SUCCESS_CONSTANTS } from './constants';
 
 const Success: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -78,6 +80,7 @@ const Success: React.FC = () => {
       {/* Let's Start Button */}
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '200px' }}>
         <Button
+          onClick={() => navigate('/dashboard')}
           sx={{
             width: '210px',
             height: '48px',

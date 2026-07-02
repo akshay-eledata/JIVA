@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, Alert } from '@mui/material';
 import GoogleIcon from '../../assets/Google.png';
 import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
@@ -11,6 +11,38 @@ import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
 const Signin: React.FC = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSignin = async () => {
+    if (!email || !password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:5001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Login failed.');
+      }
+      // Store JWT token
+      localStorage.setItem('token', data.token);
+      navigate('/select-packages');
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -56,6 +88,12 @@ const Signin: React.FC = () => {
           {SIGNIN_LABELS.WELCOME_TITLE}
         </Typography>
 
+        {error && (
+          <Alert severity="error" sx={{ mb: 2, borderRadius: '8px' }}>
+            {error}
+          </Alert>
+        )}
+
         <Box sx={{ marginBottom: '12px' }}>
           <Typography
             sx={{
@@ -73,6 +111,8 @@ const Signin: React.FC = () => {
           <TextField
             fullWidth
             placeholder={SIGNIN_LABELS.ENTER}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
                 height: '40px',
@@ -125,6 +165,8 @@ const Signin: React.FC = () => {
             fullWidth
             placeholder={SIGNIN_LABELS.ENTER}
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
                 height: '40px',
@@ -147,7 +189,8 @@ const Signin: React.FC = () => {
 
         <Button
           fullWidth
-          onClick={() => navigate('/select-packages')}
+          onClick={handleSignin}
+          disabled={loading}
           sx={{
             height: '40px',
             borderRadius: '8px',
@@ -165,7 +208,7 @@ const Signin: React.FC = () => {
             },
           }}
         >
-          {SIGNIN_LABELS.BUTTON_TEXT}
+          {loading ? 'Signing in...' : SIGNIN_LABELS.BUTTON_TEXT}
         </Button>
 
         <Box
