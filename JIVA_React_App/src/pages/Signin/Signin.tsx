@@ -21,6 +21,13 @@ const Signin: React.FC = () => {
       setError('Please fill in all fields.');
       return;
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
     setError('');
     setLoading(true);
     try {

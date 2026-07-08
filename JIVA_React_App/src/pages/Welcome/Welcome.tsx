@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import JivaLogo from '../../assets/jiva.svg';
 import VectorBg from '../../assets/Vector.svg';
 import HandImg from '../../assets/Hand.svg';
@@ -27,6 +28,7 @@ import { WELCOME_CONSTANTS } from './constants';
 import { WELCOME_LABELS } from './labels';
 
 const Welcome: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = React.useState<number>(0);
 
   const services = [
@@ -146,10 +148,36 @@ const Welcome: React.FC = () => {
               fontSize: { xs: '20px', md: '30px' },
               color: '#474747',
               letterSpacing: '0.01em',
+              mb: 2,
             }}
           >
             {WELCOME_LABELS.SUBTITLE}
           </Typography>
+
+          {/* GET STARTED BUTTON ADDED HERE */}
+          <Button
+            onClick={() => navigate('/signin')}
+            sx={{
+              backgroundColor: '#61CC3E',
+              color: '#FFFFFF',
+              fontFamily: '"Source Sans Pro", sans-serif',
+              fontWeight: 700,
+              fontSize: '16px',
+              padding: '8px 24px',
+              borderRadius: '6px',
+              mb: 5,
+              textTransform: 'none',
+              // boxShadow: '0 4px 14px 0 rgba(97,204,62,0.39)',
+              '&:hover': {
+                backgroundColor: '#52b332',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 6px 20px rgba(97,204,62,0.4)',
+              },
+              transition: 'all 0.2s ease-in-out',
+            }}
+          >
+            Get Started
+          </Button>
         </Box>
 
         {/* Main Interactive Circle and Floating Cards Container */}
