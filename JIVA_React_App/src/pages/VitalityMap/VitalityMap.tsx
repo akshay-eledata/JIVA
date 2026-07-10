@@ -342,8 +342,9 @@ const RecommendationSection: React.FC = () => {
 const VitalityMap: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { isRescheduled } = useSchedule();
-    const rescheduleIntent = location.state?.rescheduleIntent || false;
+    const { isRescheduled, resetReschedule } = useSchedule();
+    const [demoToggle, setDemoToggle] = useState(false);
+    const rescheduleIntent = location.state?.rescheduleIntent !== undefined ? location.state.rescheduleIntent : (!demoToggle);
     const [showAlert, setShowAlert] = useState(!rescheduleIntent);
     const [selectedBiomarker, setSelectedBiomarker] = useState(0);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -357,16 +358,9 @@ const VitalityMap: React.FC = () => {
     useEffect(() => {
         const loadDashboardData = async () => {
             try {
-                // Get token from localStorage
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    navigate('/signin');
-                    return;
-                }
-
-                // Fetch grouped test results
+                // Fetch grouped test results using HttpOnly cookies
                 const resultsRes = await fetch('http://localhost:5001/api/test-results', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    credentials: 'include'
                 });
                 if (resultsRes.ok) {
                     const data = await resultsRes.json();
@@ -428,12 +422,14 @@ const VitalityMap: React.FC = () => {
                 <Box>
                     <Typography
                         variant="h1"
+                        onClick={() => setDemoToggle(!demoToggle)}
                         sx={{
                             fontSize: '44px',
                             fontWeight: 800,
                             color: '#1A212B',
                             lineHeight: '52px',
                             letterSpacing: '-0.02em',
+                            cursor: 'pointer',
                         }}
                     >
                         {VITALITY_MAP_LABELS.HELLO}
@@ -481,7 +477,7 @@ const VitalityMap: React.FC = () => {
             </Box>
 
             {/* Notification Alert, Retest Banner, or Post-Reschedule Scheduled Card */}
-            {isRescheduled ? (
+            {false && isRescheduled ? (
                 <Box
                     sx={{
                         width: '100%',
@@ -530,7 +526,10 @@ const VitalityMap: React.FC = () => {
                             </Box>
                             <Box sx={{ width: '2px', height: '43px', backgroundColor: '#B1C2DC80' }} />
                             <Button
-                                onClick={() => navigate('/vitality-map', { state: { rescheduleIntent: true } })}
+                                onClick={() => {
+                                    resetReschedule();
+                                    navigate('/vitality-map', { state: { rescheduleIntent: false } });
+                                }}
                                 sx={{
                                     ml: 2,
                                     backgroundColor: '#006045',
@@ -1026,33 +1025,35 @@ const VitalityMap: React.FC = () => {
                                 {VITALITY_MAP_LABELS.COMPARE_TITLE}
                             </Typography>
 
-                            {/* Toggle */}
-                            <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#C8D0DB' }}>
-                                <Box
-                                    onClick={() => setIsCompareMode(false)}
-                                    sx={{
-                                        px: 3, py: '6px',
-                                        borderRadius: '10px',
-                                        backgroundColor: !isCompareMode ? '#F9FAFB' : 'transparent',
-                                        cursor: 'pointer',
-                                    }}>
-                                    <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
-                                        Heat Map
-                                    </Typography>
+                            {/* Toggle - Only show if NOT the first test */}
+                            {!rescheduleIntent && (
+                                <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#C8D0DB' }}>
+                                    <Box
+                                        onClick={() => setIsCompareMode(false)}
+                                        sx={{
+                                            px: 3, py: '6px',
+                                            borderRadius: '10px',
+                                            backgroundColor: !isCompareMode ? '#F9FAFB' : 'transparent',
+                                            cursor: 'pointer',
+                                        }}>
+                                        <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
+                                            Heat Map
+                                        </Typography>
+                                    </Box>
+                                    <Box
+                                        onClick={() => setIsCompareMode(true)}
+                                        sx={{
+                                            px: 3, py: '6px',
+                                            borderRadius: '10px',
+                                            backgroundColor: isCompareMode ? '#F9FAFB' : 'transparent',
+                                            cursor: 'pointer'
+                                        }}>
+                                        <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
+                                            Compare
+                                        </Typography>
+                                    </Box>
                                 </Box>
-                                <Box
-                                    onClick={() => setIsCompareMode(true)}
-                                    sx={{
-                                        px: 3, py: '6px',
-                                        borderRadius: '10px',
-                                        backgroundColor: isCompareMode ? '#F9FAFB' : 'transparent',
-                                        cursor: 'pointer'
-                                    }}>
-                                    <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
-                                        Compare
-                                    </Typography>
-                                </Box>
-                            </Box>
+                            )}
                         </Box>
 
                         {/* Legend */}
@@ -1181,7 +1182,25 @@ const VitalityMap: React.FC = () => {
                                     }}
                                 >
                                     {((isExpanded ? activeCategories[selectedBiomarker]?.tests : activeCategories[selectedBiomarker]?.tests?.slice(0, 3)) || []).map((item: any, idx: number) => (
-                                        <Box key={idx} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
+                                        <Box 
+                                            key={idx} 
+                                            onClick={() => {
+                                                if (rescheduleIntent) {
+                                                    navigate('/auto-immunity');
+                                                } else {
+                                                    navigate('/rheumatoid-factor');
+                                                }
+                                            }}
+                                            sx={{ 
+                                                display: 'flex', 
+                                                gap: 2, 
+                                                alignItems: 'flex-start', 
+                                                pr: 4.5,
+                                                cursor: 'pointer',
+                                                transition: 'opacity 0.2s',
+                                                '&:hover': { opacity: 0.7 }
+                                            }}
+                                        >
                                             <Box
                                                 sx={{
                                                     width: '4px',

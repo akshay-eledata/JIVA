@@ -34,14 +34,14 @@ const Signin: React.FC = () => {
       const res = await fetch('http://localhost:5001/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'Login failed.');
       }
-      // Store JWT token
-      localStorage.setItem('token', data.token);
+      // JWT token is now securely stored in an HttpOnly cookie automatically
       navigate('/select-packages');
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');

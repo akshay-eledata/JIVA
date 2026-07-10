@@ -2,6 +2,7 @@ require('dotenv').config(); // MUST be first — loads .env before anything else
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { connectDB } = require('./config/db');
 
 // Connect to Database
@@ -10,8 +11,12 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5174',
+  credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));

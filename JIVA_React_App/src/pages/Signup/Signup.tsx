@@ -36,13 +36,14 @@ const Signup: React.FC = () => {
       const res = await fetch('http://localhost:5001/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ name, email, password })
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'Registration failed.');
       }
-      localStorage.setItem('token', data.token);
+      
       navigate('/select-packages');
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');

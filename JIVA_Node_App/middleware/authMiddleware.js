@@ -4,13 +4,16 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
 
-  // 1. Check if the frontend sent a token in the headers
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    try {
-      // 2. Extract the token (Remove the word "Bearer ")
-      token = req.headers.authorization.split(' ')[1];
+  // 1. Check if the frontend sent a token in cookies (HttpOnly) or headers
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
-      // 3. Verify the token using our secret key
+  if (token) {
+    try {
+      // 2. Verify the token using our secret key
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // 4. Find the user in the database (but don't grab their password)
