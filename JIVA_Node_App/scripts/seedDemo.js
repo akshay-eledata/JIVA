@@ -19,8 +19,9 @@ const {
   sequelize, User, PatientProfile, Questionnaire, LabReport, TestResult,
   Diagnosis, FoodRecommendation, ExerciseRecommendation, SupplementRecommendation, SystemSummary,
 } = db;
+const XLSX = require('xlsx');
 const { seedReference } = require('./seedReference');
-const { canonicalKey, classify } = require('./lib/classify');
+const { canonicalKey, classify, classifyExplicit } = require('./lib/classify');
 
 const TESTS_DIR = path.resolve(__dirname, '..', '..', 'Data', 'Tests');
 const DATA_DIR = path.resolve(__dirname, '..', '..', 'Data');
@@ -31,9 +32,28 @@ const engineOutput = require(path.join(DATA_DIR, 'Sample Output', 'female_29_out
 const DEMO_EMAIL = 'test@jiva.com';
 const DEMO_PASSWORD = 'password123';
 
-// critical thresholds keyed by canonical biomarker name
+// critical thresholds keyed by canonical biomarker name (fallback)
 const critByKey = {};
 for (const b of ranges.biomarkers) critByKey[canonicalKey(b.name)] = b.critical || null;
+
+// 4-tier boundaries from Data/Lab_Ranges.xlsx, keyed by "<biomarker>|<sex>".
+const num = (x) => (x === '' || x == null ? null : Number(x));
+const rangeByKey = {};
+{
+  const wb = XLSX.readFile(path.join(DATA_DIR, 'Lab_Ranges.xlsx'));
+  const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+  for (const r of rows) {
+    rangeByKey[`${canonicalKey(r.Biomarker)}|${String(r.Sex).toLowerCase()}`] = {
+      inLow: num(r['In-Range Low']), inHigh: num(r['In-Range High']),
+      bLow: num(r['Borderline Low']), bHigh: num(r['Borderline High']),
+      critLow: num(r['Critical Low']), critHigh: num(r['Critical High']),
+    };
+  }
+}
+// Pick the sex-specific band, else the general band.
+const rangeFor = (testName, sex) =>
+  rangeByKey[`${canonicalKey(testName)}|${String(sex || '').toLowerCase()}`] ||
+  rangeByKey[`${canonicalKey(testName)}|general`] || null;
 
 async function run() {
   console.log('Resetting database (force sync)…');
@@ -83,13 +103,19 @@ async function run() {
     overallSummary: engineOutput.overall_summary,
   });
 
-  // Test results (from input labs, classified) ------------------------------
+  // Test results (from input labs, classified with 4-tier Lab_Ranges) --------
+  const patientSex = patientInput.patient.sex;
+  const tierTally = { in_range: 0, borderline: 0, out_of_range: 0, critical: 0, unknown: 0 };
   let matched = 0, unmatched = 0;
   for (const lab of patientInput.labs) {
     const key = canonicalKey(lab.test_name);
     const bm = ref.biomarkerByKey[key];
     if (bm) matched++; else { unmatched++; console.warn(`  ⚠ no biomarker for lab "${lab.test_name}"`); }
-    const cls = classify(lab.value, lab.reference_range_low, lab.reference_range_high, critByKey[key]);
+    const band = rangeFor(lab.test_name, patientSex);
+    const cls = band
+      ? classifyExplicit(lab.value, band)
+      : classify(lab.value, lab.reference_range_low, lab.reference_range_high, critByKey[key]);
+    tierTally[cls.status] = (tierTally[cls.status] || 0) + 1;
     await TestResult.create({
       labReportId: report.id,
       userId: user.id,
@@ -106,6 +132,15 @@ async function run() {
       panel: lab.panel || null,
     });
   }
+
+  // Re-sync the report rollup to the 4-tier classification (Lab_Ranges).
+  await report.update({
+    totalLabsReviewed: patientInput.labs.length,
+    inRangeCount: tierTally.in_range,
+    borderlineCount: tierTally.borderline,
+    outOfRangeCount: tierTally.out_of_range,
+    criticalCount: tierTally.critical,
+  });
 
   // Diagnoses ---------------------------------------------------------------
   for (const d of engineOutput.diagnoses || []) {

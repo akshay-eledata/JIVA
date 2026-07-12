@@ -62,4 +62,38 @@ function classify(value, refLow, refHigh, critical) {
   return { status: 'in_range', isNormal: true, numericValue: num };
 }
 
-module.exports = { canonicalKey, classify };
+/**
+ * 4-tier classification against explicit boundaries from Lab_Ranges.xlsx.
+ * @param {number|string} value
+ * @param {{critLow:?number,bLow:?number,inLow:?number,inHigh:?number,bHigh:?number,critHigh:?number}} r
+ */
+function classifyExplicit(value, r) {
+  if (value === null || value === undefined || value === '') {
+    return { status: 'unknown', isNormal: null, numericValue: null };
+  }
+  const num = typeof value === 'number' ? value : parseFloat(value);
+  if (Number.isNaN(num)) {
+    const v = String(value).trim().toLowerCase();
+    const isNorm = NORMAL_QUALITATIVE.has(v);
+    return { status: isNorm ? 'in_range' : 'out_of_range', isNormal: isNorm, numericValue: null };
+  }
+  const mk = (status) => ({ status, isNormal: status === 'in_range', numericValue: num });
+  const { critLow, bLow, inLow, inHigh, bHigh, critHigh } = r || {};
+
+  if (critLow != null && num < critLow) return mk('critical');
+  if (critHigh != null && num > critHigh) return mk('critical');
+
+  const aboveLow = inLow == null || num >= inLow;
+  const belowHigh = inHigh == null || num <= inHigh;
+  if (aboveLow && belowHigh) return mk('in_range');
+
+  if (inHigh != null && num > inHigh) {
+    return mk(bHigh != null && num <= bHigh ? 'borderline' : 'out_of_range');
+  }
+  if (inLow != null && num < inLow) {
+    return mk(bLow != null && num >= bLow ? 'borderline' : 'out_of_range');
+  }
+  return mk('in_range');
+}
+
+module.exports = { canonicalKey, classify, classifyExplicit };

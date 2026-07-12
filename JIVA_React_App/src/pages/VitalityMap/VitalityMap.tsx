@@ -302,12 +302,14 @@ const VitalityMap: React.FC = () => {
         ? {
             inRange: selectedSystem.counts.inRange || 0,
             out: selectedSystem.counts.outOfRange || 0,
-            abnormal: (selectedSystem.counts.borderline || 0) + (selectedSystem.counts.critical || 0),
+            borderline: selectedSystem.counts.borderline || 0,
+            critical: selectedSystem.counts.critical || 0,
         }
         : {
             inRange: la?.inRangeCount || 0,
             out: la?.outOfRangeCount || 0,
-            abnormal: (la?.borderlineCount || 0) + (la?.criticalCount || 0),
+            borderline: la?.borderlineCount || 0,
+            critical: la?.criticalCount || 0,
         };
     // Biological age placeholder: calendar age minus 2 years (D — provisional).
     const bioAge = report?.patient?.age != null ? report.patient.age - 2 : null;
@@ -793,13 +795,14 @@ const VitalityMap: React.FC = () => {
                         {(() => {
                             const bars = [
                                 { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#81FDCA', c2: '#54AD88' },
-                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#81FDCA', c2: '#55AF8A' },
-                                { label: 'ABNORMAL', count: rangeCounts.abnormal, c1: '#90DCCE', c2: '#58968A' },
+                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#FFC48A', c2: '#F0955A' },
+                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#FDE68A', c2: '#E8B14C' },
+                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#FDA4A4', c2: '#EF5C5C' },
                             ];
                             const maxV = Math.max(1, ...bars.map((b) => b.count));
                             const MAX_H = 150, MIN_H = 20;
                             return (
-                                <Box sx={{ position: 'relative', width: '100%', height: '240px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 7, pb: '40px', boxSizing: 'border-box' }}>
+                                <Box sx={{ position: 'relative', width: '100%', height: '240px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 4, pb: '40px', boxSizing: 'border-box' }}>
                                     {/* horizontal gridlines */}
                                     <Box sx={{ position: 'absolute', top: 0, left: 20, right: 20, bottom: '40px', backgroundImage: 'repeating-linear-gradient(to top, #F2F4F7 0, #F2F4F7 1.5px, transparent 1.5px, transparent 18px)', pointerEvents: 'none' }} />
                                     {/* baseline */}
@@ -807,9 +810,9 @@ const VitalityMap: React.FC = () => {
                                     {bars.map((b) => {
                                         const h = Math.max(MIN_H, (b.count / maxV) * MAX_H);
                                         return (
-                                            <Box key={b.label} sx={{ position: 'relative', width: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                            <Box key={b.label} sx={{ position: 'relative', width: '34px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                                 <Box sx={{
-                                                    width: '40px', height: `${h}px`, borderRadius: '8px', position: 'relative',
+                                                    width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative',
                                                     background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`,
                                                     transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
                                                     '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(0,0,0,0.14) 0, rgba(0,0,0,0.14) 3px, transparent 3px, transparent 6px)' },
@@ -817,7 +820,7 @@ const VitalityMap: React.FC = () => {
                                                     <Typography sx={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', fontSize: '11px', fontWeight: 600, color: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</Typography>
                                                     <Box sx={{ position: 'absolute', top: '9px', left: '50%', transform: 'translateX(-50%)', width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#4B5563', border: '1.5px solid #FFFFFF' }} />
                                                 </Box>
-                                                <Typography sx={{ position: 'absolute', bottom: '-34px', left: '50%', transform: 'translateX(-50%)', fontSize: '9px', color: '#1A212B', whiteSpace: 'nowrap', fontFamily: 'Source Sans Pro' }}>{b.label}</Typography>
+                                                <Typography sx={{ position: 'absolute', bottom: '-30px', left: '50%', transform: 'translateX(-50%)', fontSize: '8px', fontWeight: 600, color: '#475467', whiteSpace: 'nowrap', letterSpacing: '0.02em', fontFamily: 'Source Sans Pro' }}>{b.label}</Typography>
                                             </Box>
                                         );
                                     })}
