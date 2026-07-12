@@ -1071,6 +1071,7 @@ const VitalityMap: React.FC = () => {
                                         gap: 4,
                                         flexGrow: 1,
                                         overflowY: isExpanded ? 'auto' : 'hidden',
+                                        overflowX: 'hidden',
                                         '&::-webkit-scrollbar': {
                                             width: '4px',
                                         },
@@ -1087,7 +1088,9 @@ const VitalityMap: React.FC = () => {
                                         const txtColor = isIn ? '#006045' : isBord ? '#B7791F' : '#D92D20';
                                         const label = isIn ? 'In Range' : isBord ? 'Borderline' : 'Out of range';
                                         return (
-                                            <Box key={idx} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
+                                            <Box key={idx}
+                                                onClick={() => navigate(`/biomarker/${encodeURIComponent(item.testName)}`)}
+                                                sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5, cursor: 'pointer', borderRadius: '8px', py: 0.5, transition: 'background-color 0.15s ease', '&:hover': { backgroundColor: '#F8FAFC' } }}>
                                                 <Box
                                                     sx={{
                                                         width: '4px',
