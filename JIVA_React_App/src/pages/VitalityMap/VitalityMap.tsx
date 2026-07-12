@@ -294,6 +294,15 @@ const VitalityMap: React.FC = () => {
     // Biological age placeholder: calendar age minus 2 years (D — provisional).
     const bioAge = report?.patient?.age != null ? report.patient.age - 2 : null;
 
+    // Header greeting: use the patient's real first + last name, else a
+    // sex-based default. Live date underneath.
+    const rawName: string = ((report?.patient?.name as string) || '').trim();
+    const nameParts: string[] = rawName.split(/\s+/).filter(Boolean);
+    const hasRealName = nameParts.length >= 2 && nameParts.every((p) => /[a-zA-Z]/.test(p) && !/^\d+$/.test(p));
+    const displayName = hasRealName ? rawName : (report?.patient?.sex === 'Male' ? 'Juan Martinez' : 'Preetha Narayanan');
+    const greeting = `Hello ${displayName}`;
+    const todayStr = `It's ${new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+
     return (
         <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', }}>
             {/* Consultation Modal */}
@@ -332,7 +341,7 @@ const VitalityMap: React.FC = () => {
                             letterSpacing: '-0.02em',
                         }}
                     >
-                        {VITALITY_MAP_LABELS.HELLO}
+                        {greeting}
                     </Typography>
                     <Typography
                         sx={{
@@ -342,38 +351,9 @@ const VitalityMap: React.FC = () => {
                             fontWeight: 500,
                         }}
                     >
-                        {VITALITY_MAP_LABELS.DATE_STRING}
+                        {todayStr}
                     </Typography>
                 </Box>
-
-                {/* Search Bar */}
-                <TextField
-                    placeholder={VITALITY_MAP_LABELS.SEARCH_PLACEHOLDER}
-                    size="small"
-                    sx={{
-                        width: VITALITY_MAP_CONSTANTS.SEARCH_WIDTH,
-                        '& .MuiOutlinedInput-root': {
-                            borderRadius: '24px',
-                            backgroundColor: '#FFFFFF',
-                            height: VITALITY_MAP_CONSTANTS.SEARCH_HEIGHT,
-                            '& fieldset': {
-                                borderColor: '#E2E8F0',
-                            },
-                        },
-                        '& .MuiOutlinedInput-input': {
-                            padding: '10px 14px',
-                            color: '#667085',
-                            fontSize: '16px'
-                        }
-                    }}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon sx={{ color: '#98A2B3', fontSize: '22px' }} />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
             </Box>
 
             {/* Notification Alert, Retest Banner, or Post-Reschedule Scheduled Card */}
