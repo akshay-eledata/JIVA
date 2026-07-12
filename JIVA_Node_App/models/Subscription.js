@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-const User = require('./User');
-const Package = require('./Package');
 
 const Subscription = sequelize.define('Subscription', {
   id: {
@@ -25,9 +23,5 @@ const Subscription = sequelize.define('Subscription', {
   timestamps: true
 });
 
-Subscription.belongsTo(User, { foreignKey: 'userId' });
-Subscription.belongsTo(Package, { foreignKey: 'packageId' });
-User.hasMany(Subscription, { foreignKey: 'userId' });
-Package.hasMany(Subscription, { foreignKey: 'packageId' });
-
+// Associations to User and Panel are defined centrally in models/index.js.
 module.exports = Subscription;

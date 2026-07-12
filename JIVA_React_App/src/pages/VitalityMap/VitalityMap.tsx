@@ -14,6 +14,7 @@ import {
     MenuItem,
     FormControl,
     Grid,
+    Dialog,
 } from '@mui/material';
 import ConsultationModal from '../../Component/ConsultationModal/ConsultationModal';
 import BiomarkerCompare from '../../Component/BiomarkerCompare/BiomarkerCompare';
@@ -32,25 +33,8 @@ import CheckCircleIcon from '../../assets/Check-circle.svg';
 import KitIcon from '../../assets/Kit.svg';
 import { VITALITY_MAP_CONSTANTS } from './constants';
 import { VITALITY_MAP_LABELS } from './labels';
-
-const biomarkerData = [
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#E1F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#E1F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#F9E2C2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#D2F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#E1F2E2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#F9E2C2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#FFD7C2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#F9E2C2' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#FFB073' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#FFB073' },
-    { title: 'Auto Immunity', status: '1/4 in Range', color: '#FF8A65' },
-];
+import { apiUrl } from '../../config';
+import { spectrumColor, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
 
 interface RecommendationItem {
     id: string;
@@ -69,105 +53,99 @@ interface RecommendationCard {
     headerBg: string;
 }
 
-const recommendationData: RecommendationCard[] = [
-    {
-        id: 'food-eat',
-        title: 'Food to Eat',
-        subtitle: 'For Auto Immunity',
-        headerBg: 'linear-gradient(90deg, #F1FBF8 0%, #DDF4EF 100%)',
-        items: [
-            { id: '1', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={ForkPlateIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#006045', iconBg: '#F0F0F0' },
-            { id: '2', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={ForkPlateIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#006045', iconBg: '#F0F0F0' },
-            { id: '3', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={ForkPlateIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#006045', iconBg: '#F0F0F0' },
-            { id: '4', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={ForkPlateIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#006045', iconBg: '#F0F0F0' },
-            { id: '5', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={ForkPlateIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#006045', iconBg: '#F0F0F0' },
-            { id: '6', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={ForkPlateIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#006045', iconBg: '#F0F0F0' },
-        ],
-    },
-    {
-        id: 'food-avoid',
-        title: 'Food to Avoid',
-        subtitle: 'For Auto Immunity',
-        headerBg: 'linear-gradient(90deg, #F7F5FE 0%, #EBE9FD 100%)',
-        items: [
-            { id: '1', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={NoFoodIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#4A3AFF', iconBg: '#F0F0F0' },
-            { id: '2', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={NoFoodIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#4A3AFF', iconBg: '#F0F0F0' },
-            { id: '3', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={NoFoodIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#4A3AFF', iconBg: '#F0F0F0' },
-            { id: '4', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={NoFoodIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#4A3AFF', iconBg: '#F0F0F0' },
-        ],
-    },
-    {
-        id: 'exercise',
-        title: 'Exercise',
-        subtitle: 'For Auto Immunity',
-        headerBg: 'linear-gradient(90deg, #F4F8FE 0%, #E4EAFD 100%)',
-        items: [
-            { id: '1', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={AlignIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#2E90FA', iconBg: '#F0F0F0' },
-            { id: '2', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={AlignIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#2E90FA', iconBg: '#F0F0F0' },
-        ],
-    },
-    {
-        id: 'supplements',
-        title: 'Supplements',
-        subtitle: 'For Auto Immunity',
-        headerBg: 'linear-gradient(90deg, #FFF9F1 0%, #FEEDDE 100%)',
-        items: [
-            { id: '1', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={MedicineBottleIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#E08A4A', iconBg: '#F0F0F0' },
-            { id: '2', title: 'Spinach', subtitle: 'Boost your energy level to power your day...', icon: <Box component="img" src={MedicineBottleIcon} sx={{ width: 18, height: 18 }} />, iconColor: '#E08A4A', iconBg: '#F0F0F0' },
-        ],
-    },
-];
+// Parse a recommendation label into { name, detail, sub }:
+//   "Refined carbohydrates — white rice, white bread (arroz blanco)"
+//     -> name: "Refined carbohydrates", detail: "white rice, white bread", sub: "arroz blanco"
+//   "Walnuts (nueces)" -> name: "Walnuts", sub: "nueces"
+const parseRec = (s: string): { name: string; detail: string; sub: string } => {
+    let base = (s || '').trim();
+    let sub = '';
+    const paren = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(base);
+    if (paren) { base = paren[1].trim(); sub = paren[2].trim(); }
+    let name = base;
+    let detail = '';
+    const parts = base.split(/\s*[—–]\s*|\s+-\s+/); // em/en dash or spaced hyphen
+    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(' — ').trim(); }
+    return { name, detail, sub };
+};
 
-const RecommendationSection: React.FC = () => {
-    const [selectedBiomarker, setSelectedBiomarkerFilter] = useState('Auto Immunity');
+const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
+    // Top-N per column (D: 5 eat / 5 avoid / 2 exercise / 3 supplements).
+    const eat = (report?.foods_to_eat || []).slice(0, 5);
+    const avoid = (report?.foods_to_avoid || []).slice(0, 5);
+    const exercise = (report?.exercise_recommendations || []).slice(0, 2);
+    const supplements = (report?.supplement_recommendations || []).slice(0, 3);
 
-    const renderCard = (card: RecommendationCard, noContainer: boolean = false) => {
-        const isStacked = card.id === 'exercise' || card.id === 'supplements';
+    const [selected, setSelected] = useState<{ kind: string; data: any } | null>(null);
+    const mkIcon = (src: string) => <Box component="img" src={src} sx={{ width: 18, height: 18 }} />;
 
+    // Raw label per kind, and the concise pill name derived from it.
+    const rawName = (kind: string, d: any): string =>
+        kind === 'exercise' ? d.exerciseType : kind === 'supplement' ? d.supplementName : d.food;
+    const nameFor = (kind: string, d: any): string => parseRec(rawName(kind, d)).name;
+    // Labeled detail rows shown in the popup.
+    const detailRows = (kind: string, d: any): { label: string; value: string }[] => {
+        const rows =
+            kind === 'eat' ? [
+                { label: 'How much', value: d.quantityFrequency },
+                { label: 'Why it helps', value: d.rationale },
+            ] : kind === 'avoid' ? [
+                { label: 'Action', value: d.avoidanceLevel },
+                { label: 'Target', value: d.reductionTarget },
+                { label: 'Why avoid', value: d.rationale },
+            ] : kind === 'exercise' ? [
+                { label: 'Frequency', value: d.frequency },
+                { label: 'Duration', value: d.duration },
+                { label: 'Intensity', value: d.intensity },
+                { label: 'Why it helps', value: d.whyItHelps },
+                { label: 'Safety', value: d.safetyNotes },
+            ] : [
+                { label: 'Dosage', value: d.dosageRange },
+                { label: 'Timing', value: d.timing },
+                { label: 'Why it helps', value: d.whyItHelps },
+                { label: 'Safety', value: d.safetyNote },
+                { label: 'Availability', value: d.localAvailabilityNote },
+                { label: 'Tier', value: d.startTier },
+            ];
+        return rows.filter((r) => r.value);
+    };
+
+    const cards = [
+        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, iconColor: '#006045' },
+        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, iconColor: '#4A3AFF' },
+        { id: 'exercise', title: 'Exercise', kind: 'exercise', data: exercise, icon: AlignIcon, iconColor: '#2E90FA' },
+        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, iconColor: '#E08A4A' },
+    ];
+
+    const renderCard = (card: (typeof cards)[number], noContainer: boolean = false) => {
         const content = (
             <>
                 {/* Card Header */}
                 <Box
                     sx={{
-                        p: '24px',
+                        p: '20px 24px',
                         backgroundColor: '#F7FAFD',
                         position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 0.5,
                         borderBottom: '0.5px solid #B1C2DC',
                     }}
                 >
-                    <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#1A212B', display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {card.title} <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
+                    <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#1A212B', textAlign: 'left' }}>
+                        {card.title}
                     </Typography>
-                    <Typography sx={{ fontSize: '13px', color: '#667085', fontWeight: 500, textAlign: 'left' }}>
-                        {card.subtitle}
-                    </Typography>
-
-                    {/* Background Star Shape */}
                     <Box
                         component="img"
                         src={StarIcon}
                         alt="star"
-                        sx={{
-                            position: 'absolute',
-                            right: 16,
-                            top: 12,
-                            width: '80px',
-                            height: '80px',
-                            opacity: 0.7,
-                            transform: 'rotate(-15deg)',
-                            pointerEvents: 'none'
-                        }}
+                        sx={{ position: 'absolute', right: 16, top: 12, width: '70px', height: '70px', opacity: 0.7, transform: 'rotate(-15deg)', pointerEvents: 'none' }}
                     />
                 </Box>
 
-                {/* Items Body */}
-                <Box sx={{ p: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {card.items.map((item) => (
+                {/* Items — name only; click for full details */}
+                <Box sx={{ p: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {card.data.map((d: any, i: number) => (
                         <Box
-                            key={item.id}
+                            key={i}
+                            onClick={() => setSelected({ kind: card.kind, data: d })}
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -178,51 +156,22 @@ const RecommendationSection: React.FC = () => {
                                 border: '1px solid #F2F4F7',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s ease',
-                                textAlign: 'left',
-                                '&:hover': {
-                                    transform: 'translateY(-2px)',
-                                }
+                                '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(0,0,0,0.08)' },
                             }}
                         >
                             <Box
                                 sx={{
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: '50%',
-                                    backgroundColor: item.iconBg,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    color: item.iconColor,
-                                    flexShrink: 0
+                                    width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#F0F0F0',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: card.iconColor, flexShrink: 0,
                                 }}
                             >
-                                {item.icon}
+                                {mkIcon(card.icon)}
                             </Box>
-                            <Box>
-                                <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#1A212B', mb: 0.2 }}>
-                                    {item.title}
-                                </Typography>
-                                <Typography sx={{ fontSize: '11px', color: '#667085', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px', }}>
-                                    {item.subtitle}
-                                </Typography>
-                            </Box>
+                            <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#1A212B', textAlign: 'left', minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {nameFor(card.kind, d)}
+                            </Typography>
                         </Box>
                     ))}
-
-                    <Typography
-                        sx={{
-                            fontSize: '13px',
-                            fontWeight: 700,
-                            color: '#006045',
-                            textAlign: 'center',
-                            mt: 1,
-                            cursor: 'pointer',
-                            '&:hover': { textDecoration: 'underline' }
-                        }}
-                    >
-                        Show more
-                    </Typography>
                 </Box>
             </>
         );
@@ -230,111 +179,56 @@ const RecommendationSection: React.FC = () => {
         if (noContainer) return content;
 
         return (
-            <Box
-                sx={{
-                    borderRadius: '24px',
-                    backgroundColor: '#F7FAFD',
-                    border: '0.5px solid #B1C2DC',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: isStacked ? 'auto' : '100%',
-                }}
-            >
+            <Box sx={{ borderRadius: '24px', backgroundColor: '#F7FAFD', border: '0.5px solid #B1C2DC', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
                 {content}
             </Box>
         );
     };
 
     return (
-        <Box
-            sx={{
-                mt: 6,
-                backgroundColor: '#F1F5F9',
-                borderRadius: '40px',
-                p: 5,
-                border: '1px solid #E2E8F0',
-            }}
-        >
-            <Typography
-                sx={{
-                    textAlign: 'left',
-                    fontSize: '28px',
-                    fontWeight: 700,
-                    color: '#000000',
-                    mb: 4,
-                }}
-            >
+        <Box sx={{ mt: 6, backgroundColor: '#F1F5F9', borderRadius: '40px', p: 5, border: '1px solid #E2E8F0' }}>
+            <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 4 }}>
                 {VITALITY_MAP_LABELS.RECOMMENDED_TITLE}
             </Typography>
 
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 4, mb: 6 }}>
-                <Box>
-                    <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#9AA8BC', mb: 1, textAlign: 'left' }}>{VITALITY_MAP_LABELS.SELECT_BIOMARKER}</Typography>
-                    <FormControl variant="outlined" size="small" sx={{ minWidth: 380 }}>
-                        <Select
-                            value={selectedBiomarker}
-                            onChange={(e) => setSelectedBiomarkerFilter(e.target.value as string)}
-                            IconComponent={KeyboardArrowDownIcon}
-                            sx={{
-                                borderRadius: '12px',
-                                backgroundColor: '#FFFFFF',
-                                height: '48px',
-                                border: '1px solid #7281971A',
-                                '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
-                                '& .MuiSelect-select': { py: '12px', fontSize: '16px', fontWeight: 400, color: '#728197', textAlign: 'left' }
-                            }}
-                        >
-                            <MenuItem value="Auto Immunity">Auto Immunity</MenuItem>
-                            <MenuItem value="Others">Others</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-
-                <Button
-                    variant="outlined"
-                    sx={{
-                        textTransform: 'none',
-                        borderRadius: '12px',
-                        borderColor: '#006045',
-                        color: '#006045',
-                        fontWeight: 700,
-                        px: 4,
-                        height: '48px',
-                        fontSize: '16px',
-                        '&:hover': {
-                            borderColor: '#004d35',
-                            backgroundColor: '#F3FAF7',
-                        }
-                    }}
-                >
-                    {VITALITY_MAP_LABELS.VIEW_ALL}
-                </Button>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 3 }}>
-                <Box sx={{ flex: 1 }}>
-                    {renderCard(recommendationData[0])}
-                </Box>
-                <Box sx={{ flex: 1 }}>
-                    {renderCard(recommendationData[1])}
-                </Box>
-                <Box
-                    sx={{
-                        flex: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        borderRadius: '24px',
-                        border: '0.5px solid #B1C2DC',
-                        overflow: 'hidden',
-                        backgroundColor: '#F7FAFD'
-                    }}
-                >
-                    {renderCard(recommendationData[2], true)}
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 3, alignItems: 'stretch' }}>
+                <Box sx={{ minWidth: 0 }}>{renderCard(cards[0])}</Box>
+                <Box sx={{ minWidth: 0 }}>{renderCard(cards[1])}</Box>
+                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '0.5px solid #B1C2DC', overflow: 'hidden', backgroundColor: '#F7FAFD' }}>
+                    {renderCard(cards[2], true)}
                     <Box sx={{ height: '0.5px', backgroundColor: '#B1C2DC' }} />
-                    {renderCard(recommendationData[3], true)}
+                    {renderCard(cards[3], true)}
                 </Box>
             </Box>
+
+            {/* Detail popup */}
+            <Dialog open={!!selected} onClose={() => setSelected(null)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
+                {selected && (() => {
+                    const { name, detail, sub } = parseRec(rawName(selected.kind, selected.data));
+                    const rows = detail
+                        ? [{ label: 'Includes', value: detail }, ...detailRows(selected.kind, selected.data)]
+                        : detailRows(selected.kind, selected.data);
+                    return (
+                        <Box sx={{ p: 4 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+                                <Typography sx={{ fontSize: '22px', fontWeight: 700, color: '#1A212B' }}>{name}</Typography>
+                                <IconButton onClick={() => setSelected(null)} sx={{ p: 0, mt: 0.5 }}>
+                                    <Box component="img" src={CancelIcon} alt="Close" sx={{ width: 20, height: 20 }} />
+                                </IconButton>
+                            </Box>
+                            {sub && <Typography sx={{ fontSize: '14px', fontStyle: 'italic', color: '#667085', mb: 2 }}>{sub}</Typography>}
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                                {rows.map((r) => (
+                                    <Box key={r.label} sx={{ textAlign: 'left' }}>
+                                        <Typography sx={{ fontSize: '11px', fontWeight: 700, color: '#98A2B3', textTransform: 'uppercase', letterSpacing: '0.04em', mb: 0.3 }}>{r.label}</Typography>
+                                        <Typography sx={{ fontSize: '14px', color: '#475467', lineHeight: '21px' }}>{r.value}</Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    );
+                })()}
+            </Dialog>
         </Box>
     );
 };
@@ -348,51 +242,26 @@ const VitalityMap: React.FC = () => {
     const [selectedBiomarker, setSelectedBiomarker] = useState(0);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCompareMode, setIsCompareMode] = useState(false);
+    const [clinicalOpen, setClinicalOpen] = useState(false);
 
-    const [categoriesData, setCategoriesData] = useState<any[]>([]);
+    const [systems, setSystems] = useState<any[]>([]);
+    const [report, setReport] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadDashboardData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) { navigate('/signin'); return; }
+            const headers = { Authorization: `Bearer ${token}` };
             try {
-                // Get token from localStorage
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    navigate('/signin');
-                    return;
-                }
-
-                // Fetch grouped test results
-                const resultsRes = await fetch('http://localhost:5001/api/test-results', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (resultsRes.ok) {
-                    const data = await resultsRes.json();
-                    
-                    const mapped = Object.keys(data).map((catName) => {
-                        const tests = data[catName];
-                        const total = tests.length;
-                        const inRange = tests.filter((t: any) => t.isNormal).length;
-                        const ratio = total > 0 ? inRange / total : 0;
-                        
-                        // Select color based on ratio
-                        let color = '#D2F2E2'; // green
-                        if (ratio >= 0.75) color = '#D2F2E2';
-                        else if (ratio >= 0.5) color = '#E1F2E2';
-                        else if (ratio >= 0.25) color = '#F9E2C2';
-                        else color = '#FF8A65';
-
-                        return {
-                            name: catName,
-                            tests,
-                            statusText: `${inRange}/${total} in Range`,
-                            color
-                        };
-                    });
-                    setCategoriesData(mapped);
-                }
+                const [bmRes, repRes] = await Promise.all([
+                    fetch(apiUrl('/api/me/biomarkers?groupBy=system'), { headers }),
+                    fetch(apiUrl('/api/me/report/latest'), { headers }),
+                ]);
+                if (bmRes.ok) { const d = await bmRes.json(); setSystems(d.systems || []); }
+                if (repRes.ok) { setReport(await repRes.json()); }
             } catch (err) {
                 console.error('Error fetching Vitality Map data:', err);
             } finally {
@@ -402,18 +271,28 @@ const VitalityMap: React.FC = () => {
         loadDashboardData();
     }, []);
 
-    // Fallback to static data if no database results
-    const activeCategories = categoriesData.length > 0 ? categoriesData : Array(16).fill(null).map((_, i) => ({
-        name: 'Auto Immunity',
-        statusText: '1/4 in Range',
-        color: i % 4 === 0 ? '#D2F2E2' : (i % 3 === 0 ? '#E1F2E2' : (i % 2 === 0 ? '#F9E2C2' : '#FF8A65')),
-        tests: [
-            { isNormal: true, value: 410, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } },
-            { isNormal: true, value: 410, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } },
-            { isNormal: true, value: 410, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } },
-            { isNormal: false, value: 1200, biomarker: { name: 'Anti Nuclear Antibodies (ANA) Pattern', unit: 'nmol/ L' } }
-        ]
+    // The 10 canonical systems → heat-map tiles, colored on a continuous
+    // in-range → out-of-range spectrum (D14). Long names get a short tile label.
+    const SHORT_SYSTEM_LABELS: Record<string, string> = {
+        'Immune/Inflammatory': 'Immunity',
+        'Hormonal/Reproductive': 'Hormonal',
+    };
+    const activeSystems = systems.map((s: any) => ({
+        name: SHORT_SYSTEM_LABELS[s.name] || s.displayName || s.name,
+        systemName: s.name,
+        counts: s.counts,
+        statusText: `${s.counts.inRange}/${s.counts.total} in Range`,
+        color: spectrumColor(s.spectrumP),
+        biomarkers: s.biomarkers || [],
     }));
+
+    const selectedSystem = activeSystems[selectedBiomarker];
+    const selectedSummary =
+        (report?.system_summaries || []).find((ss: any) => ss.systemName === selectedSystem?.systemName)?.summary ||
+        report?.patient_summary || '';
+    const la = report?.lab_analysis;
+    // Biological age placeholder: calendar age minus 2 years (D — provisional).
+    const bioAge = report?.patient?.age != null ? report.patient.age - 2 : null;
 
     return (
         <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', }}>
@@ -422,6 +301,23 @@ const VitalityMap: React.FC = () => {
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
+
+            {/* Clinical Notes — full note popup */}
+            <Dialog open={clinicalOpen} onClose={() => setClinicalOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
+                <Box sx={{ p: 4, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                        <Typography sx={{ fontSize: '22px', fontWeight: 700, color: '#1A212B' }}>
+                            Clinical Notes{selectedSystem?.name ? ` — ${selectedSystem.name}` : ''}
+                        </Typography>
+                        <IconButton onClick={() => setClinicalOpen(false)} sx={{ p: 0, mt: 0.5 }}>
+                            <Box component="img" src={CancelIcon} alt="Close" sx={{ width: 20, height: 20 }} />
+                        </IconButton>
+                    </Box>
+                    <Typography sx={{ fontSize: '15px', color: '#475467', lineHeight: '24px' }}>
+                        {selectedSummary}
+                    </Typography>
+                </Box>
+            </Dialog>
 
             {/* Header Section */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 5, mt: 2 }}>
@@ -796,7 +692,7 @@ const VitalityMap: React.FC = () => {
                                 },
                                 stroke: { lineCap: 'round' }
                             }}
-                            series={[75]}
+                            series={[bioAge != null ? 72 : 0]}
                             type="radialBar"
                             height={VITALITY_MAP_CONSTANTS.CHART_HEIGHT}
                         />
@@ -852,7 +748,7 @@ const VitalityMap: React.FC = () => {
                                 {VITALITY_MAP_LABELS.BIOLOGICAL_AGE_HEADER}
                             </Typography>
                             <Typography sx={{ fontSize: '28px', fontWeight: 700, color: '#6B7280', lineHeight: 1, fontFamily: 'Source Sans Pro' }}>
-                                {VITALITY_MAP_LABELS.BIOLOGICAL_AGE_VALUE}
+                                {bioAge != null ? bioAge : '—'}
                             </Typography>
                         </Box>
                     </Box>
@@ -860,7 +756,7 @@ const VitalityMap: React.FC = () => {
                     <Box sx={{ mt: 2, textAlign: 'left', width: '100%', px: 1 }}>
                         <Box sx={{ width: '100%', height: '1.5px', backgroundColor: '#C8D0DB', mb: 3 }} />
                         <Typography sx={{ fontSize: '16px', color: '#475467', lineHeight: '24px', mb: 2 }}>
-                            Your Biological Age <span style={{ color: '#101828', fontWeight: 700 }}>is 7.2 years younger than you calendar age.</span> This result is based on the lab test from January 2025
+                            Your Biological Age is <span style={{ color: '#101828', fontWeight: 700 }}>{bioAge != null ? `${bioAge} years` : '—'}</span>{report?.patient?.age != null ? `, about 2 years younger than your calendar age of ${report.patient.age}.` : '.'}
                         </Typography>
                         <Typography
                             sx={{
@@ -896,57 +792,56 @@ const VitalityMap: React.FC = () => {
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 3, width: '100%' }}>
-                        <svg width="100%" height="240" viewBox="0 0 400 240" preserveAspectRatio="none">
-                            <defs>
-                                <linearGradient id="rangeGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#81FDCA" />
-                                    <stop offset="100%" stopColor="#54AD88" />
-                                </linearGradient>
-                                <linearGradient id="rangeGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#81FDCA" />
-                                    <stop offset="100%" stopColor="#55AF8A" />
-                                </linearGradient>
-                                <linearGradient id="rangeGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#90DCCE" />
-                                    <stop offset="100%" stopColor="#58968A" />
-                                </linearGradient>
-                                <pattern id="preciseStripes" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(-45)">
-                                    <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(0,0,0,0.15)" strokeWidth="3" />
-                                </pattern>
-                            </defs>
+                        {(() => {
+                            const bars = [
+                                { label: 'IN RANGE', count: la?.inRangeCount || 0, cx: 140, grad: 'url(#rangeGrad1)' },
+                                { label: 'OUT OF RANGE', count: la?.outOfRangeCount || 0, cx: 200, grad: 'url(#rangeGrad2)' },
+                                { label: 'ABNORMAL', count: (la?.borderlineCount || 0) + (la?.criticalCount || 0), cx: 260, grad: 'url(#rangeGrad3)' },
+                            ];
+                            const maxV = Math.max(1, ...bars.map((b) => b.count));
+                            const baseY = 200, maxH = 150, minH = 22;
+                            return (
+                                <svg width="100%" height="240" viewBox="0 0 400 240" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="rangeGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="#81FDCA" />
+                                            <stop offset="100%" stopColor="#54AD88" />
+                                        </linearGradient>
+                                        <linearGradient id="rangeGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="#81FDCA" />
+                                            <stop offset="100%" stopColor="#55AF8A" />
+                                        </linearGradient>
+                                        <linearGradient id="rangeGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="#90DCCE" />
+                                            <stop offset="100%" stopColor="#58968A" />
+                                        </linearGradient>
+                                        <pattern id="preciseStripes" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(-45)">
+                                            <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(0,0,0,0.15)" strokeWidth="3" />
+                                        </pattern>
+                                    </defs>
 
-                            {[0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165].map((y) => (
-                                <line
-                                    key={y}
-                                    x1="20"
-                                    y1={200 - y}
-                                    x2="380"
-                                    y2={200 - y}
-                                    stroke="#F2F4F7"
-                                    strokeWidth="1.5"
-                                />
-                            ))}
+                                    {[0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165].map((y) => (
+                                        <line key={y} x1="20" y1={200 - y} x2="380" y2={200 - y} stroke="#F2F4F7" strokeWidth="1.5" />
+                                    ))}
 
-                            <text x="140" y="78" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#6B7280', fontFamily: 'Source Sans Pro' }}>88</text>
-                            <rect x="122" y="86" width="36" height="114" rx="8" fill="url(#rangeGrad1)" />
-                            <rect x="126" y="92" width="28" height="103" rx="4" fill="url(#preciseStripes)" />
-                            <circle cx="140" cy="96" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                            <text x="140" y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>IN RANGE</text>
+                                    {bars.map((b) => {
+                                        const h = Math.max(minH, (b.count / maxV) * maxH);
+                                        const topY = baseY - h;
+                                        return (
+                                            <g key={b.label}>
+                                                <text x={b.cx} y={topY - 8} textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</text>
+                                                <rect x={b.cx - 18} y={topY} width="36" height={h} rx="8" fill={b.grad} />
+                                                <rect x={b.cx - 14} y={topY + 6} width="28" height={Math.max(0, h - 11)} rx="4" fill="url(#preciseStripes)" />
+                                                <circle cx={b.cx} cy={topY + 10} r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
+                                                <text x={b.cx} y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>{b.label}</text>
+                                            </g>
+                                        );
+                                    })}
 
-                            <text x="200" y="38" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 400, fill: '#5B5B5B', fontFamily: 'Source Sans Pro' }}>88</text>
-                            <rect x="182" y="48" width="36" height="152" rx="8" fill="url(#rangeGrad2)" />
-                            <rect x="186" y="54" width="28" height="141" rx="4" fill="url(#preciseStripes)" />
-                            <circle cx="200" cy="58" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                            <text x="200" y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>OUT OF RANGE</text>
-
-                            <text x="260" y="105" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#6B7280', fontFamily: 'Source Sans Pro' }}>16</text>
-                            <rect x="242" y="115" width="36" height="85" rx="8" fill="url(#rangeGrad3)" />
-                            <rect x="246" y="121" width="28" height="75" rx="4" fill="url(#preciseStripes)" />
-                            <circle cx="260" cy="125" r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                            <text x="260" y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>ABNORMAL</text>
-
-                            <line x1="20" y1="200" x2="380" y2="200" stroke="#F2F4F7" strokeWidth="1.5" />
-                        </svg>
+                                    <line x1="20" y1="200" x2="380" y2="200" stroke="#F2F4F7" strokeWidth="1.5" />
+                                </svg>
+                            );
+                        })()}
                     </Box>
                 </Box>
 
@@ -965,16 +860,18 @@ const VitalityMap: React.FC = () => {
                     }}
                 >
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 3 }}>
-                        Clinical Notes
+                        Clinical Notes{selectedSystem?.name ? ` — ${selectedSystem.name}` : ''}
                     </Typography>
 
-                    <Typography sx={{ fontSize: '14px', color: '#475467', lineHeight: '24px', mb: 'auto' }}>
-                        Autoimmunity is when your immune system attacks your body's own tissues rather than harmful pathogens. You may be left with more questions than answers. And that's ok. Education is the first step.
+                    <Typography sx={{ fontSize: '14px', color: '#475467', lineHeight: '24px', mb: 'auto', display: '-webkit-box', WebkitLineClamp: 6, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {selectedSummary || 'Select a body system to view its clinical notes.'}
                     </Typography>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 3, borderTop: '1px solid #F2F4F7', }}>
                         <Button
                             variant="outlined"
+                            onClick={() => setClinicalOpen(true)}
+                            disabled={!selectedSummary}
                             sx={{
                                 textTransform: 'none',
                                 borderRadius: '12px',
@@ -1064,7 +961,7 @@ const VitalityMap: React.FC = () => {
                                         width: '100px',
                                         height: '6px',
                                         borderRadius: '4px',
-                                        background: 'linear-gradient(90deg, #A6E4D0 0%, #FFB073 100%)',
+                                        background: SPECTRUM_GRADIENT,
                                     }}
                                 />
                                 <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#98A2B3', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>OUT OF RANGE</Typography>
@@ -1076,10 +973,10 @@ const VitalityMap: React.FC = () => {
                     {!isCompareMode && (
                         <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 0.5 }}>
                             <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5, lineHeight: 1.2 }}>
-                                {activeCategories[selectedBiomarker]?.name || 'Auto Immunity'}
+                                {selectedSystem?.name || '—'}
                             </Typography>
                             <Typography sx={{ fontSize: '16px', color: '#667085', fontWeight: 500, textAlign: 'left', pr: 4.5 }}>
-                                {isExpanded ? 'All Biomarkers' : `${activeCategories[selectedBiomarker]?.tests?.length || 0} Biomarkers`}
+                                {`${selectedSystem?.biomarkers?.length || 0} Biomarkers`}
                             </Typography>
                         </Box>
                     )}
@@ -1095,11 +992,11 @@ const VitalityMap: React.FC = () => {
                             <Box
                                 sx={{
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(4, 1fr)',
+                                    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
                                     gap: '16px',
                                 }}
                             >
-                                {activeCategories.map((item, index) => (
+                                {activeSystems.map((item, index) => (
                                     <Box
                                         key={index}
                                         onClick={() => setSelectedBiomarker(index)}
@@ -1115,20 +1012,23 @@ const VitalityMap: React.FC = () => {
                                             transition: 'all 0.2s ease',
                                             position: 'relative',
                                             boxShadow: selectedBiomarker === index ? '0px 10px 20px rgba(0,0,0,0.15), 0px 4px 6px rgba(0,0,0,0.1)' : 'none',
-                                            border: selectedBiomarker === index ? '1px solid rgba(0,0,0,0.1)' : 'none',
+                                            border: selectedBiomarker === index ? '1.5px solid rgba(0,0,0,0.35)' : '1px solid rgba(0,0,0,0.15)',
                                             zIndex: selectedBiomarker === index ? 1 : 0,
                                             '&:hover': {
                                                 transform: 'translateY(-2px)',
-                                                boxShadow: '0px 4px 12px rgba(0,0,0,0.05)'
+                                                boxShadow: '0px 6px 16px rgba(0,0,0,0.14)'
                                             }
                                         }}
                                     >
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                            <Box>
-                                                <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.2 }}>
+                                            <Box sx={{ minWidth: 0, flex: 1, pr: 1 }}>
+                                                <Typography sx={{
+                                                    fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left',
+                                                    whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                                                }}>
                                                     {item.name}
                                                 </Typography>
-                                                <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467' }}>
+                                                <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467', textAlign: 'left' }}>
                                                     {item.statusText}
                                                 </Typography>
                                             </Box>
@@ -1180,28 +1080,35 @@ const VitalityMap: React.FC = () => {
                                         },
                                     }}
                                 >
-                                    {((isExpanded ? activeCategories[selectedBiomarker]?.tests : activeCategories[selectedBiomarker]?.tests?.slice(0, 3)) || []).map((item: any, idx: number) => (
-                                        <Box key={idx} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
-                                            <Box
-                                                sx={{
-                                                    width: '4px',
-                                                    height: '46px',
-                                                    backgroundColor: item.isNormal ? '#BAEBD7' : '#FFD2C2',
-                                                    borderRadius: '2px',
-                                                    flexShrink: 0,
-                                                    mt: 0.5
-                                                }}
-                                            />
-                                            <Box>
-                                                <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2' }}>
-                                                    {item.biomarker?.name}
-                                                </Typography>
-                                                <Typography sx={{ fontSize: '15px', color: '#728197' }}>
-                                                    <span style={{ color: item.isNormal ? '#006045' : '#D92D20', fontWeight: 600 }}>{item.isNormal ? 'In Range' : 'Out of range'}</span> {item.value} {item.biomarker?.unit || ''}
-                                                </Typography>
+                                    {((isExpanded ? selectedSystem?.biomarkers : selectedSystem?.biomarkers?.slice(0, 3)) || []).map((item: any, idx: number) => {
+                                        const isIn = item.status === 'in_range';
+                                        const isBord = item.status === 'borderline';
+                                        const barColor = isIn ? '#BAEBD7' : isBord ? '#FCE4B0' : '#FFD2C2';
+                                        const txtColor = isIn ? '#006045' : isBord ? '#B7791F' : '#D92D20';
+                                        const label = isIn ? 'In Range' : isBord ? 'Borderline' : 'Out of range';
+                                        return (
+                                            <Box key={idx} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', pr: 4.5 }}>
+                                                <Box
+                                                    sx={{
+                                                        width: '4px',
+                                                        height: '46px',
+                                                        backgroundColor: barColor,
+                                                        borderRadius: '2px',
+                                                        flexShrink: 0,
+                                                        mt: 0.5
+                                                    }}
+                                                />
+                                                <Box>
+                                                    <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2' }}>
+                                                        {item.biomarkerName || item.testName}
+                                                    </Typography>
+                                                    <Typography sx={{ fontSize: '15px', color: '#728197' }}>
+                                                        <span style={{ color: txtColor, fontWeight: 600 }}>{label}</span> {item.value} {item.unit || ''}
+                                                    </Typography>
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    ))}
+                                        );
+                                    })}
                                 </Box>
 
                                 <Box sx={{ pr: 4.5, display: 'flex' }}>
@@ -1236,7 +1143,7 @@ const VitalityMap: React.FC = () => {
             </Box>
 
             {/* Biomarker Section Container */}
-            <RecommendationSection />
+            <RecommendationSection report={report} />
         </Box>
     );
 };

@@ -6,6 +6,7 @@ import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
 import { SIGNUP_LABELS } from './labels';
 import { SIGNUP_CONSTANTS } from './constants';
+import { apiUrl } from '../../config';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
@@ -33,7 +34,7 @@ const Signup: React.FC = () => {
     setLoading(true);
     try {
       const name = email.split('@')[0] || 'User';
-      const res = await fetch('http://localhost:5001/api/auth/register', {
+      const res = await fetch(apiUrl('/api/auth/register'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })

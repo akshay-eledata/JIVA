@@ -6,6 +6,7 @@ import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
 import { SIGNIN_LABELS } from './labels';
 import { SIGNIN_CONSTANTS } from './constants';
+import { apiUrl } from '../../config';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
@@ -31,7 +32,7 @@ const Signin: React.FC = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5001/api/auth/login', {
+      const res = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

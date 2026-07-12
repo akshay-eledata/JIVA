@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-const User = require('./User');
 
 const Order = sequelize.define('Order', {
   id: {
@@ -11,7 +10,7 @@ const Order = sequelize.define('Order', {
   packageIds: {
     type: DataTypes.ARRAY(DataTypes.UUID),
     allowNull: false,
-    comment: 'Array of Package IDs the user selected'
+    comment: 'Array of Panel IDs the user selected'
   },
   totalAmount: {
     type: DataTypes.FLOAT,
@@ -26,8 +25,5 @@ const Order = sequelize.define('Order', {
   timestamps: true
 });
 
-// One User can have many Orders
-Order.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
-User.hasMany(Order, { foreignKey: 'userId' });
-
+// Association to User is defined centrally in models/index.js.
 module.exports = Order;

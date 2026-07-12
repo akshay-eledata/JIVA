@@ -7,6 +7,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { COLORS, FONTS, FONT_WEIGHTS } from '../../constants/constants';
 import { PackageInfo } from './constants';
+import { apiUrl } from '../../config';
 import tickIconWhite from '../../assets/Tick-Icon-white.svg';
 
 const SelectPackages: React.FC = () => {
@@ -21,7 +22,7 @@ const SelectPackages: React.FC = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/packages');
+        const response = await fetch(apiUrl('/api/packages'));
         if (response.ok) {
           const data = await response.json();
           const addons = data.filter((p: any) => p.type === 'addon');
