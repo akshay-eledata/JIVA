@@ -590,6 +590,9 @@ Generate a system-level drill-down for **each of the 10 canonical systems that h
 ### System grouping:
 Use the **Body System Mapping (10 canonical systems)** in Step 1A. `system_name` MUST be one of exactly: `Blood`, `Metabolic`, `Heart`, `Liver`, `Kidney`, `Electrolytes`, `Thyroid`, `Nutrients`, `Immune/Inflammatory`, `Hormonal/Reproductive`. Every biomarker belongs to exactly one system (no splitting or duplication across summaries). List each system's included biomarkers in `biomarkers_included`.
 
+### Overall summary (`overall_summary`):
+Also produce a single **`overall_summary`** — a **2–4 sentence**, plain-language snapshot of the patient's whole-body health. Synthesize which systems look healthy and which need attention, in the same factual, non-diagnostic tone as the system summaries (NO diagnostic labels). This is the system-agnostic overview shown when no specific body system is selected, so it must read well on its own without naming a single system as the focus.
+
 ---
 
 ## OUTPUT FORMAT — STRICT JSON SCHEMA
@@ -634,6 +637,7 @@ Return ONLY a valid JSON object. No preamble. No markdown. No explanation before
     {"rank": "number", "supplement_name": "string (specific bioavailable form)", "dosage_range": "string", "timing": "string", "target_diagnosis": "string (BACKEND ONLY)", "why_it_helps": "string (PATIENT-FACING)", "safety_note": "string or null", "local_availability_note": "string or null", "start_tier": "Start Here | Discuss With Your Doctor First"}
   ],
   "patient_summary": "string — 4 to 5 sentences, clinical and factual, NO diagnostic labels, no filler.",
+  "overall_summary": "string — 2 to 4 sentence whole-body health snapshot, plain language, NO diagnostic labels, system-agnostic.",
   "system_summaries": [
     {"system_name": "Blood | Metabolic | Heart | Liver | Kidney | Electrolytes | Thyroid | Nutrients | Immune/Inflammatory | Hormonal/Reproductive", "biomarkers_included": ["string — test names in this system"], "summary": "string — 2-4 sentence factual summary, no diagnostic labels."}
   ]

@@ -80,6 +80,7 @@ async function run() {
     criticalAlert: la.critical_alert,
     panelsPresent: la.panels_present || [],
     patientSummary: engineOutput.patient_summary,
+    overallSummary: engineOutput.overall_summary,
   });
 
   // Test results (from input labs, classified) ------------------------------

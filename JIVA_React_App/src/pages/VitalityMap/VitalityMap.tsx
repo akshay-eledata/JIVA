@@ -239,7 +239,7 @@ const VitalityMap: React.FC = () => {
     const { isRescheduled } = useSchedule();
     const rescheduleIntent = location.state?.rescheduleIntent || false;
     const [showAlert, setShowAlert] = useState(!rescheduleIntent);
-    const [selectedBiomarker, setSelectedBiomarker] = useState(0);
+    const [selectedBiomarker, setSelectedBiomarker] = useState<number | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -286,11 +286,29 @@ const VitalityMap: React.FC = () => {
         biomarkers: s.biomarkers || [],
     }));
 
-    const selectedSystem = activeSystems[selectedBiomarker];
-    const selectedSummary =
-        (report?.system_summaries || []).find((ss: any) => ss.systemName === selectedSystem?.systemName)?.summary ||
-        report?.patient_summary || '';
+    // No system selected (null) → show overall totals + overall summary.
+    const selectedSystem = selectedBiomarker != null ? activeSystems[selectedBiomarker] : null;
     const la = report?.lab_analysis;
+
+    const systemSummary = selectedSystem
+        ? ((report?.system_summaries || []).find((ss: any) => ss.systemName === selectedSystem.systemName)?.summary || '')
+        : '';
+    const overallSummary = report?.overall_summary || report?.patient_summary || '';
+    const clinicalTitle = selectedSystem ? `Clinical Notes: ${selectedSystem.name}` : 'Clinical Notes: Overall Summary';
+    const clinicalBody = selectedSystem ? systemSummary : overallSummary;
+
+    // Range card: selected system's counts, or the whole-report totals when nothing is selected.
+    const rangeCounts = selectedSystem
+        ? {
+            inRange: selectedSystem.counts.inRange || 0,
+            out: selectedSystem.counts.outOfRange || 0,
+            abnormal: (selectedSystem.counts.borderline || 0) + (selectedSystem.counts.critical || 0),
+        }
+        : {
+            inRange: la?.inRangeCount || 0,
+            out: la?.outOfRangeCount || 0,
+            abnormal: (la?.borderlineCount || 0) + (la?.criticalCount || 0),
+        };
     // Biological age placeholder: calendar age minus 2 years (D — provisional).
     const bioAge = report?.patient?.age != null ? report.patient.age - 2 : null;
 
@@ -316,14 +334,14 @@ const VitalityMap: React.FC = () => {
                 <Box sx={{ p: 4, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                         <Typography sx={{ fontSize: '22px', fontWeight: 700, color: '#1A212B' }}>
-                            Clinical Notes{selectedSystem?.name ? ` — ${selectedSystem.name}` : ''}
+                            {clinicalTitle}
                         </Typography>
                         <IconButton onClick={() => setClinicalOpen(false)} sx={{ p: 0, mt: 0.5 }}>
                             <Box component="img" src={CancelIcon} alt="Close" sx={{ width: 20, height: 20 }} />
                         </IconButton>
                     </Box>
                     <Typography sx={{ fontSize: '15px', color: '#475467', lineHeight: '24px' }}>
-                        {selectedSummary}
+                        {clinicalBody}
                     </Typography>
                 </Box>
             </Dialog>
@@ -709,7 +727,7 @@ const VitalityMap: React.FC = () => {
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                 <Box sx={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3B82F6' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{VITALITY_MAP_LABELS.CALENDAR_AGE_VALUE}</Typography>
+                                <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{report?.patient?.age != null ? `${report.patient.age} Years` : '—'}</Typography>
                             </Box>
                         </Box>
 
@@ -774,52 +792,36 @@ const VitalityMap: React.FC = () => {
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 3, width: '100%' }}>
                         {(() => {
                             const bars = [
-                                { label: 'IN RANGE', count: la?.inRangeCount || 0, cx: 140, grad: 'url(#rangeGrad1)' },
-                                { label: 'OUT OF RANGE', count: la?.outOfRangeCount || 0, cx: 200, grad: 'url(#rangeGrad2)' },
-                                { label: 'ABNORMAL', count: (la?.borderlineCount || 0) + (la?.criticalCount || 0), cx: 260, grad: 'url(#rangeGrad3)' },
+                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#81FDCA', c2: '#54AD88' },
+                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#81FDCA', c2: '#55AF8A' },
+                                { label: 'ABNORMAL', count: rangeCounts.abnormal, c1: '#90DCCE', c2: '#58968A' },
                             ];
                             const maxV = Math.max(1, ...bars.map((b) => b.count));
-                            const baseY = 200, maxH = 150, minH = 22;
+                            const MAX_H = 150, MIN_H = 20;
                             return (
-                                <svg width="100%" height="240" viewBox="0 0 400 240" preserveAspectRatio="none">
-                                    <defs>
-                                        <linearGradient id="rangeGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="#81FDCA" />
-                                            <stop offset="100%" stopColor="#54AD88" />
-                                        </linearGradient>
-                                        <linearGradient id="rangeGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="#81FDCA" />
-                                            <stop offset="100%" stopColor="#55AF8A" />
-                                        </linearGradient>
-                                        <linearGradient id="rangeGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="#90DCCE" />
-                                            <stop offset="100%" stopColor="#58968A" />
-                                        </linearGradient>
-                                        <pattern id="preciseStripes" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(-45)">
-                                            <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(0,0,0,0.15)" strokeWidth="3" />
-                                        </pattern>
-                                    </defs>
-
-                                    {[0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165].map((y) => (
-                                        <line key={y} x1="20" y1={200 - y} x2="380" y2={200 - y} stroke="#F2F4F7" strokeWidth="1.5" />
-                                    ))}
-
+                                <Box sx={{ position: 'relative', width: '100%', height: '240px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 7, pb: '40px', boxSizing: 'border-box' }}>
+                                    {/* horizontal gridlines */}
+                                    <Box sx={{ position: 'absolute', top: 0, left: 20, right: 20, bottom: '40px', backgroundImage: 'repeating-linear-gradient(to top, #F2F4F7 0, #F2F4F7 1.5px, transparent 1.5px, transparent 18px)', pointerEvents: 'none' }} />
+                                    {/* baseline */}
+                                    <Box sx={{ position: 'absolute', left: 20, right: 20, bottom: '40px', height: '1.5px', backgroundColor: '#F2F4F7' }} />
                                     {bars.map((b) => {
-                                        const h = Math.max(minH, (b.count / maxV) * maxH);
-                                        const topY = baseY - h;
+                                        const h = Math.max(MIN_H, (b.count / maxV) * MAX_H);
                                         return (
-                                            <g key={b.label}>
-                                                <text x={b.cx} y={topY - 8} textAnchor="middle" style={{ fontSize: '11px', fontWeight: 600, fill: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</text>
-                                                <rect x={b.cx - 18} y={topY} width="36" height={h} rx="8" fill={b.grad} />
-                                                <rect x={b.cx - 14} y={topY + 6} width="28" height={Math.max(0, h - 11)} rx="4" fill="url(#preciseStripes)" />
-                                                <circle cx={b.cx} cy={topY + 10} r="4.5" fill="#4B5563" stroke="#fff" strokeWidth="1.5" />
-                                                <text x={b.cx} y="220" textAnchor="middle" style={{ fontSize: '9px', fontWeight: 400, fill: '#1A212B', fontFamily: 'Source Sans Pro' }}>{b.label}</text>
-                                            </g>
+                                            <Box key={b.label} sx={{ position: 'relative', width: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                <Box sx={{
+                                                    width: '40px', height: `${h}px`, borderRadius: '8px', position: 'relative',
+                                                    background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`,
+                                                    transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
+                                                    '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(0,0,0,0.14) 0, rgba(0,0,0,0.14) 3px, transparent 3px, transparent 6px)' },
+                                                }}>
+                                                    <Typography sx={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', fontSize: '11px', fontWeight: 600, color: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</Typography>
+                                                    <Box sx={{ position: 'absolute', top: '9px', left: '50%', transform: 'translateX(-50%)', width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#4B5563', border: '1.5px solid #FFFFFF' }} />
+                                                </Box>
+                                                <Typography sx={{ position: 'absolute', bottom: '-34px', left: '50%', transform: 'translateX(-50%)', fontSize: '9px', color: '#1A212B', whiteSpace: 'nowrap', fontFamily: 'Source Sans Pro' }}>{b.label}</Typography>
+                                            </Box>
                                         );
                                     })}
-
-                                    <line x1="20" y1="200" x2="380" y2="200" stroke="#F2F4F7" strokeWidth="1.5" />
-                                </svg>
+                                </Box>
                             );
                         })()}
                     </Box>
@@ -840,18 +842,18 @@ const VitalityMap: React.FC = () => {
                     }}
                 >
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 3 }}>
-                        Clinical Notes{selectedSystem?.name ? ` — ${selectedSystem.name}` : ''}
+                        {clinicalTitle}
                     </Typography>
 
                     <Typography sx={{ fontSize: '14px', color: '#475467', lineHeight: '24px', mb: 'auto', display: '-webkit-box', WebkitLineClamp: 6, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                        {selectedSummary || 'Select a body system to view its clinical notes.'}
+                        {clinicalBody || 'Your clinical notes will appear here.'}
                     </Typography>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 3, borderTop: '1px solid #F2F4F7', }}>
                         <Button
                             variant="outlined"
                             onClick={() => setClinicalOpen(true)}
-                            disabled={!selectedSummary}
+                            disabled={!clinicalBody}
                             sx={{
                                 textTransform: 'none',
                                 borderRadius: '12px',
@@ -953,10 +955,10 @@ const VitalityMap: React.FC = () => {
                     {!isCompareMode && (
                         <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 0.5 }}>
                             <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5, lineHeight: 1.2 }}>
-                                {selectedSystem?.name || '—'}
+                                {selectedSystem ? selectedSystem.name : 'Select a system'}
                             </Typography>
                             <Typography sx={{ fontSize: '16px', color: '#667085', fontWeight: 500, textAlign: 'left', pr: 4.5 }}>
-                                {`${selectedSystem?.biomarkers?.length || 0} Biomarkers`}
+                                {selectedSystem ? `${selectedSystem.biomarkers?.length || 0} Biomarkers` : 'Tap a tile to view its biomarkers'}
                             </Typography>
                         </Box>
                     )}
@@ -979,7 +981,7 @@ const VitalityMap: React.FC = () => {
                                 {activeSystems.map((item, index) => (
                                     <Box
                                         key={index}
-                                        onClick={() => setSelectedBiomarker(index)}
+                                        onClick={() => setSelectedBiomarker(selectedBiomarker === index ? null : index)}
                                         sx={{
                                             backgroundColor: item.color,
                                             borderRadius: '16px',
@@ -1092,8 +1094,14 @@ const VitalityMap: React.FC = () => {
                                             </Box>
                                         );
                                     })}
+                                    {!selectedSystem && (
+                                        <Typography sx={{ fontSize: '15px', color: '#98A2B3', pr: 4.5 }}>
+                                            Select a system tile on the left to see its biomarkers here.
+                                        </Typography>
+                                    )}
                                 </Box>
 
+                                {selectedSystem && (
                                 <Box sx={{ pr: 4.5, display: 'flex' }}>
                                     <Button
                                         variant="outlined"
@@ -1119,6 +1127,7 @@ const VitalityMap: React.FC = () => {
                                         {isExpanded ? 'View Less' : 'Read More'}
                                     </Button>
                                 </Box>
+                                )}
                             </Box>
                         </Box>
                     </Box>

@@ -76,6 +76,7 @@ async function getLatestReport(req, res) {
         panelsPresent: report.panelsPresent,
       },
       patient_summary: report.patientSummary,
+      overall_summary: report.overallSummary,
       diagnoses: (report.Diagnoses || []).sort(byRank),
       foods_to_eat: foods.filter((f) => f.kind === 'eat').sort(byRank),
       foods_to_avoid: foods.filter((f) => f.kind === 'avoid').sort(byRank),

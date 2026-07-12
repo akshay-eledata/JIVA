@@ -41,7 +41,8 @@ const LabReport = sequelize.define('LabReport', {
     allowNull: false,
     defaultValue: []
   },
-  patientSummary: { type: DataTypes.TEXT, allowNull: true }
+  patientSummary: { type: DataTypes.TEXT, allowNull: true },
+  overallSummary: { type: DataTypes.TEXT, allowNull: true }
 }, {
   timestamps: true
 });
