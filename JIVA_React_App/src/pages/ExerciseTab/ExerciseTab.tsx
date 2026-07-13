@@ -157,6 +157,7 @@ const ExerciseTab: React.FC = () => {
                                 key={item.id}
                                 component={Link}
                                 to="/video-player"
+                                state={{ videoUrl: item.videoUrl, title: item.title, desc: item.desc }}
                                 sx={{
                                     textDecoration: 'none',
                                     backgroundColor: '#F1F5F9',
@@ -237,6 +238,7 @@ const ExerciseTab: React.FC = () => {
                                 key={item.id}
                                 component={Link}
                                 to="/video-player"
+                                state={{ videoUrl: item.videoUrl, title: item.title, desc: item.desc }}
                                 sx={{
                                     textDecoration: 'none',
                                     backgroundColor: '#F1F5F9',

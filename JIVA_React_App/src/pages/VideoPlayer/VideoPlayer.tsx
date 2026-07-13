@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Box, Typography, IconButton, Stack } from '@mui/material';
 import Yoga4 from '../../assets/yoga 4.svg';
 import PlayIcon from '../../assets/play.svg';
@@ -17,11 +18,95 @@ import { VIDEO_PLAYER_CONSTANTS } from './constants';
 import { VIDEO_PLAYER_LABELS } from './labels';
 
 const VideoPlayer: React.FC = () => {
+    const location = useLocation();
+    const videoUrl = location.state?.videoUrl || '/yoga.mp4';
+    const videoTitle = location.state?.title || VIDEO_PLAYER_LABELS.VIDEO_TITLE;
+
     const [showPlaylist, setShowPlaylist] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isEnded, setIsEnded] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [currentTimeDisplay, setCurrentTimeDisplay] = useState('0:00 / 0:00');
+    const [showControls, setShowControls] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const formatTime = (timeInSeconds: number) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = Math.floor(timeInSeconds % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
+
+    const handleTimeUpdate = () => {
+        if (videoRef.current) {
+            const current = videoRef.current.currentTime;
+            const duration = videoRef.current.duration || 1;
+            setProgress((current / duration) * 100);
+            setCurrentTimeDisplay(`${formatTime(current)} / ${formatTime(duration)}`);
+        }
+    };
+
+    const handleEnded = () => {
+        setIsPlaying(false);
+        setIsEnded(true);
+        setShowControls(true);
+    };
+
+    const togglePlay = (e?: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (videoRef.current) {
+            if (isEnded) {
+                videoRef.current.currentTime = 0;
+                setIsEnded(false);
+                videoRef.current.play().catch(err => console.error(err));
+                setIsPlaying(true);
+                setShowControls(false);
+                return;
+            }
+            if (isPlaying) {
+                videoRef.current.pause();
+                setIsPlaying(false);
+                setShowControls(true);
+            } else {
+                videoRef.current.play().then(() => {
+                    setIsPlaying(true);
+                    setShowControls(false); // Hide immediately when clicking play, unless hovering
+                }).catch(err => {
+                    console.error("Video play failed:", err);
+                    alert("Video play failed: " + err.message);
+                });
+            }
+        }
+    };
+
+    const toggleMute = (e?: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        setIsMuted(!isMuted);
+    };
+
+    const handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (videoRef.current) {
+            const bounds = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - bounds.left;
+            
+            // Left half = rewind 10s, Right half = skip 10s
+            if (clickX < bounds.width / 2) {
+                videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 10);
+            } else {
+                videoRef.current.currentTime = Math.min(videoRef.current.duration || 0, videoRef.current.currentTime + 10);
+            }
+        }
+    };
 
     const relatedVideos = [
         { id: 1, title: 'Padma Asana' },
@@ -70,6 +155,10 @@ const VideoPlayer: React.FC = () => {
         >
             {/* Video Preview Section */}
             <Box
+                onMouseEnter={() => setShowControls(true)}
+                onMouseLeave={() => { if (isPlaying) setShowControls(false); }}
+                onClick={togglePlay}
+                onDoubleClick={handleDoubleClick}
                 sx={{
                     width: '100%',
                     position: 'relative',
@@ -77,13 +166,18 @@ const VideoPlayer: React.FC = () => {
                     overflow: 'hidden',
                     aspectRatio: '16/9',
                     backgroundColor: '#F9FAFB',
+                    cursor: 'pointer',
                 }}
             >
-                <Box
-                    component="img"
-                    src={Yoga4}
-                    alt="Yoga Video"
-                    sx={{
+                <video
+                    ref={videoRef}
+                    src={videoUrl}
+                    poster={Yoga4}
+                    onTimeUpdate={handleTimeUpdate}
+                    onEnded={handleEnded}
+                    preload="metadata"
+                    muted={isMuted}
+                    style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
@@ -92,43 +186,120 @@ const VideoPlayer: React.FC = () => {
                 />
 
                 {/* Video Controls Overlay */}
-                <Box sx={VIDEO_PLAYER_CONSTANTS.CONTROL_BAR_STYLE}>
+                <Box sx={{
+                    ...VIDEO_PLAYER_CONSTANTS.CONTROL_BAR_STYLE,
+                    opacity: showControls ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out',
+                }}
+                    onClick={(e) => e.stopPropagation()} // Prevent clicking bar from pausing video
+                >
                     {/* Play Button */}
-                    <IconButton sx={{ p: 0 }}>
-                        <Box component="img" src={PlayIcon} sx={{ width: '16px', height: '16px' }} />
+                    <IconButton onClick={togglePlay} sx={{ p: 0 }}>
+                        {isPlaying ? (
+                            <Box sx={{ width: '16px', height: '16px', display: 'flex', gap: '4px', justifyContent: 'center', alignItems: 'center' }}>
+                                <Box sx={{ width: '4px', height: '14px', backgroundColor: 'white' }} />
+                                <Box sx={{ width: '4px', height: '14px', backgroundColor: 'white' }} />
+                            </Box>
+                        ) : isEnded ? (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                                <path d="M3 3v5h5"/>
+                            </svg>
+                        ) : (
+                            <Box component="img" src={PlayIcon} sx={{ width: '16px', height: '16px' }} />
+                        )}
                     </IconButton>
 
-                    {/* Progress Bar */}
+                    {/* Progress Bar Container */}
                     <Box
                         sx={{
                             flex: 1,
-                            height: '4px',
-                            backgroundColor: 'rgba(26, 33, 43, 0.2)',
-                            borderRadius: '2px',
+                            height: '16px',
+                            display: 'flex',
+                            alignItems: 'center',
                             position: 'relative',
+                            cursor: 'pointer',
                         }}
                     >
+                        {/* Visual Track (Background) */}
+                        <Box
+                            sx={{
+                                width: '100%',
+                                height: '4px',
+                                backgroundColor: 'rgba(26, 33, 43, 0.2)',
+                                borderRadius: '2px',
+                                position: 'relative',
+                            }}
+                        >
+                            {/* Visual Track (Filled) */}
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 0,
+                                    bottom: 0,
+                                    width: `${progress}%`,
+                                    backgroundColor: '#1A212B',
+                                    borderRadius: '2px',
+                                }}
+                            />
+                        </Box>
+                        
+                        {/* Draggable Dot */}
                         <Box
                             sx={{
                                 position: 'absolute',
-                                left: 0,
-                                top: 0,
-                                bottom: 0,
-                                width: '40%',
-                                backgroundColor: '#1A212B',
-                                borderRadius: '2px',
+                                left: `${progress}%`,
+                                transform: 'translateX(-50%)',
+                                width: '12px',
+                                height: '12px',
+                                borderRadius: '50%',
+                                backgroundColor: '#000000',
+                                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+                                pointerEvents: 'none', // Let clicks pass through
+                            }}
+                        />
+
+                        {/* Invisible Range Input for Native Dragging */}
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            value={progress || 0}
+                            onChange={(e) => {
+                                const newProgress = parseFloat(e.target.value);
+                                if (videoRef.current) {
+                                    const duration = videoRef.current.duration || 0;
+                                    videoRef.current.currentTime = (newProgress / 100) * duration;
+                                    setProgress(newProgress);
+                                    if (isEnded && newProgress < 100) {
+                                        setIsEnded(false);
+                                    }
+                                }
+                            }}
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onDoubleClick={(e) => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                position: 'absolute',
+                                width: '100%',
+                                height: '100%',
+                                opacity: 0,
+                                cursor: 'pointer',
+                                margin: 0,
                             }}
                         />
                     </Box>
 
                     {/* Time */}
                     <Typography sx={{ fontSize: '14px', color: '#ffffff', fontWeight: 500 }}>
-                        {VIDEO_PLAYER_LABELS.VIDEO_PROGRESS_MOCK}
+                        {currentTimeDisplay}
                     </Typography>
 
                     {/* Right Controls */}
                     <Stack direction="row" spacing={2} alignItems="center">
-                        <IconButton sx={{ p: 0 }}>
+                        <IconButton onClick={toggleMute} sx={{ p: 0, opacity: isMuted ? 0.5 : 1 }}>
                             <Box component="img" src={VolumeIcon} sx={{ width: '20px', height: '20px' }} />
                         </IconButton>
                         <IconButton sx={{ p: 0 }}>
@@ -169,7 +340,7 @@ const VideoPlayer: React.FC = () => {
                             mb: 1.5,
                         }}
                     >
-                        {VIDEO_PLAYER_LABELS.VIDEO_TITLE}
+                        {videoTitle}
                     </Typography>
                     <Box sx={{ mr: 6, }}>
                         <Typography
