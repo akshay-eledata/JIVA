@@ -22,6 +22,7 @@ import YourHealth from './pages/YourHealth/YourHealth';
 import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
 import Welcome from './pages/Welcome/Welcome';
 import SelectPackages from './pages/SelectPackages/SelectPackages';
+import BiomarkerDetail from './pages/BiomarkerDetail/BiomarkerDetail';
 import theme from './theme';
 
 const App: React.FC = () => {
@@ -68,6 +69,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/personal-info" element={<PersonalInfo />} />
               <Route path="/vitality-map" element={<VitalityMap />} />
+              <Route path="/biomarker/:name" element={<BiomarkerDetail />} />
               <Route path="/action-plan" element={<ActionPlan />} />
               <Route path="/auto-immunity" element={<AutoImmunity />} />
               <Route path="/rheumatoid-factor" element={<RheumatoidFactor />} />

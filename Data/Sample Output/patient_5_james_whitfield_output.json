@@ -1,0 +1,362 @@
+{
+  "patient_id": "JIVA-2026-00105",
+  "patient_name": "James Whitfield",
+  "date_processed": "2026-03-20",
+  "lab_analysis": {
+    "total_labs_reviewed": 49,
+    "in_range_count": 29,
+    "borderline_count": 4,
+    "out_of_range_count": 16,
+    "critical_count": 0,
+    "critical_alert": null,
+    "panels_present": ["JIVA Basic Panel", "JIVA Cardio-Metabolic Panel", "JIVA Stress & Aging Panel", "JIVA Metabolic & Diabetes Risk Panel"],
+    "labs": [
+      {"test_name": "WBC", "value": 6.8, "unit": "K/µL", "reference_range_low": 4.5, "reference_range_high": 11.0, "status": "IN RANGE", "clinical_note": "Your white blood cell count is healthy."},
+      {"test_name": "RBC", "value": 4.7, "unit": "M/µL", "reference_range_low": 4.5, "reference_range_high": 5.9, "status": "IN RANGE", "clinical_note": "Red blood cell count is in a healthy range."},
+      {"test_name": "Hemoglobin", "value": 14.1, "unit": "g/dL", "reference_range_low": 13.5, "reference_range_high": 17.5, "status": "IN RANGE", "clinical_note": "Hemoglobin is healthy — your blood is carrying oxygen effectively."},
+      {"test_name": "Hematocrit", "value": 42, "unit": "%", "reference_range_low": 41, "reference_range_high": 53, "status": "BORDERLINE", "clinical_note": "Your hematocrit is at the lower edge of the normal range for men. This is worth monitoring alongside your B12 levels."},
+      {"test_name": "MCV", "value": 102, "unit": "fL", "reference_range_low": 80, "reference_range_high": 100, "status": "OUT OF RANGE", "clinical_note": "Your red blood cells are slightly larger than normal. This pattern, called macrocytosis, is commonly associated with vitamin B12 deficiency — which your labs confirmed. As your B12 levels improve, this should normalize."},
+      {"test_name": "MCH", "value": 34, "unit": "pg", "reference_range_low": 27, "reference_range_high": 33, "status": "OUT OF RANGE", "clinical_note": "Each red blood cell is carrying slightly more hemoglobin than ideal, which is consistent with the larger-than-normal red blood cell size your MCV showed."},
+      {"test_name": "MCHC", "value": 33.6, "unit": "g/dL", "reference_range_low": 32, "reference_range_high": 36, "status": "IN RANGE", "clinical_note": "Hemoglobin concentration is normal."},
+      {"test_name": "RDW", "value": 14.8, "unit": "%", "reference_range_low": 11.5, "reference_range_high": 14.5, "status": "OUT OF RANGE", "clinical_note": "Your red blood cells vary more in size than usual. Combined with the elevated MCV, this suggests your body is producing some normal-sized and some larger red blood cells — a pattern seen in early B12 deficiency."},
+      {"test_name": "Platelets", "value": 210, "unit": "K/µL", "reference_range_low": 150, "reference_range_high": 400, "status": "IN RANGE", "clinical_note": "Platelet count is healthy."},
+      {"test_name": "Neutrophils", "value": 56, "unit": "%", "reference_range_low": 40, "reference_range_high": 70, "status": "IN RANGE", "clinical_note": "Neutrophil percentage is normal."},
+      {"test_name": "Lymphocytes", "value": 31, "unit": "%", "reference_range_low": 20, "reference_range_high": 40, "status": "IN RANGE", "clinical_note": "Lymphocyte percentage is within normal range."},
+      {"test_name": "Monocytes", "value": 8, "unit": "%", "reference_range_low": 2, "reference_range_high": 10, "status": "IN RANGE", "clinical_note": "Monocyte percentage is normal."},
+      {"test_name": "Eosinophils", "value": 3, "unit": "%", "reference_range_low": 1, "reference_range_high": 4, "status": "IN RANGE", "clinical_note": "Eosinophil percentage is normal."},
+      {"test_name": "Basophils", "value": 0.5, "unit": "%", "reference_range_low": 0, "reference_range_high": 1, "status": "IN RANGE", "clinical_note": "Basophil percentage is normal."},
+      {"test_name": "Calcium", "value": 9.5, "unit": "mg/dL", "reference_range_low": 8.5, "reference_range_high": 10.5, "status": "IN RANGE", "clinical_note": "Calcium is in a healthy range."},
+      {"test_name": "Chloride", "value": 100, "unit": "mmol/L", "reference_range_low": 98, "reference_range_high": 107, "status": "IN RANGE", "clinical_note": "Chloride is within normal range."},
+      {"test_name": "Magnesium (Serum)", "value": 1.72, "unit": "mg/dL", "reference_range_low": 1.7, "reference_range_high": 2.2, "status": "BORDERLINE", "clinical_note": "Your magnesium is at the very bottom of the normal range. Magnesium is especially important for blood sugar processing, heart health, nerve function, and sleep quality — all areas that are priorities for you. Your Metformin medication can also contribute to lower magnesium levels."},
+      {"test_name": "Potassium", "value": 4.5, "unit": "mmol/L", "reference_range_low": 3.5, "reference_range_high": 5.1, "status": "IN RANGE", "clinical_note": "Potassium is in a healthy range."},
+      {"test_name": "Sodium", "value": 139, "unit": "mmol/L", "reference_range_low": 136, "reference_range_high": 145, "status": "IN RANGE", "clinical_note": "Sodium is within normal range."},
+      {"test_name": "Phosphorus", "value": 3.4, "unit": "mg/dL", "reference_range_low": 2.5, "reference_range_high": 4.5, "status": "IN RANGE", "clinical_note": "Phosphorus is normal."},
+      {"test_name": "Glucose (Fasting)", "value": 138, "unit": "mg/dL", "reference_range_low": 70, "reference_range_high": 99, "status": "OUT OF RANGE", "clinical_note": "Your fasting blood sugar is significantly above the ideal range, indicating that your blood sugar management needs additional support beyond your current medication. Diet, exercise, and targeted supplementation can help your Metformin work more effectively."},
+      {"test_name": "Carbon Dioxide (Bicarbonate)", "value": 23, "unit": "mmol/L", "reference_range_low": 22, "reference_range_high": 29, "status": "IN RANGE", "clinical_note": "Bicarbonate is within normal range."},
+      {"test_name": "Albumin", "value": 3.9, "unit": "g/dL", "reference_range_low": 3.5, "reference_range_high": 5.0, "status": "IN RANGE", "clinical_note": "Albumin is healthy."},
+      {"test_name": "Total Protein", "value": 7.0, "unit": "g/dL", "reference_range_low": 6.0, "reference_range_high": 8.5, "status": "IN RANGE", "clinical_note": "Total protein is within normal range."},
+      {"test_name": "Alkaline Phosphatase (ALP)", "value": 78, "unit": "U/L", "reference_range_low": 44, "reference_range_high": 147, "status": "IN RANGE", "clinical_note": "ALP is normal."},
+      {"test_name": "ALT", "value": 32, "unit": "U/L", "reference_range_low": 7, "reference_range_high": 56, "status": "IN RANGE", "clinical_note": "Liver enzyme ALT is in a healthy range."},
+      {"test_name": "AST", "value": 28, "unit": "U/L", "reference_range_low": 10, "reference_range_high": 40, "status": "IN RANGE", "clinical_note": "AST is within normal range."},
+      {"test_name": "Creatinine", "value": 1.25, "unit": "mg/dL", "reference_range_low": 0.74, "reference_range_high": 1.35, "status": "BORDERLINE", "clinical_note": "Your creatinine is in range but on the higher end. This is worth monitoring as it reflects kidney filtration function. Staying well-hydrated and managing blood sugar and blood pressure are the most important protective measures for kidney health."},
+      {"test_name": "BUN", "value": 22, "unit": "mg/dL", "reference_range_low": 7, "reference_range_high": 20, "status": "OUT OF RANGE", "clinical_note": "Your BUN is slightly above the normal range. Combined with your borderline creatinine, this suggests your kidneys are working a bit harder than ideal. This is common when blood sugar and blood pressure have been elevated over time, and it underscores the importance of tightening blood sugar control."},
+      {"test_name": "HbA1c", "value": 7.2, "unit": "%", "reference_range_low": 4.0, "reference_range_high": 5.6, "status": "OUT OF RANGE", "clinical_note": "Your HbA1c — the gold standard measure of blood sugar control over the past 2–3 months — is above the ideal target. While your Metformin is helping, your body needs additional support through diet, exercise, and supplementation to bring this closer to the target of under 6.5%. Every 0.5% reduction in HbA1c significantly reduces your risk of long-term complications."},
+      {"test_name": "Total Cholesterol", "value": 205, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 199, "status": "OUT OF RANGE", "clinical_note": "Your total cholesterol is slightly above the recommended level despite statin therapy. Dietary optimization can help your medication work more effectively."},
+      {"test_name": "LDL Cholesterol", "value": 115, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 99, "status": "OUT OF RANGE", "clinical_note": "Your LDL cholesterol is above the optimal target. For someone with your health history and risk factors, many physicians target LDL under 70–100 mg/dL. Dietary fiber and plant sterols can provide additional LDL-lowering support alongside your statin."},
+      {"test_name": "HDL Cholesterol", "value": 48, "unit": "mg/dL", "reference_range_low": 40, "reference_range_high": 999, "status": "BORDERLINE", "clinical_note": "Your HDL is in range but below the ideal threshold of 50+ mg/dL for cardiovascular protection. Your existing exercise routine (walking, cycling, swimming) is the best foundation for raising HDL — maintaining and slightly increasing this activity will help."},
+      {"test_name": "Triglycerides", "value": 178, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 149, "status": "OUT OF RANGE", "clinical_note": "Your triglycerides are elevated above the ideal range. Triglycerides are closely tied to blood sugar management — as your blood sugar control tightens, triglycerides typically improve as well. Omega-3 supplementation and reducing refined carbohydrates are particularly effective."},
+      {"test_name": "Non-HDL Cholesterol", "value": 157, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 129, "status": "OUT OF RANGE", "clinical_note": "Your non-HDL cholesterol is elevated, reflecting the combined cardiovascular burden of your LDL and triglyceride-rich particles."},
+      {"test_name": "Total Cholesterol / HDL Ratio", "value": 4.3, "unit": "ratio", "reference_range_low": 0, "reference_range_high": 4.5, "status": "IN RANGE", "clinical_note": "This ratio is within the acceptable range, which is a positive finding."},
+      {"test_name": "Total Bilirubin", "value": 0.9, "unit": "mg/dL", "reference_range_low": 0.1, "reference_range_high": 1.2, "status": "IN RANGE", "clinical_note": "Bilirubin is normal."},
+      {"test_name": "hs-CRP", "value": 2.8, "unit": "mg/L", "reference_range_low": 0, "reference_range_high": 1.0, "status": "OUT OF RANGE", "clinical_note": "Your inflammation marker is elevated, placing you in the higher-risk category for cardiovascular events. Chronic low-grade inflammation often accompanies elevated blood sugar and cholesterol. Reducing inflammation through anti-inflammatory foods, omega-3s, and blood sugar control is a key part of your protocol."},
+      {"test_name": "Urinalysis", "value": "Normal", "unit": "Qualitative", "reference_range_low": null, "reference_range_high": null, "status": "IN RANGE", "clinical_note": "Urinalysis is normal — an encouraging sign for kidney health."},
+      {"test_name": "ApoB", "value": 105, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 90, "status": "OUT OF RANGE", "clinical_note": "Your ApoB — a marker that counts the number of cholesterol-carrying particles in your blood — is above the ideal target. Many cardiologists consider ApoB the single most important cholesterol marker for cardiovascular risk. Each ApoB particle can embed in your artery walls, so reducing this number is a key goal."},
+      {"test_name": "LDL Particle Number", "value": 1280, "unit": "nmol/L", "reference_range_low": 0, "reference_range_high": 1000, "status": "OUT OF RANGE", "clinical_note": "Your LDL particle number is above optimal. This measures how many LDL particles are circulating — higher numbers mean more particles that can penetrate artery walls. This works alongside your ApoB to give a comprehensive picture of your cardiovascular risk."},
+      {"test_name": "Lipoprotein(a)", "value": 42, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 30, "status": "OUT OF RANGE", "clinical_note": "Your Lp(a) is above the ideal threshold. Lp(a) is largely determined by genetics and does not respond significantly to diet or medication. However, knowing it's elevated is valuable because it means controlling your other modifiable risk factors (LDL, triglycerides, blood sugar, inflammation) becomes even more important. Share this result with your physician."},
+      {"test_name": "Vitamin D (25-OH)", "value": 35, "unit": "ng/mL", "reference_range_low": 30, "reference_range_high": 100, "status": "IN RANGE", "clinical_note": "Your vitamin D is in the normal range thanks to your current supplementation. Many practitioners consider 50–60 ng/mL optimal for full benefit — you may want to gradually increase your dose to reach that target."},
+      {"test_name": "Vitamin B12", "value": 185, "unit": "pg/mL", "reference_range_low": 200, "reference_range_high": 900, "status": "OUT OF RANGE", "clinical_note": "Your vitamin B12 is below the normal range. This is a well-known consequence of long-term Metformin use — Metformin reduces B12 absorption in your gut. B12 is essential for nerve function, red blood cell production, energy, and brain health. Restoring your B12 is a high priority, especially given your family history of Alzheimer's disease."},
+      {"test_name": "Folate", "value": 5.2, "unit": "ng/mL", "reference_range_low": 2.7, "reference_range_high": 17.0, "status": "IN RANGE", "clinical_note": "Folate is within normal range, though it's on the lower end. Folate works closely with B12 in methylation and homocysteine processing."},
+      {"test_name": "Homocysteine", "value": 14.8, "unit": "µmol/L", "reference_range_low": 0, "reference_range_high": 10.4, "status": "OUT OF RANGE", "clinical_note": "Your homocysteine is significantly elevated. Homocysteine is an amino acid that, when elevated, is associated with increased cardiovascular risk and cognitive decline. It's directly linked to your low B12 — when B12 is deficient, your body cannot recycle homocysteine efficiently, and it builds up. Restoring B12 (and supporting with folate and B6) should bring this down."},
+      {"test_name": "Fasting Insulin", "value": 15.2, "unit": "µIU/mL", "reference_range_low": 2.0, "reference_range_high": 19.6, "status": "IN RANGE", "clinical_note": "Your fasting insulin is within the lab reference range but above the optimal level of under 10 µIU/mL. This suggests your pancreas is still producing adequate insulin but your cells aren't responding to it as efficiently as they should. Your Metformin helps address this, and lifestyle changes can enhance its effect."},
+      {"test_name": "HOMA-IR", "value": 5.2, "unit": "index", "reference_range_low": 0, "reference_range_high": 1.9, "status": "OUT OF RANGE", "clinical_note": "Your HOMA-IR confirms significant insulin resistance. Despite Metformin therapy, your body's insulin sensitivity needs further improvement. The combination of resistance training, fiber-rich nutrition, and supplements like berberine can provide meaningful additional support."},
+      {"test_name": "C-Peptide", "value": 3.2, "unit": "ng/mL", "reference_range_low": 0.8, "reference_range_high": 3.85, "status": "IN RANGE", "clinical_note": "Your C-Peptide shows that your pancreas is still producing insulin at an adequate level. This is encouraging — it means your body has the capacity to respond to lifestyle interventions, and protecting your remaining insulin-producing capacity is a key goal."}
+    ]
+  },
+  "diagnoses": [
+    {
+      "rank": 1,
+      "diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "confidence": "HIGH",
+      "supporting_labs": ["Glucose (Fasting)", "HbA1c", "Fasting Insulin", "HOMA-IR", "C-Peptide", "Triglycerides"],
+      "clinical_rationale": "Fasting glucose of 138 mg/dL and HbA1c of 7.2% confirm inadequately controlled Type 2 Diabetes despite Metformin 1000mg BID therapy. HOMA-IR of 5.2 demonstrates persistent significant insulin resistance. Fasting insulin of 15.2 and C-Peptide of 3.2 confirm the pancreas is still producing insulin but cells are not responding adequately — indicating room for lifestyle intensification before requiring additional pharmacotherapy. Elevated triglycerides (178) reflect the metabolic dyslipidemia of insulin resistance. BUN of 22 and creatinine of 1.25 (borderline) suggest early renal strain from chronic hyperglycemia and hypertension, underscoring urgency of tightening glycemic control."
+    },
+    {
+      "rank": 2,
+      "diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk (High Residual Risk Despite Statin + Elevated Lp(a))",
+      "confidence": "HIGH",
+      "supporting_labs": ["ApoB", "LDL Particle Number", "Lipoprotein(a)", "LDL Cholesterol", "Triglycerides", "Non-HDL Cholesterol", "HDL Cholesterol", "hs-CRP", "Homocysteine"],
+      "clinical_rationale": "Despite atorvastatin 40mg, the patient shows significant residual cardiovascular risk: ApoB 105 mg/dL (target <80 for high-risk patients), LDL-P 1280 nmol/L (>1000), LDL 115, triglycerides 178, non-HDL 157, and HDL borderline at 48. Lp(a) elevated at 42 mg/dL is a genetically determined independent risk factor that does not respond to statins. hs-CRP of 2.8 adds inflammatory cardiovascular risk. Homocysteine of 14.8 (driven by B12 deficiency) is an additional vascular risk factor. Family history of fatal stroke in father compounds the risk. This patient's cardiovascular risk profile requires aggressive lifestyle intervention and discussion with prescribing physician about statin dose optimization and Lp(a) management."
+    },
+    {
+      "rank": 3,
+      "diagnosis": "Vitamin B12 Deficiency (Metformin-Induced) with Hyperhomocysteinemia and Macrocytosis",
+      "confidence": "HIGH",
+      "supporting_labs": ["Vitamin B12", "Homocysteine", "MCV", "MCH", "RDW", "Hematocrit"],
+      "clinical_rationale": "B12 of 185 pg/mL is below reference range in the context of long-term Metformin 1000mg BID therapy — Metformin is a well-established cause of B12 malabsorption through interference with the calcium-dependent ileal B12-intrinsic factor complex. The deficiency has produced measurable hematologic consequences: MCV 102 (macrocytic), MCH 34 (elevated), RDW 14.8 (anisocytosis), and hematocrit 42 (borderline low for males). Homocysteine markedly elevated at 14.8 µmol/L confirms impaired methylation — B12 is a required cofactor for the methionine synthase enzyme that converts homocysteine to methionine. Elevated homocysteine in the context of T2DM, CVD risk factors, and family history of Alzheimer's disease is particularly concerning, as hyperhomocysteinemia is an independent risk factor for both cardiovascular events and cognitive decline. Aggressive B12 repletion is indicated."
+    }
+  ],
+  "foods_to_eat": [
+    {
+      "rank": 1,
+      "food": "Wild-caught salmon and sardines",
+      "quantity_frequency": "4 servings per week (4–6 oz per serving)",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Rich in EPA and DHA omega-3 fatty acids that can lower your triglycerides by 20–50% and have a powerful anti-inflammatory effect — helping bring down the elevated hs-CRP your labs showed. Omega-3s also support brain health and cognitive function, which you've noted as a priority."
+    },
+    {
+      "rank": 2,
+      "food": "Lentils and chickpeas",
+      "quantity_frequency": "1 cup cooked, 5–6 times per week",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Legumes are among the most effective foods for blood sugar management. Their high soluble fiber content slows glucose absorption after meals, reducing the blood sugar spikes that drive your HbA1c up. They also help lower LDL cholesterol by binding bile acids in the gut — supporting both your blood sugar and cholesterol goals simultaneously."
+    },
+    {
+      "rank": 3,
+      "food": "Oat bran or steel-cut oats",
+      "quantity_frequency": "1/2 cup dry (cooked) daily for breakfast",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Contains beta-glucan, a soluble fiber that binds cholesterol in your gut and helps remove it. This works alongside your statin medication through a complementary pathway. Studies show 3g of beta-glucan daily can reduce LDL by 5–10%. Oats also have a moderate glycemic impact that supports steadier blood sugar."
+    },
+    {
+      "rank": 4,
+      "food": "Extra virgin olive oil",
+      "quantity_frequency": "2–3 tablespoons daily as your primary cooking and dressing oil",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "A cornerstone of the Mediterranean diet you already follow. Contains oleocanthal (a natural anti-inflammatory) and oleic acid (a monounsaturated fat that supports healthy cholesterol ratios). Supports heart health, brain health, and helps reduce your inflammatory markers."
+    },
+    {
+      "rank": 5,
+      "food": "Broccoli sprouts",
+      "quantity_frequency": "1/2 cup, 3–4 times per week (add to salads, sandwiches, or smoothies)",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Contain sulforaphane, which activates a metabolic pathway (Nrf2) that improves how your cells respond to insulin. In clinical trials, sulforaphane from broccoli sprouts reduced fasting glucose in people with blood sugar challenges. They also support liver and cellular detoxification."
+    },
+    {
+      "rank": 6,
+      "food": "Walnuts",
+      "quantity_frequency": "1 oz (about 14 halves) daily",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Rich in ALA omega-3 and polyphenols that reduce LDL oxidation and support cardiovascular health. Walnuts have also shown specific benefits for cognitive function in aging populations — relevant given your interest in Alzheimer's prevention."
+    },
+    {
+      "rank": 7,
+      "food": "Blueberries and dark berries",
+      "quantity_frequency": "1/2 cup daily",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Rich in anthocyanins that improve insulin sensitivity and reduce inflammation. They have a low glycemic impact compared to other fruits, making them ideal for blood sugar management. Blueberries specifically have been studied for cognitive health benefits."
+    },
+    {
+      "rank": 8,
+      "food": "Turmeric with black pepper",
+      "quantity_frequency": "1/2 teaspoon turmeric with a pinch of black pepper daily in cooking or golden milk",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Curcumin is one of the most studied anti-inflammatory compounds, directly reducing the inflammatory signaling pathway that drives your elevated hs-CRP. Black pepper increases curcumin absorption by up to 2,000%."
+    },
+    {
+      "rank": 9,
+      "food": "Chia seeds and ground flaxseed",
+      "quantity_frequency": "2 tablespoons of either daily in oatmeal, smoothies, or yogurt",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Packed with soluble fiber and omega-3s that slow glucose absorption and reduce post-meal blood sugar spikes. The fiber also helps lower cholesterol and supports healthy gut bacteria."
+    },
+    {
+      "rank": 10,
+      "food": "Avocado",
+      "quantity_frequency": "1/2 avocado, 4–5 times per week",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Provides monounsaturated fats that support healthy cholesterol ratios and help raise your HDL. Also provides potassium, which supports healthy blood pressure — important given your hypertension."
+    },
+    {
+      "rank": 11,
+      "food": "Garlic",
+      "quantity_frequency": "2–3 fresh cloves daily in cooking",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Contains allicin, which helps lower LDL cholesterol and supports healthy blood pressure. Works through a different pathway than your statin, providing complementary benefit."
+    },
+    {
+      "rank": 12,
+      "food": "Spinach and dark leafy greens",
+      "quantity_frequency": "1–2 cups cooked, 4–5 times per week",
+      "target_diagnosis": "Vitamin B12 Deficiency (Metformin-Induced) with Hyperhomocysteinemia and Macrocytosis",
+      "why_it_helps": "Excellent source of folate, which works with B12 to help recycle homocysteine — the amino acid your labs showed is elevated. Also provides magnesium (which your labs showed is borderline low) and nitrates that support healthy blood flow."
+    },
+    {
+      "rank": 13,
+      "food": "Apple cider vinegar",
+      "quantity_frequency": "1 tablespoon diluted in water before your 2 largest meals",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Studies show that vinegar before meals reduces the blood sugar response to carbohydrates by 20–30%. A simple, effective addition that works alongside your Metformin to help blunt post-meal glucose spikes."
+    },
+    {
+      "rank": 14,
+      "food": "Green tea",
+      "quantity_frequency": "2–3 cups daily",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Contains EGCG, a polyphenol that supports healthy inflammation levels, improves endothelial function (blood vessel health), and has been shown to have modest LDL-lowering effects. Also supports cognitive health through its neuroprotective properties."
+    },
+    {
+      "rank": 15,
+      "food": "Psyllium husk",
+      "quantity_frequency": "5–10g daily in water, taken before meals",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Psyllium is a viscous soluble fiber that binds bile acids (lowering LDL by 5–10%) and slows glucose absorption after meals. It provides dual benefit for both your cholesterol and blood sugar goals."
+    }
+  ],
+  "foods_to_avoid": [
+    {
+      "rank": 1,
+      "food": "Refined sugars and sweetened beverages (soda, fruit juice, sweetened tea/coffee, candy)",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_to_avoid": "Liquid and refined sugars cause rapid, sharp blood sugar spikes that overwhelm your body's already-strained blood sugar management system. They're also the primary dietary driver of elevated triglycerides and add to the inflammatory burden your hs-CRP reflects."
+    },
+    {
+      "rank": 2,
+      "food": "Refined carbohydrates (white bread, white pasta, white rice, pastries)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Replace with whole grain alternatives (whole wheat, brown rice, quinoa, barley); limit refined carbs to no more than 1 small serving per day",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_to_avoid": "Refined carbs break down into sugar very quickly, causing blood sugar spikes that your body struggles to manage. Your HbA1c of 7.2% shows your average blood sugar has been running high — reducing the speed at which carbs hit your bloodstream helps your Metformin work more effectively."
+    },
+    {
+      "rank": 3,
+      "food": "Trans fats and partially hydrogenated oils (commercial baked goods, fried fast food)",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_to_avoid": "Trans fats raise LDL and lower HDL — the worst possible combination for your lipid profile. They also promote inflammation and increase ApoB particle concentration, which is one of your most important cardiovascular markers to improve."
+    },
+    {
+      "rank": 4,
+      "food": "Excess sodium (processed foods, canned soups, deli meats, fast food)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit sodium to under 2,000mg per day (given your hypertension and borderline kidney markers)",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_to_avoid": "Your borderline creatinine and elevated BUN suggest your kidneys are working a bit harder than ideal. High sodium intake strains kidney filtration and raises blood pressure — reducing sodium is protective for both your kidneys and cardiovascular system."
+    },
+    {
+      "rank": 5,
+      "food": "Ultra-processed snack foods (chips, crackers, packaged cookies)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit to no more than once per week; replace with nuts, seeds, or fresh fruit",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_to_avoid": "Ultra-processed foods combine refined fats, sugars, and starches with inflammatory additives. They spike blood sugar, raise triglycerides, and promote the chronic inflammation your hs-CRP showed is elevated."
+    },
+    {
+      "rank": 6,
+      "food": "High-glycemic fruits in excess (dried fruits, grapes, bananas — especially when eaten alone)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit high-glycemic fruits to 1 small serving per day; always pair with protein or fat (e.g., apple with almond butter, not apple alone). Prioritize berries, which have a lower glycemic impact.",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_to_avoid": "While fruits provide valuable nutrients, high-glycemic fruits can spike blood sugar significantly when eaten alone. Pairing them with protein or fat slows absorption and reduces the glucose spike."
+    },
+    {
+      "rank": 7,
+      "food": "Excess omega-6 vegetable oils (corn, soybean, sunflower oil)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Replace with extra virgin olive oil or avocado oil for cooking (you likely already do this on a Mediterranean diet)",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_to_avoid": "Excess omega-6 oils promote the inflammatory cascade that drives your elevated hs-CRP. Maintaining your Mediterranean diet's emphasis on olive oil is one of the best things you're already doing."
+    },
+    {
+      "rank": 8,
+      "food": "Processed deli meats and cured meats",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit to no more than once per week; choose fresh, unprocessed meats or fish",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_to_avoid": "High in sodium, nitrates, and saturated fat. The sodium burden is particularly relevant given your borderline kidney markers and hypertension."
+    },
+    {
+      "rank": 9,
+      "food": "Large portions of starchy carbohydrates (even whole grains) in a single sitting",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Keep total carbs per meal to about 30–45g (roughly 3/4 cup cooked grain or 1 slice bread); always pair with protein, fat, and vegetables",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_to_avoid": "Even healthy carbs can spike blood sugar when eaten in large portions. Portion-controlling carbohydrates and always pairing them with protein, fat, and fiber is one of the most effective blood sugar management strategies."
+    },
+    {
+      "rank": 10,
+      "food": "Alcohol",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Maintain your current minimal intake (1–2x/month). If you do drink, limit to 1 drink and always with food — never on an empty stomach.",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_to_avoid": "Alcohol disrupts blood sugar regulation and can cause both hypo- and hyperglycemia, especially in combination with Metformin. It also raises triglycerides and adds caloric load without nutritional benefit. Your current minimal intake is appropriate — maintain it."
+    }
+  ],
+  "exercise_recommendations": [
+    {
+      "rank": 1,
+      "exercise_type": "Zone 2 Aerobic Cardio (Continue and Expand: Walking, Cycling, Swimming)",
+      "frequency": "5–6 times per week (build on your current 3–5x/week routine)",
+      "duration": "30–45 minutes per session; aim for 200+ total minutes per week",
+      "intensity": "Low-to-moderate — RPE 4–5 out of 10. You should be able to hold a conversation comfortably.",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "You already have an excellent exercise foundation. Zone 2 cardio is the most effective type of exercise for improving how your body processes blood sugar, raising your HDL ('good' cholesterol), and lowering triglycerides. It also reduces hs-CRP and supports brain health — which you've identified as a priority. Your current cycling, swimming, and walking are perfect modalities. Slightly increasing frequency and duration will amplify the benefits.",
+      "safety_notes": "Your blood pressure medications (Lisinopril) and statin (Atorvastatin) are fully compatible with exercise. Stay well-hydrated, especially when swimming and cycling. Monitor for signs of hypoglycemia (shakiness, sudden weakness, confusion) since Metformin can affect blood sugar during prolonged exercise — carry a quick glucose source like glucose tablets during longer sessions."
+    },
+    {
+      "rank": 2,
+      "exercise_type": "Resistance / Strength Training",
+      "frequency": "2–3 times per week",
+      "duration": "25–35 minutes per session",
+      "intensity": "Moderate — RPE 5–7 out of 10. Focus on compound movements with moderate weights or resistance bands.",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Resistance training builds lean muscle mass, which acts as a 'glucose sponge' — muscle tissue pulls sugar from your bloodstream even without insulin. This directly improves insulin sensitivity and helps lower both fasting glucose and HbA1c. It also helps maintain bone density and functional strength as you age, and supports healthy metabolism.",
+      "safety_notes": "At 62 with hypertension, use controlled breathing during lifts (avoid holding your breath). Start with lighter weights and higher reps (12–15) before progressing. Your Tai Chi practice provides an excellent base of body awareness and balance. Consider combining Tai Chi days with light strength work."
+    },
+    {
+      "rank": 3,
+      "exercise_type": "Post-Meal Walking",
+      "frequency": "After your 2 largest meals daily",
+      "duration": "15–20 minutes per walk",
+      "intensity": "Light — RPE 3–4 out of 10. Comfortable walking pace.",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Post-meal walking reduces the blood sugar spike from that meal by 20–30% — this is one of the most impactful habits for someone whose HbA1c needs to come down. Since your glucose is highest after meals, this targeted timing maximizes the benefit. Walking after dinner also supports sleep quality.",
+      "safety_notes": null
+    }
+  ],
+  "supplement_recommendations": [
+    {
+      "rank": 1,
+      "supplement_name": "Methylcobalamin (Vitamin B12, Methylated Form)",
+      "dosage_range": "1,000–2,000 mcg per day sublingual for the first 3 months (repletion phase); then 500–1,000 mcg daily (maintenance)",
+      "timing": "Morning, sublingual (under the tongue) for best absorption — this bypasses the gut absorption issue caused by Metformin",
+      "target_diagnosis": "Vitamin B12 Deficiency (Metformin-Induced) with Hyperhomocysteinemia and Macrocytosis",
+      "why_it_helps": "Your B12 is below normal, directly caused by your Metformin medication reducing B12 absorption in your gut. B12 is essential for nerve function, healthy red blood cell production (your enlarged red blood cells are a consequence of the deficiency), and recycling homocysteine — the amino acid your labs showed is elevated. Restoring B12 is critical for your cardiovascular and cognitive health. The methylated form (methylcobalamin) is the active form your body can use immediately.",
+      "safety_note": "Metformin specifically depletes B12 — this supplementation is directly warranted by your medication. Sublingual delivery bypasses the gut absorption issue. No adverse interactions with any of your medications. Recheck B12 and homocysteine in 3 months.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 2,
+      "supplement_name": "Omega-3 Fish Oil (EPA + DHA, Triglyceride Form)",
+      "dosage_range": "2,000–4,000 mg combined EPA+DHA per day (your current 1,000mg fish oil likely provides only 300–500mg EPA+DHA — check the label and increase)",
+      "timing": "With your largest meal containing fat; can split into 2 doses",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "At therapeutic doses, omega-3s can lower triglycerides by 20–50%, reduce inflammation (hs-CRP), and help slow the progression of cardiovascular disease. They also support brain health and cognitive function — relevant given your family history. Your current fish oil dose is likely subtherapeutic for your needs — the key is getting enough EPA+DHA (not just total fish oil).",
+      "safety_note": "Compatible with your Atorvastatin, Lisinopril, and Metformin. If you are ever prescribed a blood thinner, consult your doctor as omega-3s have mild anticoagulant properties. Triglyceride form is better absorbed than ethyl ester form.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 3,
+      "supplement_name": "Magnesium Glycinate",
+      "dosage_range": "300–400 mg elemental magnesium per day",
+      "timing": "Evening, 30–60 minutes before bed",
+      "target_diagnosis": "Type 2 Diabetes Mellitus with Suboptimal Glycemic Control on Metformin",
+      "why_it_helps": "Your magnesium is at the very bottom of normal, and both Metformin and elevated blood sugar can deplete magnesium. Magnesium is a critical cofactor for over 300 enzymes, including those involved in insulin receptor function, glucose metabolism, and cardiovascular health. It also supports nerve function and sleep quality. The glycinate form is gentle on the stomach and particularly supportive of sleep.",
+      "safety_note": "Compatible with all your current medications. Take at least 2 hours away from Metformin for optimal absorption of both.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 4,
+      "supplement_name": "L-Methylfolate (5-MTHF) + Pyridoxal-5-Phosphate (P5P / Active B6)",
+      "dosage_range": "L-Methylfolate: 800 mcg–1,000 mcg per day; P5P: 25–50 mg per day",
+      "timing": "Morning, with your B12 supplement",
+      "target_diagnosis": "Vitamin B12 Deficiency (Metformin-Induced) with Hyperhomocysteinemia and Macrocytosis",
+      "why_it_helps": "Your homocysteine of 14.8 is significantly elevated. Homocysteine recycling requires three key nutrients working together: B12, folate, and B6. While B12 is your primary deficiency, adding the active forms of folate (L-methylfolate, not synthetic folic acid) and B6 (P5P) ensures the full methylation cycle can function efficiently. This combination should bring your homocysteine down meaningfully, reducing both cardiovascular and cognitive risk.",
+      "safety_note": "No interactions with your medications. Active folate (L-methylfolate) is preferred over synthetic folic acid for better utilization. These work synergistically with your B12 supplement.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 5,
+      "supplement_name": "Ubiquinol (CoQ10, Active Reduced Form)",
+      "dosage_range": "200–300 mg per day",
+      "timing": "With your largest meal containing fat",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Your statin medication (Atorvastatin 40mg) blocks the same enzyme pathway that produces CoQ10, which your cells need for energy production — especially your heart and muscle cells. Statin-related muscle fatigue or soreness often improves with CoQ10 supplementation. Ubiquinol also helps protect LDL particles from oxidation, which is especially important given your elevated ApoB and LDL particle number.",
+      "safety_note": "Specifically warranted for statin users. Ubiquinol (not ubiquinone) is recommended for adults over 40 due to better absorption. Compatible with all your medications.",
+      "start_tier": "Start Here"
+    }
+  ],
+  "patient_summary": "Your labs give us a detailed picture of where to focus — and the encouraging news is that you already have strong foundations in place with your Mediterranean diet, regular exercise, Tai Chi practice, and existing supplements, so we're building on strength rather than starting from scratch. Your blood sugar markers show that your current medication needs more support from diet and exercise to bring your levels closer to target, your advanced cardiovascular markers reveal that your heart health protocol can be optimized further (especially since you have a genetic marker called Lp(a) that makes controlling the modifiable factors even more important), and your B12 has dropped below normal as a direct consequence of your Metformin — which is also driving up your homocysteine, an important marker for both heart and brain health. The highest-impact first steps are starting sublingual B12 immediately (methylcobalamin 1,000–2,000 mcg daily), increasing your omega-3 fish oil to therapeutic doses, adding post-meal walks after your two biggest meals, and incorporating 2–3 days of resistance training alongside your current cardio routine. With these additions to your already solid foundation, you can expect meaningful improvement in your B12, homocysteine, and triglycerides within 8–12 weeks, and gradual HbA1c improvement over 3–4 months — your next labs will tell an even better story."
+}

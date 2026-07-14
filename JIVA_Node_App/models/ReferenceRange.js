@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-const Biomarker = require('./Biomarker');
 
 // The ReferenceRange defines what is "healthy" for a specific Biomarker
 const ReferenceRange = sequelize.define('ReferenceRange', {
@@ -33,8 +32,5 @@ const ReferenceRange = sequelize.define('ReferenceRange', {
   timestamps: true
 });
 
-// A Biomarker can have many Reference Ranges (e.g. one for male, one for female)
-Biomarker.hasMany(ReferenceRange, { foreignKey: 'biomarkerId', onDelete: 'CASCADE' });
-ReferenceRange.belongsTo(Biomarker, { foreignKey: 'biomarkerId' });
-
+// Association to Biomarker is defined centrally in models/index.js.
 module.exports = ReferenceRange;

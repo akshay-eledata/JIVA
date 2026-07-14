@@ -1,0 +1,61 @@
+Initial Questionnaire Responses
+Age: 34
+Sex: Male
+Lifestyle &amp; Habits
+·       Food allergies: No
+·       Diet: Omnivore
+·       Physical activity: Moderate
+·       Occupation: Doctor
+·       Sleep: 6 hours
+·       Alcohol: Occasional
+·       Tobacco: No
+Medical History
+·       Last doctor visit: 6 Months
+·       Chronic conditions: Hypertension
+·       Medications: Hydrochlorothiazide
+·       Supplements: Berberine
+Family History
+·       Father: Alcohol-related liver disease
+·       Genetic lineage: Hispanic
+Concerns
+·       Blood draw concerns: No
+·       Health goals: General health
+Basic Lab Package – Results
+Test Result Reference
+Range
+
+Interpretation
+
+CBC Normal WNL Normal
+Calcium (mg/dL) 9.1 8.6–10.2 Normal
+Chloride (mmol/L) 96 98–107 Normal
+Magnesium (mg/dL) 2.0 1.7–2.2 Low-normal
+
+Potassium (mmol/L) 3.4 3.5–5.1 Normal
+Sodium (mmol/L) 135 135–145 Normal
+Phosphorus (mg/dL) 2.5 2.5–4.5 Normal
+Glucose (mg/dL) 96 70–99 Normal
+CO₂ (mmol/L) 24 22–29 Normal
+Albumin (g/dL) 3.2 3.5–5.0 Low
+Total Protein (g/dL) 6.1 6.0–8.3 Low-normal
+ALP (U/L) 102 40–130 High
+ALT (U/L) 42 &lt;41 High
+AST (U/L) 36 &lt;40 High
+Creatinine (mg/dL) 1.0 0.7–1.3 Normal
+BUN (mg/dL) 18 7–20 Normal
+Urinalysis Dark
+urine
+
+— Abnormal
+
+HbA1c (%) 5.8 &lt;5.7 Normal
+Total Cholesterol
+(mg/dL)
+
+190 &lt;200 Normal
+
+LDL (mg/dL) 110 &lt;100 Borderline
+HDL (mg/dL) 48 &gt;40 Normal
+Triglycerides (mg/dL) 150 &lt;150 Borderline
+Total Bilirubin (mg/dL) 0.5 0.2–1.2 CRITICAL
+hs-CRP (mg/L) 3.2 &lt;1.0 High
