@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Typography, TextField, Button, Alert } from '@mui/material';
+import { Box, Typography, TextField, Button, Alert, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import GoogleIcon from '../../assets/Google.png';
 import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
@@ -15,6 +15,7 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('user');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -38,14 +39,18 @@ const Signup: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, role })
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'Registration failed.');
       }
       
-      navigate('/select-packages');
+      if (data.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/select-packages');
+      }
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
     } finally {
@@ -221,6 +226,40 @@ const Signup: React.FC = () => {
               },
             }}
           />
+        </Box>
+
+        <Box sx={{ marginBottom: '8px' }}>
+          <Typography
+            sx={{
+              fontFamily: FONTS.SATOSHI,
+              fontWeight: FONT_WEIGHTS.MEDIUM,
+              fontSize: '14px',
+              lineHeight: LINE_HEIGHTS.NORMAL,
+              color: COLORS.TEXT_PRIMARY,
+              marginBottom: '4px',
+              textAlign: 'left',
+            }}
+          >
+            Account Role
+          </Typography>
+          <FormControl fullWidth>
+            <Select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              sx={{ 
+                height: '40px', 
+                fontSize: '13px', 
+                borderRadius: '8px',
+                '& fieldset': {
+                  borderColor: COLORS.BORDER,
+                  borderWidth: '1px',
+                },
+              }}
+            >
+              <MenuItem value="user">Patient</MenuItem>
+              <MenuItem value="admin">Admin</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
 
         <Button

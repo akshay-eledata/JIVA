@@ -35,9 +35,7 @@ const BiomarkerDetail: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) { navigate('/signin'); return; }
-        fetch(apiUrl('/api/me/biomarkers?groupBy=system'), { headers: { Authorization: `Bearer ${token}` } })
+        fetch(apiUrl('/api/me/biomarkers?groupBy=system'), { credentials: 'include' })
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => {
                 if (!d) return;

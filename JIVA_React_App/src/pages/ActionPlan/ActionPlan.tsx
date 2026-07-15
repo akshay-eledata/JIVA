@@ -5,6 +5,7 @@ import SaladIcon from '../../assets/salad.svg';
 import DumbellIcon from '../../assets/Dumbell.svg';
 import MedicineIcon from '../../assets/Medicine-Bottle.svg';
 import CancelIcon from '../../assets/cancel.svg';
+import LotusIcon from '../../assets/Lotus.svg';
 import ExerciseTab from '../ExerciseTab/ExerciseTab';
 import { ACTION_PLAN_CONSTANTS } from './constants';
 import { ACTION_PLAN_LABELS } from './labels';
@@ -64,9 +65,7 @@ const ActionPlan: React.FC = () => {
     const [selected, setSelected] = useState<{ kind: string; data: any } | null>(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-        fetch(apiUrl('/api/me/report/latest'), { headers: { Authorization: `Bearer ${token}` } })
+        fetch(apiUrl('/api/me/report/latest'), { credentials: 'include' })
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => d && setReport(d))
             .catch(() => {});
@@ -74,7 +73,9 @@ const ActionPlan: React.FC = () => {
 
     const eat = report?.foods_to_eat || [];
     const avoid = report?.foods_to_avoid || [];
-    const exercise = report?.exercise_recommendations || [];
+    const allExercises = report?.exercise_recommendations || [];
+    const movementItems = allExercises.filter((e: any) => !e.exerciseType.toLowerCase().match(/(yoga|meditation|breathwork)/));
+    const yogaItems = allExercises.filter((e: any) => e.exerciseType.toLowerCase().match(/(yoga|meditation|breathwork)/));
     const supplements = report?.supplement_recommendations || [];
     const flagged =
         (report?.lab_analysis?.outOfRangeCount || 0) + (report?.lab_analysis?.borderlineCount || 0);
@@ -84,6 +85,7 @@ const ActionPlan: React.FC = () => {
     const tabs = [
         { id: 'Food', label: ACTION_PLAN_LABELS.TAB_FOOD, icon: SaladIcon },
         { id: 'Exercise', label: ACTION_PLAN_LABELS.TAB_EXERCISE, icon: DumbellIcon },
+        { id: 'Yoga', label: ACTION_PLAN_LABELS.TAB_YOGA, icon: LotusIcon },
         { id: 'Supplements', label: ACTION_PLAN_LABELS.TAB_SUPPLEMENTS, icon: MedicineIcon },
     ];
 
@@ -159,22 +161,23 @@ const ActionPlan: React.FC = () => {
                 . These recommendations are specific to your lab findings.
             </Typography>
 
-            {/* Content Sections */}
             {activeTab === 'Exercise' ? (
                 <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>
                     <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#256111', mb: 2 }}>Recommended for you</Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 6 }}>
-                        {exercise.map((e: any, i: number) => (
+                        {movementItems.map((e: any, i: number) => (
                             <Box key={i} onClick={() => setSelected({ kind: 'exercise', data: e })}
                                 sx={{ p: 2.5, borderRadius: '16px', border: '1px solid #E4E7EC', cursor: 'pointer', '&:hover': { boxShadow: '0px 4px 12px rgba(0,0,0,0.06)' } }}>
                                 <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#1A212B' }}>{parseRec(e.exerciseType).name}</Typography>
                                 <Typography sx={{ fontSize: '13px', color: '#667085', mt: 0.5 }}>{[e.frequency, e.duration, e.intensity].filter(Boolean).join(' · ')}</Typography>
                             </Box>
                         ))}
-                        {exercise.length === 0 && <Typography sx={{ fontSize: '14px', color: '#98A2B3' }}>No exercise recommendations yet.</Typography>}
+                        {movementItems.length === 0 && <Typography sx={{ fontSize: '14px', color: '#98A2B3' }}>No exercise recommendations yet.</Typography>}
                     </Box>
-                    <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#256111', mb: 2 }}>Guided sessions</Typography>
-                    <ExerciseTab />
+                </Box>
+            ) : activeTab === 'Yoga' ? (
+                <Box sx={{ width: '100%', margin: '0 auto', textAlign: 'left' }}>
+                    <ExerciseTab yogaItems={yogaItems} movementItems={[]} setSelected={setSelected} />
                 </Box>
             ) : activeTab === 'Supplements' ? (
                 <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>

@@ -10,7 +10,7 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     const userExists = await User.findOne({ where: { email } });
@@ -25,7 +25,8 @@ const registerUser = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role: role || 'user'
     });
 
     const token = generateToken(user.id);
@@ -40,6 +41,7 @@ const registerUser = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
       token: token // Keep it in JSON too just in case existing logic relies on it temporarily
     });
   } catch (error) {
@@ -69,6 +71,7 @@ const loginUser = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token: token // Keep it in JSON too
       });
     } else {

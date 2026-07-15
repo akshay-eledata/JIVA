@@ -23,6 +23,7 @@ import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
 import Welcome from './pages/Welcome/Welcome';
 import SelectPackages from './pages/SelectPackages/SelectPackages';
 import BiomarkerDetail from './pages/BiomarkerDetail/BiomarkerDetail';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import theme from './theme';
 
 const App: React.FC = () => {
@@ -78,6 +79,7 @@ const App: React.FC = () => {
               <Route path="/video-player" element={<VideoPlayer />} />
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/select-packages" element={<SelectPackages />} />
+              <Route path="/admin" element={<AdminDashboard />} />
             </Routes>
           </Box>
         </Box>

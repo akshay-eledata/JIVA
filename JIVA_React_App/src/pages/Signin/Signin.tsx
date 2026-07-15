@@ -42,8 +42,12 @@ const Signin: React.FC = () => {
       if (!res.ok) {
         throw new Error(data.message || 'Login failed.');
       }
-      // JWT token is now securely stored in an HttpOnly cookie automatically
-      navigate('/select-packages');
+      // Smart redirection based on role
+      if (data.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/select-packages');
+      }
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
     } finally {

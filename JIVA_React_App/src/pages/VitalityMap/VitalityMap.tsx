@@ -253,13 +253,10 @@ const VitalityMap: React.FC = () => {
 
     useEffect(() => {
         const loadDashboardData = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) { navigate('/signin'); return; }
-            const headers = { Authorization: `Bearer ${token}` };
             try {
                 const [bmRes, repRes] = await Promise.all([
-                    fetch(apiUrl('/api/me/biomarkers?groupBy=system'), { headers }),
-                    fetch(apiUrl('/api/me/report/latest'), { headers }),
+                    fetch(apiUrl('/api/me/biomarkers?groupBy=system'), { credentials: 'include' }),
+                    fetch(apiUrl('/api/me/report/latest'), { credentials: 'include' }),
                 ]);
                 if (bmRes.ok) { const d = await bmRes.json(); setSystems(d.systems || []); }
                 if (repRes.ok) { setReport(await repRes.json()); }

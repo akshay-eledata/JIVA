@@ -5,44 +5,33 @@ import LotusIcon from '../../assets/Lotus.svg';
 import { EXERCISE_TAB_CONSTANTS } from './constants';
 import { EXERCISE_TAB_LABELS } from './labels';
 
-const ExerciseTab: React.FC = () => {
-    const navigate = useNavigate();
-    const [activeSubTab, setActiveSubTab] = useState<string>(EXERCISE_TAB_LABELS.SUBTAB_YOGA);
+interface ExerciseTabProps {
+    yogaItems?: any[];
+    movementItems?: any[];
+    setSelected?: (val: any) => void;
+}
 
-    const subTabs = [EXERCISE_TAB_LABELS.SUBTAB_YOGA, EXERCISE_TAB_LABELS.SUBTAB_EXERCISE];
+const ExerciseTab: React.FC<ExerciseTabProps> = ({ yogaItems = [], movementItems = [], setSelected }) => {
     const recommendedYoga = EXERCISE_TAB_CONSTANTS.RECOMMENDED_YOGA;
 
     return (
         <Box sx={{ width: '100%', textAlign: 'left' }}>
-            {/* Sub Tabs */}
-            <Box sx={{ display: 'flex', gap: '32px', mb: 4, borderBottom: '1px solid #E0E0E0' }}>
-                {subTabs.map((tab) => (
-                    <Box
-                        key={tab}
-                        onClick={() => setActiveSubTab(tab)}
-                        sx={{
-                            paddingBottom: '12px',
-                            cursor: 'pointer',
-                            borderBottom: activeSubTab === tab ? '2px solid #1A212B' : '2px solid transparent',
-                            marginBottom: '-1px'
-                        }}
-                    >
-                        <Typography
-                            sx={{
-                                fontSize: '16px',
-                                fontWeight: activeSubTab === tab ? 600 : 500,
-                                color: activeSubTab === tab ? '#1A212B' : '#667085'
-                            }}
-                        >
-                            {tab}
-                        </Typography>
-                    </Box>
-                ))}
-            </Box>
+            {/* Dynamic API Recommendations */}
+                    {yogaItems.length > 0 && (
+                        <Box sx={{ mb: 6 }}>
+                            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#256111', mb: 2 }}>Recommended for you</Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                {yogaItems.map((e: any, i: number) => (
+                                    <Box key={i} onClick={() => setSelected && setSelected({ kind: 'exercise', data: e })}
+                                        sx={{ p: 2.5, borderRadius: '16px', border: '1px solid #E4E7EC', cursor: 'pointer', '&:hover': { boxShadow: '0px 4px 12px rgba(0,0,0,0.06)' } }}>
+                                        <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#1A212B' }}>{e.exerciseType || e.name || 'Yoga Activity'}</Typography>
+                                        <Typography sx={{ fontSize: '13px', color: '#667085', mt: 0.5 }}>{[e.frequency, e.duration, e.intensity].filter(Boolean).join(' · ')}</Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    )}
 
-            {/* Content */}
-            {activeSubTab === EXERCISE_TAB_LABELS.SUBTAB_YOGA && (
-                <Box sx={{ width: '100%' }}>
                     {/* Types of Yoga Section */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                         <Typography sx={{ fontSize: '18px', fontWeight: 800, color: '#1A212B' }}>
@@ -290,16 +279,6 @@ const ExerciseTab: React.FC = () => {
                         ))}
                     </Box>
 
-                    {/* Divider Below */}
-                    <Divider sx={{ mb: 6, borderColor: '#EAECF0' }} />
-                </Box>
-            )}
-
-            {activeSubTab === EXERCISE_TAB_LABELS.SUBTAB_EXERCISE && (
-                <Box sx={{ py: 4, textAlign: 'center' }}>
-                    <Typography sx={{ color: '#667085' }}>{EXERCISE_TAB_LABELS.EXERCISE_CONTENT_PLACEHOLDER}</Typography>
-                </Box>
-            )}
         </Box>
     );
 };
