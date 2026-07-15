@@ -3,16 +3,25 @@
  *   Package | Biomarker | Unit | Sex | In-Range Low | In-Range High |
  *   Borderline Low | Borderline High | Critical Low | Critical High | Notes
  *
+ * BORDERLINE SEMANTICS (reworked): "borderline" means the patient is on the
+ * CUSP of leaving the in-range zone — i.e. the value is still INSIDE the
+ * reference range but within the outer margin of a boundary. It is NOT a band
+ * outside the range. Anything outside the reference range is out-of-range (or
+ * critical). "Borderline Low/High" columns are therefore the INNER edges of the
+ * comfortable core: below Borderline Low (but ≥ In-Range Low) = borderline-low;
+ * above Borderline High (but ≤ In-Range High) = borderline-high.
+ *
  * Sources:
  *  - In-range + some criticals: Data/Tests/reference_ranges.json (provisional).
- *  - Borderline bands: clinical categories where they exist (pre-diabetes,
- *    borderline-high lipids, subclinical thyroid, vitamin-D insufficiency, hs-CRP
- *    risk tiers, …); otherwise a ±10% buffer beyond the reference range.
+ *  - Borderline cusp: the outer CUSP_FRACTION of the in-range span at each
+ *    clinically-meaningful edge (skipped where a boundary is a nominal 0 floor
+ *    or an open-ended upper limit). Overridable per biomarker via coreLow/coreHigh.
  *  - Criticals refined from published critical/panic-value lists (ARUP, Mayo).
  *
  * The tier ladder (low → high):
- *   Critical Low | out-of-range | Borderline Low | borderline | In-Range Low
- *   … In-Range High | borderline | Borderline High | out-of-range | Critical High
+ *   Critical Low | out-of-range | In-Range Low | borderline | Borderline Low
+ *   … [comfortable core] … Borderline High | borderline | In-Range High
+ *   | out-of-range | Critical High
  *
  * Re-runnable. Run: node scripts/buildLabRanges.js
  */
@@ -30,21 +39,19 @@ const COMPOSITES = ranges.compositeExpansions || {};
 const key = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
 const round = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
 
-// Clinically-defined borderline bands / critical refinements (absolute values).
-// Sex-specific markers keep the ±10% default unless listed here.
+// Fraction of the in-range span that counts as the borderline "cusp" at each
+// meaningful boundary. 0.15 => the outer 15% just inside each edge.
+const CUSP_FRACTION = 0.15;
+
+// Per-biomarker refinements (absolute values):
+//   coreLow / coreHigh  — explicit inner (comfortable-core) thresholds, i.e. the
+//                         Borderline Low / Borderline High values.
+//   critLow / critHigh  — critical/panic thresholds.
 const OVERRIDE = {
-    fastingglucose: { bLow: 60, bHigh: 125, critLow: 50, critHigh: 400 }, // pre-diabetes 100–125
-    'glycatedhemoglobinhba1c': { bHigh: 6.4 },                            // pre-diabetes 5.7–6.4
-    uricacid: { bHigh: 8 },                                               // gout risk
-    totalcholesterol: { bHigh: 239 },                                     // borderline high 200–239
-    'ldlcholesterolcalculated': { bHigh: 159 },                          // borderline high 130–159
-    directldl: { bHigh: 159 },
-    triglycerides: { bHigh: 199, critHigh: 1000 },                        // borderline 150–199; >1000 pancreatitis
-    hscrp: { bHigh: 3 },                                                  // 1–3 average CV risk
-    homocysteine: { bHigh: 20 },                                          // 15–20 borderline
-    tsh: { bLow: 0.1, bHigh: 10, critLow: 0.01, critHigh: 100 },          // subclinical to 10
-    'vitamind25oh': { bLow: 20, bHigh: 150 },                            // insufficient 20–29; toxicity >150
-    ferritin: {},
+    fastingglucose: { critLow: 50, critHigh: 400 },
+    triglycerides: { critHigh: 1000 },                    // >1000 pancreatitis risk
+    tsh: { critLow: 0.01, critHigh: 100 },                // myxedema / thyroid storm
+    'vitamind25oh': { critHigh: 150 },                   // toxicity >150
     potassium: { critLow: 2.5, critHigh: 6 },
     calcium: { critLow: 6, critHigh: 13 },
     magnesium: { critLow: 1, critHigh: 4.9 },
@@ -52,20 +59,32 @@ const OVERRIDE = {
 };
 
 // Boundaries for one biomarker + one reference band {low, high}.
+// bLow / bHigh are the INNER cusp thresholds (see file header): a value inside
+// [inLow, bLow) or (bHigh, inHigh] is borderline; [bLow, bHigh] is the core.
 function boundaries(b, low, high) {
     const crit = b.critical || {};
     let critLow = crit.low != null ? crit.low : null;
     let critHigh = crit.high != null ? crit.high : null;
-    // default borderline = ±10% buffer just outside the reference range
-    let bLow = low != null && low > 0 ? round(low * 0.9) : null;
-    let bHigh = high != null && high < 999 ? round(high * 1.1) : null;
+
+    const hasLow = low != null && low > 0;      // meaningful lower boundary
+    const hasHigh = high != null && high < 999; // meaningful upper boundary
+    const span = hasLow && hasHigh ? high - low : null;
+
+    // Borderline cusp sits INSIDE the reference range near each meaningful edge.
+    let bLow = hasLow ? round(low + CUSP_FRACTION * (span != null ? span : low)) : null;
+    let bHigh = hasHigh ? round(high - CUSP_FRACTION * (span != null ? span : high)) : null;
 
     const ov = OVERRIDE[key(b.name)];
     if (ov) {
-        if (ov.bLow !== undefined) bLow = ov.bLow;
-        if (ov.bHigh !== undefined) bHigh = ov.bHigh;
+        if (ov.coreLow !== undefined) bLow = ov.coreLow;
+        if (ov.coreHigh !== undefined) bHigh = ov.coreHigh;
         if (ov.critLow !== undefined) critLow = ov.critLow;
         if (ov.critHigh !== undefined) critHigh = ov.critHigh;
+    }
+    // Keep the core non-empty and inside the range: inLow < bLow ≤ bHigh < inHigh.
+    if (bLow != null && bHigh != null && bLow > bHigh) {
+        const mid = round((bLow + bHigh) / 2);
+        bLow = mid; bHigh = mid;
     }
     return { critLow, bLow, inLow: low, inHigh: high, bHigh, critHigh };
 }

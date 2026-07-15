@@ -1,11 +1,16 @@
 /**
  * Shared helpers for ingestion: canonical name keys + lab-value classification.
  * The tier rule matches the v5 engine (Data/Engine/jiva_engine_prompt_v5.md §1B):
- *   IN RANGE     = value within [low, high]
- *   BORDERLINE   = outside the range but within 10% of the nearest boundary
- *   OUT OF RANGE = more than 10% beyond a boundary
+ *   IN RANGE     = value comfortably inside the range (not near either edge)
+ *   BORDERLINE   = inside the range but within the outer cusp of a boundary —
+ *                  on the cusp of leaving the in-range zone (early warning)
+ *   OUT OF RANGE = outside the reference range
  *   CRITICAL     = beyond a critical threshold
  */
+
+// Fraction of the reference span treated as the borderline cusp when no
+// explicit inner threshold is supplied (mirrors buildLabRanges.CUSP_FRACTION).
+const CUSP_FRACTION = 0.15;
 
 // Normalize a messy test/biomarker name into a stable lookup key.
 // "hs-CRP" -> "hscrp"; "Vitamin D (25-OH)" -> "vitamind25oh".
@@ -49,16 +54,19 @@ function classify(value, refLow, refHigh, critical) {
   const lo = refLow == null ? null : refLow;
   const hi = refHigh == null ? null : refHigh;
 
-  const withinLow = lo == null || num >= lo;
-  const withinHigh = hi == null || num <= hi;
-  if (withinLow && withinHigh) return { status: 'in_range', isNormal: true, numericValue: num };
+  // Outside the reference range => out of range.
+  if (lo != null && num < lo) return { status: 'out_of_range', isNormal: false, numericValue: num };
+  if (hi != null && num > hi) return { status: 'out_of_range', isNormal: false, numericValue: num };
 
-  if (hi != null && num > hi) {
-    return { status: num <= hi * 1.1 ? 'borderline' : 'out_of_range', isNormal: false, numericValue: num };
-  }
-  if (lo != null && num < lo) {
-    return { status: num >= lo * 0.9 ? 'borderline' : 'out_of_range', isNormal: false, numericValue: num };
-  }
+  // Inside the range: flag the outer CUSP_FRACTION near a meaningful edge as
+  // borderline (on the cusp of leaving in range).
+  const hasLow = lo != null && lo > 0;
+  const hasHigh = hi != null && hi < 999;
+  const span = hasLow && hasHigh ? hi - lo : null;
+  const cuspLow = hasLow ? lo + CUSP_FRACTION * (span != null ? span : lo) : null;
+  const cuspHigh = hasHigh ? hi - CUSP_FRACTION * (span != null ? span : hi) : null;
+  if (cuspLow != null && num < cuspLow) return { status: 'borderline', isNormal: false, numericValue: num };
+  if (cuspHigh != null && num > cuspHigh) return { status: 'borderline', isNormal: false, numericValue: num };
   return { status: 'in_range', isNormal: true, numericValue: num };
 }
 
@@ -83,16 +91,13 @@ function classifyExplicit(value, r) {
   if (critLow != null && num < critLow) return mk('critical');
   if (critHigh != null && num > critHigh) return mk('critical');
 
-  const aboveLow = inLow == null || num >= inLow;
-  const belowHigh = inHigh == null || num <= inHigh;
-  if (aboveLow && belowHigh) return mk('in_range');
+  // Outside the reference range (but not critical) => out of range.
+  if (inLow != null && num < inLow) return mk('out_of_range');
+  if (inHigh != null && num > inHigh) return mk('out_of_range');
 
-  if (inHigh != null && num > inHigh) {
-    return mk(bHigh != null && num <= bHigh ? 'borderline' : 'out_of_range');
-  }
-  if (inLow != null && num < inLow) {
-    return mk(bLow != null && num >= bLow ? 'borderline' : 'out_of_range');
-  }
+  // Inside the range: near an edge (past the inner cusp threshold) => borderline.
+  if (bLow != null && num < bLow) return mk('borderline');
+  if (bHigh != null && num > bHigh) return mk('borderline');
   return mk('in_range');
 }
 

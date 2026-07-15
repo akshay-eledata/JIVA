@@ -364,9 +364,9 @@ Classify every lab value received into one of four tiers:
 
 | Tier | Label | Rule |
 |------|-------|------|
-| ✅ **IN RANGE** | Value is within the reference range for the patient's sex |
-| ⚠️ **BORDERLINE** | Value is within 10% of either boundary of the reference range |
-| 🔴 **OUT OF RANGE** | Value exceeds or falls below the reference range by more than 10% |
+| ✅ **IN RANGE** | Value sits comfortably inside the reference range for the patient's sex — not near either boundary |
+| ⚠️ **BORDERLINE** | Value is **still inside** the reference range but within the outer ~15% margin of a meaningful boundary — i.e. **on the cusp of leaving the in-range zone** (an early warning, not an abnormal result). Skip the low cusp where the lower bound is a nominal 0 floor, and the high cusp where the upper bound is open-ended. |
+| 🔴 **OUT OF RANGE** | Value falls outside the reference range for the patient's sex |
 | 🚨 **CRITICAL** | Value falls into the critical threshold defined in Step 1A |
 
 **Qualitative tests** (Urinalysis, H. pylori IgG, ANA screen, ApoE genotype, Free PSA %, LDL pattern-type results, etc.): classify as IN RANGE (normal/negative/favorable) or OUT OF RANGE (positive/abnormal/unfavorable). Do not assign BORDERLINE or CRITICAL to qualitative results unless the specific test has a defined critical threshold. For **ApoE genotype**, treat any e4-containing genotype as OUT OF RANGE (elevated risk) and note it; e2/e3 and e3/e3 are IN RANGE.
