@@ -595,6 +595,41 @@ Also produce a single **`overall_summary`** — a **2–4 sentence**, plain-lang
 
 ---
 
+## STEP 9: BIOLOGICAL AGE (PATIENT-FACING)
+
+Estimate the patient's **biological age** — how old their body appears based on their labs, versus their chronological age.
+
+### Method — Phenotypic Age (PhenoAge, Levine et al. 2018)
+Use the validated **PhenoAge** algorithm. It is derived from **9 Basic-Panel biomarkers + chronological age**, all present in every JIVA report:
+`albumin, serum creatinine, fasting glucose, hs-CRP, lymphocyte %, MCV, RDW, alkaline phosphatase, WBC`.
+
+Compute the linear predictor (convert units as noted), then convert to years:
+```
+xb = -19.907
+   - 0.0336 * albumin(g/L)                 # g/dL × 10
+   + 0.0095 * creatinine(µmol/L)           # mg/dL × 88.4
+   + 0.1953 * glucose(mmol/L)              # mg/dL ÷ 18
+   + 0.0954 * ln(hs-CRP in mg/dL)          # mg/L ÷ 10
+   - 0.0120 * lymphocyte(%)
+   + 0.0268 * MCV(fL)
+   + 0.3306 * RDW(%)
+   + 0.00188 * ALP(U/L)
+   + 0.0554 * WBC(1000 cells/µL)
+   + 0.0804 * chronological_age(years)
+M = 1 − exp( −exp(xb) · (exp(120·0.0076927) − 1) / 0.0076927 )
+biological_age = 141.50225 + ln( −0.00553 · ln(1 − M) ) / 0.09165
+```
+Round `biological_age` to one decimal. If any of the 9 markers is missing, estimate from the ones present and say so in the explanation.
+
+### Refinement from add-on panels
+The 9 core markers come from the Basic Panel. When add-on panels are present, use their markers as **supporting context** in the explanation (they do not change the PhenoAge number): e.g. HbA1c / fasting insulin corroborate glucose-driven acceleration; advanced lipids, homocysteine, and inflammatory markers (IL-6, TNF-α, fibrinogen) reinforce an older reading; strong nutrient and hormone status can support a younger one.
+
+### Output
+- `biological_age`: the number (years).
+- `biological_age_explanation`: **2–3 sentences, patient-facing, NO diagnostic labels.** Name the method in plain terms ("based on a validated set of blood markers"), state whether the body looks older or younger than the calendar age and by how much, and call out the 2–3 markers driving it most (e.g. blood sugar, inflammation, red-cell size). If add-on markers corroborate, mention them briefly.
+
+---
+
 ## OUTPUT FORMAT — STRICT JSON SCHEMA
 
 Return ONLY a valid JSON object. No preamble. No markdown. No explanation before or after the JSON.
@@ -638,6 +673,8 @@ Return ONLY a valid JSON object. No preamble. No markdown. No explanation before
   ],
   "patient_summary": "string — 4 to 5 sentences, clinical and factual, NO diagnostic labels, no filler.",
   "overall_summary": "string — 2 to 4 sentence whole-body health snapshot, plain language, NO diagnostic labels, system-agnostic.",
+  "biological_age": "number — PhenoAge in years (one decimal)",
+  "biological_age_explanation": "string — 2 to 3 sentences, patient-facing, how it was derived and the key drivers, NO diagnostic labels.",
   "system_summaries": [
     {"system_name": "Blood | Metabolic | Heart | Liver | Kidney | Electrolytes | Thyroid | Nutrients | Immune/Inflammatory | Hormonal/Reproductive", "biomarkers_included": ["string — test names in this system"], "summary": "string — 2-4 sentence factual summary, no diagnostic labels."}
   ]

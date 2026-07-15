@@ -245,6 +245,7 @@ const VitalityMap: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCompareMode, setIsCompareMode] = useState(false);
     const [clinicalOpen, setClinicalOpen] = useState(false);
+    const [bioAgeOpen, setBioAgeOpen] = useState(false);
 
     const [systems, setSystems] = useState<any[]>([]);
     const [report, setReport] = useState<any>(null);
@@ -288,6 +289,10 @@ const VitalityMap: React.FC = () => {
 
     // No system selected (null) → show overall totals + overall summary.
     const selectedSystem = selectedBiomarker != null ? activeSystems[selectedBiomarker] : null;
+    // Right-hand biomarker list: the selected system's, or ALL biomarkers when nothing is selected.
+    const displayedBiomarkers = selectedSystem
+        ? (selectedSystem.biomarkers || [])
+        : activeSystems.flatMap((s: any) => s.biomarkers || []);
     const la = report?.lab_analysis;
 
     const systemSummary = selectedSystem
@@ -311,8 +316,15 @@ const VitalityMap: React.FC = () => {
             borderline: la?.borderlineCount || 0,
             critical: la?.criticalCount || 0,
         };
-    // Biological age placeholder: calendar age minus 2 years (D — provisional).
-    const bioAge = report?.patient?.age != null ? report.patient.age - 2 : null;
+    // Biological age (PhenoAge) from the engine.
+    const bioAge = report?.biological_age != null ? report.biological_age : null;
+    const bioAgeExplanation = report?.biological_age_explanation || '';
+    const calAge = report?.patient?.age;
+    const bioDelta = bioAge != null && calAge != null ? Math.round((bioAge - calAge) * 10) / 10 : null;
+    const bioDeltaText =
+        bioDelta == null ? ''
+            : Math.abs(bioDelta) < 0.5 ? `about the same as your calendar age of ${calAge}`
+                : `about ${Math.abs(bioDelta)} year${Math.abs(bioDelta) === 1 ? '' : 's'} ${bioDelta > 0 ? 'older' : 'younger'} than your calendar age of ${calAge}`;
 
     // Header greeting: use the patient's real first + last name, else a
     // sex-based default. Live date underneath.
@@ -321,7 +333,7 @@ const VitalityMap: React.FC = () => {
     const hasRealName = nameParts.length >= 2 && nameParts.every((p) => /[a-zA-Z]/.test(p) && !/^\d+$/.test(p));
     const displayName = hasRealName ? rawName : (report?.patient?.sex === 'Male' ? 'Juan Martinez' : 'Preetha Narayanan');
     const greeting = `Hello ${displayName}`;
-    const todayStr = `It's ${new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+    const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     return (
         <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', }}>
@@ -330,6 +342,29 @@ const VitalityMap: React.FC = () => {
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
+
+            {/* Biological Age — how it was derived */}
+            <Dialog open={bioAgeOpen} onClose={() => setBioAgeOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
+                <Box sx={{ p: 4, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                        <Box>
+                            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#98A2B3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Biological Age</Typography>
+                            <Typography sx={{ fontSize: '30px', fontWeight: 700, color: '#1A212B', lineHeight: 1.1 }}>
+                                {bioAge != null ? `${bioAge} years` : '—'}
+                            </Typography>
+                        </Box>
+                        <IconButton onClick={() => setBioAgeOpen(false)} sx={{ p: 0, mt: 0.5 }}>
+                            <Box component="img" src={CancelIcon} alt="Close" sx={{ width: 20, height: 20 }} />
+                        </IconButton>
+                    </Box>
+                    <Typography sx={{ fontSize: '15px', color: '#475467', lineHeight: '24px' }}>
+                        {bioAgeExplanation}
+                    </Typography>
+                    <Typography sx={{ fontSize: '12px', color: '#98A2B3', mt: 3, lineHeight: '18px' }}>
+                        Method: PhenoAge (Levine et al., 2018) — a validated estimate derived from nine routine blood markers (albumin, creatinine, fasting glucose, hs-CRP, lymphocyte %, MCV, RDW, alkaline phosphatase, and white-cell count) together with your calendar age. Add-on panel results are used as supporting context.
+                    </Typography>
+                </Box>
+            </Dialog>
 
             {/* Clinical Notes — full note popup */}
             <Dialog open={clinicalOpen} onClose={() => setClinicalOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
@@ -359,6 +394,7 @@ const VitalityMap: React.FC = () => {
                             color: '#1A212B',
                             lineHeight: '52px',
                             letterSpacing: '-0.02em',
+                            textAlign: 'left',
                         }}
                     >
                         {greeting}
@@ -369,6 +405,7 @@ const VitalityMap: React.FC = () => {
                             color: '#667085',
                             mt: 0.5,
                             fontWeight: 500,
+                            textAlign: 'left',
                         }}
                     >
                         {todayStr}
@@ -756,16 +793,17 @@ const VitalityMap: React.FC = () => {
                     <Box sx={{ mt: 2, textAlign: 'left', width: '100%', px: 1 }}>
                         <Box sx={{ width: '100%', height: '1.5px', backgroundColor: '#C8D0DB', mb: 3 }} />
                         <Typography sx={{ fontSize: '16px', color: '#475467', lineHeight: '24px', mb: 2 }}>
-                            Your Biological Age is <span style={{ color: '#101828', fontWeight: 700 }}>{bioAge != null ? `${bioAge} years` : '—'}</span>{report?.patient?.age != null ? `, about 2 years younger than your calendar age of ${report.patient.age}.` : '.'}
+                            Your Biological Age is <span style={{ color: '#101828', fontWeight: 700 }}>{bioAge != null ? `${bioAge} years` : '—'}</span>{bioDeltaText ? `, ${bioDeltaText}.` : '.'}
                         </Typography>
                         <Typography
+                            onClick={() => bioAgeExplanation && setBioAgeOpen(true)}
                             sx={{
                                 fontSize: '16px',
                                 fontWeight: 700,
-                                color: '#101828',
+                                color: bioAgeExplanation ? '#101828' : '#98A2B3',
                                 textDecoration: 'underline',
-                                cursor: 'pointer',
-                                '&:hover': { opacity: 0.7 }
+                                cursor: bioAgeExplanation ? 'pointer' : 'default',
+                                '&:hover': { opacity: bioAgeExplanation ? 0.7 : 1 }
                             }}
                         >
                             View More
@@ -958,10 +996,10 @@ const VitalityMap: React.FC = () => {
                     {!isCompareMode && (
                         <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 0.5 }}>
                             <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5, lineHeight: 1.2 }}>
-                                {selectedSystem ? selectedSystem.name : 'Select a system'}
+                                {selectedSystem ? selectedSystem.name : 'All Biomarkers'}
                             </Typography>
                             <Typography sx={{ fontSize: '16px', color: '#667085', fontWeight: 500, textAlign: 'left', pr: 4.5 }}>
-                                {selectedSystem ? `${selectedSystem.biomarkers?.length || 0} Biomarkers` : 'Tap a tile to view its biomarkers'}
+                                {`${displayedBiomarkers.length} Biomarkers`}
                             </Typography>
                         </Box>
                     )}
@@ -1066,7 +1104,7 @@ const VitalityMap: React.FC = () => {
                                         },
                                     }}
                                 >
-                                    {((isExpanded ? selectedSystem?.biomarkers : selectedSystem?.biomarkers?.slice(0, 3)) || []).map((item: any, idx: number) => {
+                                    {(isExpanded ? displayedBiomarkers : displayedBiomarkers.slice(0, 3)).map((item: any, idx: number) => {
                                         const isIn = item.status === 'in_range';
                                         const isBord = item.status === 'borderline';
                                         const barColor = isIn ? '#BAEBD7' : isBord ? '#FCE4B0' : '#FFD2C2';
@@ -1097,14 +1135,9 @@ const VitalityMap: React.FC = () => {
                                             </Box>
                                         );
                                     })}
-                                    {!selectedSystem && (
-                                        <Typography sx={{ fontSize: '15px', color: '#98A2B3', pr: 4.5 }}>
-                                            Select a system tile on the left to see its biomarkers here.
-                                        </Typography>
-                                    )}
                                 </Box>
 
-                                {selectedSystem && (
+                                {displayedBiomarkers.length > 3 && (
                                 <Box sx={{ pr: 4.5, display: 'flex' }}>
                                     <Button
                                         variant="outlined"

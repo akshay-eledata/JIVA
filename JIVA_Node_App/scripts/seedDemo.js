@@ -101,6 +101,8 @@ async function run() {
     panelsPresent: la.panels_present || [],
     patientSummary: engineOutput.patient_summary,
     overallSummary: engineOutput.overall_summary,
+    biologicalAge: engineOutput.biological_age,
+    biologicalAgeExplanation: engineOutput.biological_age_explanation,
   });
 
   // Test results (from input labs, classified with 4-tier Lab_Ranges) --------
