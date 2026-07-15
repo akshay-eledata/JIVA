@@ -114,10 +114,10 @@ const Navbar: React.FC = () => {
             alignItems: 'center',
           }}
         >
-          {/* Questioner Button */}
+          {/* Questionnaire Button */}
           <Button
             component={Link}
-            to="/personal-info"
+            to="/questionnaire"
             sx={{
               fontFamily: NAVBAR_CONSTANTS.BUTTON_FONT_FAMILY,
               fontWeight: NAVBAR_CONSTANTS.BUTTON_FONT_WEIGHT,

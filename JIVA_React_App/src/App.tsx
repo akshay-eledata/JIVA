@@ -23,13 +23,15 @@ import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
 import Welcome from './pages/Welcome/Welcome';
 import SelectPackages from './pages/SelectPackages/SelectPackages';
 import BiomarkerDetail from './pages/BiomarkerDetail/BiomarkerDetail';
+import Intake from './pages/Intake/Intake';
+import HealthQuestionnaire from './pages/HealthQuestionnaire/HealthQuestionnaire';
 import theme from './theme';
 
 const App: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages'];
-  const authPages = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages'];
+  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages', '/intake'];
+  const authPages = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages', '/intake'];
   const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath);
   const shouldShowAuthLeftSide = authPages.includes(currentPath);
 
@@ -78,6 +80,8 @@ const App: React.FC = () => {
               <Route path="/video-player" element={<VideoPlayer />} />
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/select-packages" element={<SelectPackages />} />
+              <Route path="/intake" element={<Intake />} />
+              <Route path="/questionnaire" element={<HealthQuestionnaire />} />
             </Routes>
           </Box>
         </Box>

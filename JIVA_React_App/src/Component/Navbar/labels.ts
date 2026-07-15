@@ -4,6 +4,6 @@ export const NAVBAR_LABELS = {
   VITALITY_MAP: 'Vitality map',
   WELLNESS_PLAN: 'Wellness plan',
   SCHEDULE: 'Schedule',
-  QUESTIONER: 'Questioner',
+  QUESTIONER: 'Questionnaire',
 } as const;
 

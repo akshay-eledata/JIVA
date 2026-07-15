@@ -7,6 +7,7 @@ import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING }
 import { SIGNIN_LABELS } from './labels';
 import { SIGNIN_CONSTANTS } from './constants';
 import { apiUrl } from '../../config';
+import { flushDraftToServer } from '../../questionnaire/storage';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
@@ -43,6 +44,8 @@ const Signin: React.FC = () => {
       }
       // Store JWT token
       localStorage.setItem('token', data.token);
+      // Persist any intake answers drafted before this session had a token.
+      await flushDraftToServer().catch(() => {});
       navigate('/select-packages');
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
