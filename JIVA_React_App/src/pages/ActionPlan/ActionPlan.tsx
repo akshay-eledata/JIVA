@@ -162,19 +162,7 @@ const ActionPlan: React.FC = () => {
             {/* Content Sections */}
             {activeTab === 'Exercise' ? (
                 <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>
-                    <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#256111', mb: 2 }}>Recommended for you</Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 6 }}>
-                        {exercise.map((e: any, i: number) => (
-                            <Box key={i} onClick={() => setSelected({ kind: 'exercise', data: e })}
-                                sx={{ p: 2.5, borderRadius: '16px', border: '1px solid #E4E7EC', cursor: 'pointer', '&:hover': { boxShadow: '0px 4px 12px rgba(0,0,0,0.06)' } }}>
-                                <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#1A212B' }}>{parseRec(e.exerciseType).name}</Typography>
-                                <Typography sx={{ fontSize: '13px', color: '#667085', mt: 0.5 }}>{[e.frequency, e.duration, e.intensity].filter(Boolean).join(' · ')}</Typography>
-                            </Box>
-                        ))}
-                        {exercise.length === 0 && <Typography sx={{ fontSize: '14px', color: '#98A2B3' }}>No exercise recommendations yet.</Typography>}
-                    </Box>
-                    <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#256111', mb: 2 }}>Guided sessions</Typography>
-                    <ExerciseTab />
+                    <ExerciseTab exercise={exercise} />
                 </Box>
             ) : activeTab === 'Supplements' ? (
                 <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>
