@@ -1,0 +1,579 @@
+{
+  "generatedAt": "2026-07-09T23:30:37.026Z",
+  "functionalSystems": [
+    {
+      "name": "Blood",
+      "slug": "blood"
+    },
+    {
+      "name": "Metabolic",
+      "slug": "metabolic"
+    },
+    {
+      "name": "Heart",
+      "slug": "heart"
+    },
+    {
+      "name": "Liver",
+      "slug": "liver"
+    },
+    {
+      "name": "Kidney",
+      "slug": "kidney"
+    },
+    {
+      "name": "Electrolytes",
+      "slug": "electrolytes"
+    },
+    {
+      "name": "Thyroid",
+      "slug": "thyroid"
+    },
+    {
+      "name": "Nutrients",
+      "slug": "nutrients"
+    },
+    {
+      "name": "Immune/Inflammatory",
+      "slug": "immune-inflammatory"
+    },
+    {
+      "name": "Hormonal/Reproductive",
+      "slug": "hormonal-reproductive"
+    }
+  ],
+  "panels": [
+    {
+      "name": "JIVA Basic Panel",
+      "type": "base",
+      "price": 299,
+      "testCount": 27,
+      "biomarkers": [
+        {
+          "name": "Complete blood count (CBC)",
+          "system": "Blood"
+        },
+        {
+          "name": "Fasting glucose",
+          "system": "Metabolic"
+        },
+        {
+          "name": "Glycated Hemoglobin (HbA1c)",
+          "system": "Metabolic"
+        },
+        {
+          "name": "Total cholesterol",
+          "system": "Heart"
+        },
+        {
+          "name": "LDL cholesterol (calculated)",
+          "system": "Heart"
+        },
+        {
+          "name": "HDL cholesterol",
+          "system": "Heart"
+        },
+        {
+          "name": "Triglycerides",
+          "system": "Heart"
+        },
+        {
+          "name": "hs-CRP",
+          "system": "Heart"
+        },
+        {
+          "name": "ALT",
+          "system": "Liver"
+        },
+        {
+          "name": "AST",
+          "system": "Liver"
+        },
+        {
+          "name": "Alkaline phosphatase",
+          "system": "Liver"
+        },
+        {
+          "name": "Total & fractionated bilirubin",
+          "system": "Liver"
+        },
+        {
+          "name": "Albumin + total protein",
+          "system": "Liver"
+        },
+        {
+          "name": "Serum creatinine",
+          "system": "Kidney"
+        },
+        {
+          "name": "BUN",
+          "system": "Kidney"
+        },
+        {
+          "name": "Urinalysis (EGO)",
+          "system": "Kidney"
+        },
+        {
+          "name": "Calcium",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "Magnesium",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "Potassium",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "Sodium",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "Chloride",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "Phosphorus",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "CO2",
+          "system": "Electrolytes"
+        },
+        {
+          "name": "TSH",
+          "system": "Thyroid"
+        },
+        {
+          "name": "Uric acid",
+          "system": "Metabolic"
+        },
+        {
+          "name": "Vitamin D (25-OH)",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Ferritin",
+          "system": "Blood"
+        }
+      ]
+    },
+    {
+      "name": "Heart (Cardiometabolic)",
+      "type": "addon",
+      "price": 99,
+      "testCount": 11,
+      "biomarkers": [
+        {
+          "name": "ApoB",
+          "system": "Heart"
+        },
+        {
+          "name": "Lp(a)",
+          "system": "Heart"
+        },
+        {
+          "name": "Direct LDL",
+          "system": "Heart"
+        },
+        {
+          "name": "Small dense LDL (sdLDL)",
+          "system": "Heart"
+        },
+        {
+          "name": "LDL particle number",
+          "system": "Heart"
+        },
+        {
+          "name": "Direct HDL",
+          "system": "Heart"
+        },
+        {
+          "name": "Large HDL (functional)",
+          "system": "Heart"
+        },
+        {
+          "name": "VLDL cholesterol",
+          "system": "Heart"
+        },
+        {
+          "name": "Homocysteine",
+          "system": "Heart"
+        },
+        {
+          "name": "NT-proBNP",
+          "system": "Heart"
+        },
+        {
+          "name": "TG/HDL ratio (calculated)",
+          "system": "Heart"
+        }
+      ]
+    },
+    {
+      "name": "Male Health",
+      "type": "addon",
+      "price": 99,
+      "testCount": 9,
+      "biomarkers": [
+        {
+          "name": "Total testosterone",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Free testosterone",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Estradiol (E2)",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "FSH",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "LH",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Prolactin",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Total PSA",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Free PSA",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "SHBG",
+          "system": "Hormonal/Reproductive"
+        }
+      ]
+    },
+    {
+      "name": "Female Health",
+      "type": "addon",
+      "price": 99,
+      "testCount": 10,
+      "biomarkers": [
+        {
+          "name": "Estradiol (E2)",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Progesterone",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "FSH",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "LH",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Prolactin",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "SHBG",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "DHEA-S",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Total testosterone",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "AMH",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Morning cortisol",
+          "system": "Hormonal/Reproductive"
+        }
+      ]
+    },
+    {
+      "name": "Thyroid",
+      "type": "addon",
+      "price": 99,
+      "testCount": 5,
+      "biomarkers": [
+        {
+          "name": "TSH",
+          "system": "Thyroid"
+        },
+        {
+          "name": "Free T3 (fT3)",
+          "system": "Thyroid"
+        },
+        {
+          "name": "Free T4 (fT4)",
+          "system": "Thyroid"
+        },
+        {
+          "name": "Anti-TPO antibodies",
+          "system": "Thyroid"
+        },
+        {
+          "name": "Anti-thyroglobulin (Anti-Tg)",
+          "system": "Thyroid"
+        }
+      ]
+    },
+    {
+      "name": "Nutrition & Micronutrients",
+      "type": "addon",
+      "price": 99,
+      "testCount": 13,
+      "biomarkers": [
+        {
+          "name": "Vitamin B12",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Folate / B9",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Vitamin B6",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Zinc",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Copper",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Selenium",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Serum iron",
+          "system": "Blood"
+        },
+        {
+          "name": "TIBC",
+          "system": "Blood"
+        },
+        {
+          "name": "Transferrin saturation",
+          "system": "Blood"
+        },
+        {
+          "name": "Omega-3 index (EPA+DHA)",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Vitamin A",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Vitamin E",
+          "system": "Nutrients"
+        },
+        {
+          "name": "Vitamin K2",
+          "system": "Nutrients"
+        }
+      ]
+    },
+    {
+      "name": "Stress & Aging",
+      "type": "addon",
+      "price": 99,
+      "testCount": 9,
+      "biomarkers": [
+        {
+          "name": "Morning cortisol",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "DHEA-S",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "IGF-1",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Homocysteine",
+          "system": "Heart"
+        },
+        {
+          "name": "8-OHdG (oxidative DNA damage)",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "hs-CRP",
+          "system": "Heart"
+        },
+        {
+          "name": "Fasting insulin",
+          "system": "Metabolic"
+        },
+        {
+          "name": "GH (fasting)",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Vitamin D (25-OH) + intact PTH",
+          "system": "Nutrients"
+        }
+      ]
+    },
+    {
+      "name": "Inflammation & Immunity",
+      "type": "addon",
+      "price": 99,
+      "testCount": 10,
+      "biomarkers": [
+        {
+          "name": "IL-6",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "TNF-alpha",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "Fibrinogen",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "ESR",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "ANA screen",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "Rheumatoid factor",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "Complement C3",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "Complement C4",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "Lymphocyte differential",
+          "system": "Immune/Inflammatory"
+        },
+        {
+          "name": "D-dimer",
+          "system": "Immune/Inflammatory"
+        }
+      ]
+    },
+    {
+      "name": "Cognitive & Neurological",
+      "type": "addon",
+      "price": 99,
+      "testCount": 9,
+      "biomarkers": [
+        {
+          "name": "Homocysteine",
+          "system": "Heart"
+        },
+        {
+          "name": "Active B12 (holotranscobalamin)",
+          "system": "Nutrients"
+        },
+        {
+          "name": "RBC folate",
+          "system": "Nutrients"
+        },
+        {
+          "name": "TSH + fT3 + fT4",
+          "system": "Thyroid"
+        },
+        {
+          "name": "Morning & evening cortisol",
+          "system": "Hormonal/Reproductive"
+        },
+        {
+          "name": "Fasting glucose + insulin",
+          "system": "Metabolic"
+        },
+        {
+          "name": "Vitamin D (25-OH)",
+          "system": "Nutrients"
+        },
+        {
+          "name": "ApoE genotype",
+          "system": "Heart"
+        },
+        {
+          "name": "hs-CRP",
+          "system": "Heart"
+        }
+      ]
+    },
+    {
+      "name": "Digestive & Hepatic",
+      "type": "addon",
+      "price": 99,
+      "testCount": 10,
+      "biomarkers": [
+        {
+          "name": "GGT",
+          "system": "Liver"
+        },
+        {
+          "name": "LDH",
+          "system": "Liver"
+        },
+        {
+          "name": "Amylase",
+          "system": "Liver"
+        },
+        {
+          "name": "Lipase",
+          "system": "Liver"
+        },
+        {
+          "name": "H. pylori IgG",
+          "system": "Liver"
+        },
+        {
+          "name": "Anti-gliadin IgA",
+          "system": "Liver"
+        },
+        {
+          "name": "Anti-transglutaminase IgA",
+          "system": "Liver"
+        },
+        {
+          "name": "Fecal calprotectin",
+          "system": "Liver"
+        },
+        {
+          "name": "PT/INR",
+          "system": "Liver"
+        },
+        {
+          "name": "Direct & indirect bilirubin",
+          "system": "Liver"
+        }
+      ]
+    }
+  ]
+}

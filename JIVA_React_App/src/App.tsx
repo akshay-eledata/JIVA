@@ -12,6 +12,7 @@ import Payment from './pages/Payment/Payment';
 import Dashboard from './pages/Dashboard/Dashboard';
 import PersonalInfo from './pages/PersonalInfo/PersonalInfo';
 import VitalityMap from './pages/VitalityMap/VitalityMap';
+import VitalityMap2 from './pages/VitalityMap2/VitalityMap2';
 import ActionPlan from './pages/ActionPlan/ActionPlan';
 import VideoPlayer from './pages/VideoPlayer/VideoPlayer';
 import { ScheduleProvider } from './context/ScheduleContext';
@@ -22,13 +23,16 @@ import YourHealth from './pages/YourHealth/YourHealth';
 import FollowUpTest from './pages/FollowUpTest/FollowUpTest';
 import Welcome from './pages/Welcome/Welcome';
 import SelectPackages from './pages/SelectPackages/SelectPackages';
+import BiomarkerDetail from './pages/BiomarkerDetail/BiomarkerDetail';
+import Intake from './pages/Intake/Intake';
+import HealthQuestionnaire from './pages/HealthQuestionnaire/HealthQuestionnaire';
 import theme from './theme';
 
 const App: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages'];
-  const authPages = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages'];
+  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages', '/intake'];
+  const authPages = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages', '/intake'];
   const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath);
   const shouldShowAuthLeftSide = authPages.includes(currentPath);
 
@@ -68,6 +72,8 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/personal-info" element={<PersonalInfo />} />
               <Route path="/vitality-map" element={<VitalityMap />} />
+              <Route path="/vitality-map-2" element={<VitalityMap2 />} />
+              <Route path="/biomarker/:name" element={<BiomarkerDetail />} />
               <Route path="/action-plan" element={<ActionPlan />} />
               <Route path="/auto-immunity" element={<AutoImmunity />} />
               <Route path="/rheumatoid-factor" element={<RheumatoidFactor />} />
@@ -76,6 +82,8 @@ const App: React.FC = () => {
               <Route path="/video-player" element={<VideoPlayer />} />
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/select-packages" element={<SelectPackages />} />
+              <Route path="/intake" element={<Intake />} />
+              <Route path="/questionnaire" element={<HealthQuestionnaire />} />
             </Routes>
           </Box>
         </Box>

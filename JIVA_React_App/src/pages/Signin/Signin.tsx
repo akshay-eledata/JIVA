@@ -6,6 +6,8 @@ import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
 import { SIGNIN_LABELS } from './labels';
 import { SIGNIN_CONSTANTS } from './constants';
+import { apiUrl } from '../../config';
+import { flushDraftToServer } from '../../questionnaire/storage';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
@@ -31,7 +33,7 @@ const Signin: React.FC = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5001/api/auth/login', {
+      const res = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -41,7 +43,11 @@ const Signin: React.FC = () => {
       if (!res.ok) {
         throw new Error(data.message || 'Login failed.');
       }
-      // JWT token is now securely stored in an HttpOnly cookie automatically
+      // JWT token is now also stored in an HttpOnly cookie automatically;
+      // keep it in localStorage too for the existing Bearer-based fetches.
+      localStorage.setItem('token', data.token);
+      // Persist any intake answers drafted before this session had a token.
+      await flushDraftToServer().catch(() => {});
       navigate('/select-packages');
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');

@@ -1,0 +1,392 @@
+{
+  "patient_id": "JIVA-2026-00101",
+  "patient_name": "Marcus Thompson",
+  "date_processed": "2026-03-10",
+  "lab_analysis": {
+    "total_labs_reviewed": 38,
+    "in_range_count": 28,
+    "borderline_count": 2,
+    "out_of_range_count": 8,
+    "critical_count": 0,
+    "critical_alert": null,
+    "panels_present": ["JIVA Basic Panel", "JIVA Metabolic & Diabetes Risk Panel"],
+    "labs": [
+      {"test_name": "WBC", "value": 7.2, "unit": "K/µL", "reference_range_low": 4.5, "reference_range_high": 11.0, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "White blood cell count is normal, indicating no signs of infection or immune system abnormality."},
+      {"test_name": "RBC", "value": 5.1, "unit": "M/µL", "reference_range_low": 4.5, "reference_range_high": 5.9, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Red blood cell count is within normal limits."},
+      {"test_name": "Hemoglobin", "value": 15.2, "unit": "g/dL", "reference_range_low": 13.5, "reference_range_high": 17.5, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Hemoglobin is normal, indicating adequate oxygen-carrying capacity."},
+      {"test_name": "Hematocrit", "value": 45, "unit": "%", "reference_range_low": 41, "reference_range_high": 53, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Hematocrit is within normal range."},
+      {"test_name": "MCV", "value": 88, "unit": "fL", "reference_range_low": 80, "reference_range_high": 100, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Red blood cell size is normal."},
+      {"test_name": "MCH", "value": 30, "unit": "pg", "reference_range_low": 27, "reference_range_high": 33, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Hemoglobin content per red blood cell is normal."},
+      {"test_name": "MCHC", "value": 34, "unit": "g/dL", "reference_range_low": 32, "reference_range_high": 36, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Hemoglobin concentration is normal."},
+      {"test_name": "RDW", "value": 13.1, "unit": "%", "reference_range_low": 11.5, "reference_range_high": 14.5, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Red blood cell size variation is within normal limits."},
+      {"test_name": "Platelets", "value": 245, "unit": "K/µL", "reference_range_low": 150, "reference_range_high": 400, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Platelet count is normal, supporting healthy blood clotting."},
+      {"test_name": "Neutrophils", "value": 58, "unit": "%", "reference_range_low": 40, "reference_range_high": 70, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Neutrophil percentage is within normal range."},
+      {"test_name": "Lymphocytes", "value": 30, "unit": "%", "reference_range_low": 20, "reference_range_high": 40, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Lymphocyte percentage is normal."},
+      {"test_name": "Monocytes", "value": 7, "unit": "%", "reference_range_low": 2, "reference_range_high": 10, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Monocyte percentage is within normal limits."},
+      {"test_name": "Eosinophils", "value": 3, "unit": "%", "reference_range_low": 1, "reference_range_high": 4, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Eosinophil percentage is normal."},
+      {"test_name": "Basophils", "value": 0.5, "unit": "%", "reference_range_low": 0, "reference_range_high": 1, "status": "IN RANGE", "system_tag": "Blood/Immune", "clinical_note": "Basophil percentage is within normal range."},
+      {"test_name": "Calcium", "value": 9.4, "unit": "mg/dL", "reference_range_low": 8.5, "reference_range_high": 10.5, "status": "IN RANGE", "system_tag": "Electrolyte/Renal/Cardiovascular", "clinical_note": "Calcium level is normal, supporting bone and cardiovascular health."},
+      {"test_name": "Chloride", "value": 102, "unit": "mmol/L", "reference_range_low": 98, "reference_range_high": 107, "status": "IN RANGE", "system_tag": "Electrolyte/Renal", "clinical_note": "Chloride is within normal limits."},
+      {"test_name": "Magnesium (Serum)", "value": 1.8, "unit": "mg/dL", "reference_range_low": 1.7, "reference_range_high": 2.2, "status": "BORDERLINE", "system_tag": "Electrolyte/Renal", "clinical_note": "Magnesium is at the lower end of normal. Adequate magnesium supports blood sugar regulation and cardiovascular function."},
+      {"test_name": "Potassium", "value": 4.3, "unit": "mmol/L", "reference_range_low": 3.5, "reference_range_high": 5.1, "status": "IN RANGE", "system_tag": "Electrolyte/Renal", "clinical_note": "Potassium level is normal."},
+      {"test_name": "Sodium", "value": 140, "unit": "mmol/L", "reference_range_low": 136, "reference_range_high": 145, "status": "IN RANGE", "system_tag": "Electrolyte/Renal", "clinical_note": "Sodium is within normal range."},
+      {"test_name": "Phosphorus", "value": 3.5, "unit": "mg/dL", "reference_range_low": 2.5, "reference_range_high": 4.5, "status": "IN RANGE", "system_tag": "Electrolyte/Renal/Cardiovascular", "clinical_note": "Phosphorus level is normal."},
+      {"test_name": "Glucose (Fasting)", "value": 112, "unit": "mg/dL", "reference_range_low": 70, "reference_range_high": 99, "status": "OUT OF RANGE", "system_tag": "Metabolic", "clinical_note": "Fasting glucose is elevated above normal, indicating your body is not processing blood sugar as efficiently as it should."},
+      {"test_name": "Carbon Dioxide (Bicarbonate)", "value": 25, "unit": "mmol/L", "reference_range_low": 22, "reference_range_high": 29, "status": "IN RANGE", "system_tag": "Renal", "clinical_note": "Bicarbonate level is normal, indicating healthy acid-base balance."},
+      {"test_name": "Albumin", "value": 4.2, "unit": "g/dL", "reference_range_low": 3.5, "reference_range_high": 5.0, "status": "IN RANGE", "system_tag": "Liver", "clinical_note": "Albumin is normal, indicating healthy liver protein production."},
+      {"test_name": "Total Protein", "value": 7.1, "unit": "g/dL", "reference_range_low": 6.0, "reference_range_high": 8.5, "status": "IN RANGE", "system_tag": "Liver", "clinical_note": "Total protein is within normal limits."},
+      {"test_name": "Alkaline Phosphatase (ALP)", "value": 72, "unit": "U/L", "reference_range_low": 44, "reference_range_high": 147, "status": "IN RANGE", "system_tag": "Liver", "clinical_note": "ALP is normal."},
+      {"test_name": "ALT", "value": 48, "unit": "U/L", "reference_range_low": 7, "reference_range_high": 56, "status": "BORDERLINE", "system_tag": "Liver", "clinical_note": "ALT is in the upper portion of normal. This liver enzyme can rise when the liver is under metabolic strain."},
+      {"test_name": "AST", "value": 35, "unit": "U/L", "reference_range_low": 10, "reference_range_high": 40, "status": "IN RANGE", "system_tag": "Liver", "clinical_note": "AST is within normal range."},
+      {"test_name": "Creatinine", "value": 1.05, "unit": "mg/dL", "reference_range_low": 0.74, "reference_range_high": 1.35, "status": "IN RANGE", "system_tag": "Renal", "clinical_note": "Kidney function marker is normal."},
+      {"test_name": "BUN", "value": 16, "unit": "mg/dL", "reference_range_low": 7, "reference_range_high": 20, "status": "IN RANGE", "system_tag": "Renal", "clinical_note": "Blood urea nitrogen is within normal limits, indicating healthy kidney function."},
+      {"test_name": "HbA1c", "value": 5.9, "unit": "%", "reference_range_low": 4.0, "reference_range_high": 5.6, "status": "OUT OF RANGE", "system_tag": "Metabolic", "clinical_note": "HbA1c is elevated, reflecting that your average blood sugar over the past 2-3 months has been higher than optimal."},
+      {"test_name": "Total Cholesterol", "value": 238, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 199, "status": "OUT OF RANGE", "system_tag": "Cardiovascular/Metabolic", "clinical_note": "Total cholesterol is elevated above the desirable range."},
+      {"test_name": "LDL Cholesterol", "value": 152, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 99, "status": "OUT OF RANGE", "system_tag": "Cardiovascular/Metabolic", "clinical_note": "LDL cholesterol is significantly elevated. This type of cholesterol contributes to plaque buildup in arteries."},
+      {"test_name": "HDL Cholesterol", "value": 36, "unit": "mg/dL", "reference_range_low": 40, "reference_range_high": 999, "status": "OUT OF RANGE", "system_tag": "Cardiovascular/Metabolic", "clinical_note": "HDL cholesterol is below the protective threshold. Higher HDL helps remove excess cholesterol from your bloodstream."},
+      {"test_name": "Triglycerides", "value": 210, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 149, "status": "OUT OF RANGE", "system_tag": "Cardiovascular/Metabolic", "clinical_note": "Triglycerides are elevated, often linked to how efficiently your body processes carbohydrates and sugars."},
+      {"test_name": "Non-HDL Cholesterol", "value": 202, "unit": "mg/dL", "reference_range_low": 0, "reference_range_high": 129, "status": "OUT OF RANGE", "system_tag": "Cardiovascular/Metabolic", "clinical_note": "Non-HDL cholesterol is elevated, reflecting the total amount of potentially harmful cholesterol particles."},
+      {"test_name": "Total Cholesterol / HDL Ratio", "value": 6.6, "unit": "ratio", "reference_range_low": 0, "reference_range_high": 4.5, "status": "OUT OF RANGE", "system_tag": "Cardiovascular/Metabolic", "clinical_note": "This ratio is elevated, indicating an unfavorable balance between total and protective cholesterol."},
+      {"test_name": "Total Bilirubin", "value": 0.8, "unit": "mg/dL", "reference_range_low": 0.1, "reference_range_high": 1.2, "status": "IN RANGE", "system_tag": "Liver", "clinical_note": "Bilirubin is normal."},
+      {"test_name": "hs-CRP", "value": 3.8, "unit": "mg/L", "reference_range_low": 0, "reference_range_high": 1.0, "status": "OUT OF RANGE", "system_tag": "Immune", "clinical_note": "High-sensitivity CRP is elevated, indicating increased systemic inflammation. This is a cardiovascular risk marker."},
+      {"test_name": "Urinalysis", "value": "Normal", "unit": "Qualitative", "reference_range_low": null, "reference_range_high": null, "status": "IN RANGE", "system_tag": "Renal", "clinical_note": "Urinalysis is normal."},
+      {"test_name": "Fasting Insulin", "value": 22.4, "unit": "µIU/mL", "reference_range_low": 2.0, "reference_range_high": 19.6, "status": "OUT OF RANGE", "system_tag": "Metabolic", "clinical_note": "Fasting insulin is elevated, indicating your pancreas is working harder than normal to manage blood sugar levels."},
+      {"test_name": "HOMA-IR", "value": 6.2, "unit": "index", "reference_range_low": 0, "reference_range_high": 1.9, "status": "OUT OF RANGE", "system_tag": "Metabolic", "clinical_note": "HOMA-IR is significantly elevated, indicating reduced sensitivity to insulin at the cellular level."},
+      {"test_name": "C-Peptide", "value": 3.9, "unit": "ng/mL", "reference_range_low": 0.8, "reference_range_high": 3.85, "status": "OUT OF RANGE", "system_tag": "Metabolic", "clinical_note": "C-Peptide is slightly elevated, confirming increased insulin production by your pancreas."}
+    ]
+  },
+  "diagnoses": [
+    {
+      "rank": 1,
+      "diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "confidence": "HIGH",
+      "supporting_labs": ["Glucose (Fasting)", "HbA1c", "Fasting Insulin", "HOMA-IR", "C-Peptide", "Triglycerides", "HDL Cholesterol"],
+      "clinical_rationale": "Fasting glucose of 112 mg/dL and HbA1c of 5.9% place this patient in the pre-diabetic range. Markedly elevated fasting insulin (22.4 µIU/mL) and HOMA-IR (6.2) confirm significant insulin resistance. The dyslipidemia pattern (elevated triglycerides, low HDL) is characteristic of the insulin-resistant phenotype. Family history of Type 2 Diabetes in father increases risk."
+    },
+    {
+      "rank": 2,
+      "diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "confidence": "HIGH",
+      "supporting_labs": ["Total Cholesterol", "LDL Cholesterol", "HDL Cholesterol", "Triglycerides", "Non-HDL Cholesterol", "Total Cholesterol / HDL Ratio", "hs-CRP"],
+      "clinical_rationale": "Comprehensive lipid panel shows atherogenic pattern: LDL 152 mg/dL, HDL 36 mg/dL, triglycerides 210 mg/dL, and TC/HDL ratio of 6.6. Combined with elevated hs-CRP (3.8 mg/L), this indicates both lipid-mediated and inflammatory cardiovascular risk. Family history includes heart disease (father) and hypertension (mother), with patient already on Lisinopril for diagnosed hypertension."
+    },
+    {
+      "rank": 3,
+      "diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "confidence": "MODERATE",
+      "supporting_labs": ["hs-CRP", "Triglycerides", "Fasting Insulin"],
+      "clinical_note": "hs-CRP of 3.8 mg/L is nearly 4x the upper limit of optimal, indicating chronic low-grade inflammation. This is commonly seen alongside insulin resistance and metabolic dysfunction. Sedentary lifestyle, suboptimal sleep (5-6 hours), and social alcohol use may contribute. Inflammation drives cardiovascular risk independently of lipids."
+    }
+  ],
+  "foods_to_eat": [
+    {
+      "rank": 1,
+      "food": "Fatty fish — salmon, sardines, mackerel (salmón, sardinas, caballa)",
+      "quantity_frequency": "3-4 servings per week, 4-6 oz per serving",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Rich in EPA and DHA omega-3 fatty acids, which directly lower triglyceride levels and support healthy HDL cholesterol. These fats also reduce inflammation throughout your body."
+    },
+    {
+      "rank": 2,
+      "food": "Black beans and lentils (frijoles negros, lentejas)",
+      "quantity_frequency": "1 cup cooked, 4-5 times per week",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "High in soluble fiber, which slows glucose absorption and reduces blood sugar spikes after meals. The fiber also binds to cholesterol in your digestive tract, helping lower LDL levels."
+    },
+    {
+      "rank": 3,
+      "food": "Avocado (aguacate)",
+      "quantity_frequency": "Half to one avocado daily",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Contains monounsaturated fats that help raise protective HDL cholesterol while lowering LDL. Also provides potassium, which supports healthy blood pressure."
+    },
+    {
+      "rank": 4,
+      "food": "Extra virgin olive oil (aceite de oliva extra virgen)",
+      "quantity_frequency": "2-3 tablespoons daily for cooking and dressings",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_it_helps": "Contains oleocanthal and other polyphenols with anti-inflammatory properties. Replaces less healthy cooking oils and supports cardiovascular protection."
+    },
+    {
+      "rank": 5,
+      "food": "Chia seeds (chía)",
+      "quantity_frequency": "2 tablespoons daily, soaked in water or added to foods",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Soluble fiber forms a gel that slows digestion and glucose absorption. Also provides plant-based omega-3 (ALA) for additional anti-inflammatory benefit."
+    },
+    {
+      "rank": 6,
+      "food": "Oat bran or steel-cut oats (avena)",
+      "quantity_frequency": "1/2 cup dry, 4-5 times per week for breakfast",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Beta-glucan fiber binds bile acids in the gut, forcing your liver to use cholesterol to make more bile, thereby lowering LDL cholesterol by 5-10%."
+    },
+    {
+      "rank": 7,
+      "food": "Turmeric with black pepper (cúrcuma con pimienta negra)",
+      "quantity_frequency": "1/2 to 1 teaspoon turmeric with a pinch of black pepper daily, in cooking or golden milk",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_it_helps": "Curcumin is a potent anti-inflammatory compound. Black pepper increases absorption by 2000%. Regular use helps reduce inflammatory markers like CRP."
+    },
+    {
+      "rank": 8,
+      "food": "Walnuts (nueces)",
+      "quantity_frequency": "1 oz (about 14 halves) daily",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Provide plant-based omega-3 (ALA) and polyphenols that improve blood vessel function and help lower LDL cholesterol."
+    },
+    {
+      "rank": 9,
+      "food": "Garlic (ajo)",
+      "quantity_frequency": "2-3 cloves daily, raw or lightly cooked",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Contains allicin, which has been shown to modestly lower LDL cholesterol and support healthy blood pressure."
+    },
+    {
+      "rank": 10,
+      "food": "Green plantains, cooked and cooled (plátano verde)",
+      "quantity_frequency": "1/2 cup, 3-4 times per week",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "When cooked and cooled, forms resistant starch that feeds beneficial gut bacteria and improves how your body responds to insulin."
+    },
+    {
+      "rank": 11,
+      "food": "Broccoli and broccoli sprouts (brócoli)",
+      "quantity_frequency": "1-2 cups, 4-5 times per week",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Contains sulforaphane, a compound that activates pathways improving your cells' sensitivity to insulin. Also supports liver detoxification."
+    },
+    {
+      "rank": 12,
+      "food": "Ginger (jengibre)",
+      "quantity_frequency": "1-2 inches fresh ginger daily in tea, cooking, or smoothies",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_it_helps": "Gingerols reduce the production of inflammatory compounds in your body and support healthy digestion."
+    },
+    {
+      "rank": 13,
+      "food": "Guava (guayaba)",
+      "quantity_frequency": "1 medium fruit, 3-4 times per week",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Exceptionally high in vitamin C and fiber, with potassium to support blood pressure. Studies show guava can help improve lipid profiles."
+    },
+    {
+      "rank": 14,
+      "food": "Ceylon cinnamon (canela de Ceilán)",
+      "quantity_frequency": "1/2 to 1 teaspoon daily in coffee, oatmeal, or smoothies",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Helps improve how your cells respond to insulin, supporting more stable blood sugar levels after meals."
+    },
+    {
+      "rank": 15,
+      "food": "Dark leafy greens — spinach, Swiss chard (espinaca, acelga)",
+      "quantity_frequency": "2 cups raw or 1 cup cooked daily",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "High in magnesium, which supports healthy blood sugar metabolism and blood pressure. Also provides nitrates that support blood vessel function."
+    }
+  ],
+  "foods_to_avoid": [
+    {
+      "rank": 1,
+      "food": "Sweetened beverages — sodas, packaged juices, sweetened aguas frescas (refrescos, jugos envasados, aguas frescas con azúcar)",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_to_avoid": "Liquid sugars are absorbed rapidly, causing sharp spikes in blood sugar and insulin. Fructose in these drinks is processed by the liver and directly raises triglycerides."
+    },
+    {
+      "rank": 2,
+      "food": "Refined carbohydrates — white bread, white rice in excess, flour tortillas (pan blanco, arroz blanco en exceso, tortillas de harina)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit to no more than 1 serving per day; replace with whole grain alternatives",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_to_avoid": "Rapidly converted to glucose, causing blood sugar spikes that strain your body's ability to manage sugar levels effectively."
+    },
+    {
+      "rank": 3,
+      "food": "Fried foods (frituras)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit to once per week or less",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_to_avoid": "Frying creates inflammatory compounds (AGEs) and often uses oils high in omega-6 fats that promote inflammation when consumed in excess."
+    },
+    {
+      "rank": 4,
+      "food": "Processed deli meats and bacon (embutidos, tocino)",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_to_avoid": "High in saturated fat, sodium, and preservatives (nitrates) that raise cardiovascular risk and inflammation."
+    },
+    {
+      "rank": 5,
+      "food": "Commercial baked goods — cookies, pastries, sweet breads (galletas, pasteles, panes dulces)",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_to_avoid": "Combination of refined flour, sugar, and often trans fats or low-quality oils. Spikes blood sugar and promotes inflammation."
+    },
+    {
+      "rank": 6,
+      "food": "Vegetable oils high in omega-6 — corn, soybean, sunflower oil (aceite de maíz, soya, girasol)",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Replace with olive oil or avocado oil for cooking",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_to_avoid": "Excess omega-6 relative to omega-3 promotes inflammatory pathways in the body. Your inflammatory marker is already elevated."
+    },
+    {
+      "rank": 7,
+      "food": "Alcohol",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit to 1-2 drinks per week maximum; eliminate entirely for first 8 weeks if possible",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_to_avoid": "Alcohol is processed by the liver and directly raises triglyceride production. Even moderate intake can worsen your lipid pattern."
+    },
+    {
+      "rank": 8,
+      "food": "High-sugar breakfast cereals",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_to_avoid": "High glycemic index causes rapid blood sugar spikes first thing in the morning, setting up poor blood sugar control for the rest of the day."
+    },
+    {
+      "rank": 9,
+      "food": "Excessive red meat",
+      "avoidance_level": "REDUCE",
+      "reduction_target": "Limit to 2 servings per week; choose lean cuts",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_to_avoid": "High intake of red meat is associated with increased inflammatory markers. Prioritize fish and plant proteins instead."
+    },
+    {
+      "rank": 10,
+      "food": "Snack chips and packaged snacks (papas fritas, botanas empacadas)",
+      "avoidance_level": "ELIMINATE",
+      "reduction_target": null,
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_to_avoid": "Highly processed, combining refined carbohydrates with inflammatory oils. Promote blood sugar instability and provide no nutritional benefit."
+    }
+  ],
+  "exercise_recommendations": [
+    {
+      "rank": 1,
+      "exercise_type": "Resistance/Strength Training",
+      "frequency": "3 times per week",
+      "duration": "30-40 minutes per session",
+      "intensity": "Moderate to challenging (RPE 6-7 out of 10)",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Building muscle increases the number of glucose receptors in your body, allowing your cells to absorb blood sugar more efficiently without requiring as much insulin. This directly addresses your elevated insulin and HOMA-IR levels.",
+      "safety_notes": "Start with bodyweight exercises or light weights if new to strength training. Your blood pressure is managed with medication, so avoid breath-holding during lifts (Valsalva maneuver)."
+    },
+    {
+      "rank": 2,
+      "exercise_type": "Post-Meal Walking",
+      "frequency": "Daily, after your largest meal",
+      "duration": "15-20 minutes",
+      "intensity": "Light to moderate (RPE 3-4 out of 10) — conversational pace",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Walking immediately after eating reduces blood sugar spikes by 20-30% as your muscles absorb glucose directly from the bloodstream. Given your sedentary occupation, this is an accessible starting point.",
+      "safety_notes": null
+    },
+    {
+      "rank": 3,
+      "exercise_type": "Zone 2 Cardiovascular Exercise — brisk walking, cycling, or swimming",
+      "frequency": "3-4 times per week (can be on same days as strength training or separate)",
+      "duration": "30-45 minutes per session, building toward 150+ minutes per week total",
+      "intensity": "Moderate (RPE 5-6 out of 10) — you can talk but not sing",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Sustained moderate cardio is the most effective exercise for raising HDL cholesterol and lowering triglycerides. It also reduces inflammation markers like hs-CRP over time.",
+      "safety_notes": "Given your hypertension history, monitor how you feel during exercise. If you experience chest discomfort, unusual shortness of breath, or dizziness, stop and consult your physician."
+    }
+  ],
+  "supplement_recommendations": [
+    {
+      "rank": 1,
+      "supplement_name": "Omega-3 Fish Oil (EPA + DHA)",
+      "dosage_range": "2,000-3,000 mg combined EPA+DHA per day",
+      "timing": "With meals, divided into 2 doses (morning and evening)",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Omega-3 fatty acids directly lower triglyceride levels by 20-30% at therapeutic doses. They also reduce inflammation and support healthy blood vessel function. Your triglycerides at 210 mg/dL and hs-CRP at 3.8 mg/L indicate you would benefit significantly.",
+      "safety_note": "You are taking Lisinopril for blood pressure, which does not interact with fish oil. No significant interaction concerns.",
+      "local_availability_note": "Omega-3 fish oil is widely available in pharmacies throughout Latin America. Look for products that specify EPA and DHA content on the label.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 2,
+      "supplement_name": "Berberine HCl",
+      "dosage_range": "500 mg, 2-3 times per day",
+      "timing": "With meals (breakfast, lunch, and/or dinner)",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Berberine activates an enzyme (AMPK) that improves how your cells use glucose and respond to insulin. Studies show it can lower fasting glucose, HbA1c, and even improve lipid profiles. Your elevated HOMA-IR of 6.2 indicates this would be particularly beneficial.",
+      "safety_note": "Berberine can lower blood sugar, so monitor for symptoms of low blood sugar (shakiness, sweating) especially if you reduce carbohydrate intake significantly. It does not interact with Lisinopril.",
+      "local_availability_note": "Available in health food stores (tiendas naturistas) across Latin America. Look for standardized Berberine HCl extract.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 3,
+      "supplement_name": "Magnesium Glycinate",
+      "dosage_range": "300-400 mg elemental magnesium per day",
+      "timing": "Evening, with or without food",
+      "target_diagnosis": "Insulin Resistance / Pre-Diabetes",
+      "why_it_helps": "Magnesium is essential for insulin signaling and blood sugar regulation. Your serum level of 1.8 mg/dL is at the lower end of normal. Adequate magnesium also supports healthy blood pressure and sleep quality.",
+      "safety_note": "No interaction with Lisinopril. May have mild relaxing effect, hence evening timing recommended.",
+      "local_availability_note": "Magnesium Glycinate is available in health food stores. If unavailable, Magnesium Citrate is a widely available alternative in pharmacies throughout Latin America.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 4,
+      "supplement_name": "Curcumin with Piperine (Black Pepper Extract)",
+      "dosage_range": "500-1,000 mg curcumin per day",
+      "timing": "With a fat-containing meal for better absorption",
+      "target_diagnosis": "Systemic Inflammation (Chronic Low-Grade)",
+      "why_it_helps": "Curcumin is a potent anti-inflammatory that inhibits the NF-κB pathway. Your hs-CRP of 3.8 mg/L indicates elevated inflammation that contributes to cardiovascular risk. Curcumin has been shown to reduce CRP levels.",
+      "safety_note": "No interaction with Lisinopril. Piperine (black pepper extract) must be included for adequate absorption.",
+      "local_availability_note": "Curcumin supplements with piperine are available in health food stores and some pharmacies. Alternatively, consuming turmeric powder with black pepper in food provides similar benefits at higher doses.",
+      "start_tier": "Start Here"
+    },
+    {
+      "rank": 5,
+      "supplement_name": "Psyllium Husk Fiber (Cáscara de Psyllium)",
+      "dosage_range": "5-10 grams per day",
+      "timing": "Before meals, with a full glass of water",
+      "target_diagnosis": "Dyslipidemia with Elevated Cardiovascular Risk",
+      "why_it_helps": "Soluble fiber binds to bile acids and cholesterol in the gut, helping lower LDL cholesterol by 5-10%. It also slows glucose absorption, supporting more stable blood sugar levels.",
+      "safety_note": "Take at least 2 hours apart from any medications to avoid interference with absorption. Always take with adequate water.",
+      "local_availability_note": "Psyllium husk (cáscara de psyllium) is very widely available in pharmacies and supermarkets throughout Latin America.",
+      "start_tier": "Start Here"
+    }
+  ],
+  "patient_summary": "Your lab panel reviewed 38 markers, with 8 values outside the normal range concentrated in your metabolic and cardiovascular systems. Your blood sugar markers — including fasting glucose, HbA1c, fasting insulin, and HOMA-IR — indicate your body is working harder than it should to process glucose, and your lipid panel shows elevated triglycerides, LDL cholesterol, and reduced protective HDL cholesterol, creating an unfavorable cardiovascular risk pattern. Your hs-CRP level confirms elevated systemic inflammation, which compounds these risks. The highest-impact first steps are adding omega-3 fish oil (2,000-3,000 mg EPA+DHA daily) and berberine (500 mg with meals) while incorporating resistance training 3 times weekly and a 15-minute walk after your main meal each day. With consistent adherence to these recommendations over 3-4 months, improvements in your metabolic and lipid markers are achievable, and repeat testing at the 3-month mark is recommended to track progress.",
+  "system_summaries": [
+    {
+      "system_name": "Blood",
+      "biomarkers_included": ["WBC", "RBC", "Hemoglobin", "Hematocrit", "MCV", "MCH", "MCHC", "RDW", "Platelets", "Neutrophils", "Lymphocytes", "Monocytes", "Eosinophils", "Basophils"],
+      "summary": "All complete blood count markers are within normal range. Your white blood cells, red blood cells, hemoglobin, and platelets are all functioning normally, indicating no signs of anemia, infection, or blood cell abnormalities."
+    },
+    {
+      "system_name": "Renal/Electrolyte",
+      "biomarkers_included": ["Calcium", "Chloride", "Magnesium (Serum)", "Potassium", "Sodium", "Phosphorus", "Carbon Dioxide (Bicarbonate)", "Creatinine", "BUN", "Urinalysis"],
+      "summary": "Kidney function markers (creatinine 1.05 mg/dL, BUN 16 mg/dL) are normal, and your electrolytes are well-balanced. Magnesium at 1.8 mg/dL is at the lower end of normal — optimizing magnesium intake through diet and supplementation can support blood sugar regulation and cardiovascular health."
+    },
+    {
+      "system_name": "Liver",
+      "biomarkers_included": ["Albumin", "Total Protein", "Alkaline Phosphatase (ALP)", "ALT", "AST", "Total Bilirubin"],
+      "summary": "Most liver markers are normal, including albumin, total protein, and bilirubin. Your ALT at 48 U/L is in the upper portion of normal range, which can occur when the liver is processing excess glucose and fat. Dietary changes focusing on reducing refined carbohydrates and sugars will support liver function."
+    },
+    {
+      "system_name": "Metabolic",
+      "biomarkers_included": ["Glucose (Fasting)", "HbA1c", "Fasting Insulin", "HOMA-IR", "C-Peptide"],
+      "summary": "Your metabolic markers indicate your body is not processing blood sugar efficiently. Fasting glucose (112 mg/dL) and HbA1c (5.9%) are above optimal, while fasting insulin (22.4 µIU/mL) and HOMA-IR (6.2) confirm your pancreas is producing extra insulin to compensate. The dietary, exercise, and supplement recommendations in this protocol directly target these markers to improve how your cells respond to insulin."
+    },
+    {
+      "system_name": "Cardiovascular",
+      "biomarkers_included": ["Total Cholesterol", "LDL Cholesterol", "HDL Cholesterol", "Triglycerides", "Non-HDL Cholesterol", "Total Cholesterol / HDL Ratio"],
+      "summary": "Your lipid panel shows an unfavorable pattern: LDL cholesterol (152 mg/dL) and triglycerides (210 mg/dL) are elevated, while protective HDL cholesterol (36 mg/dL) is below the target. This pattern is often connected to how your body processes carbohydrates and responds to insulin. Omega-3 supplementation, increased fiber intake, and regular cardiovascular exercise are the most effective interventions for improving these numbers."
+    },
+    {
+      "system_name": "Immune",
+      "biomarkers_included": ["hs-CRP"],
+      "summary": "Your hs-CRP at 3.8 mg/L indicates elevated systemic inflammation, which is a cardiovascular risk factor independent of cholesterol levels. This often accompanies metabolic imbalances and responds well to anti-inflammatory dietary changes (omega-3 fats, turmeric, reduced refined carbohydrates) and regular physical activity."
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-const Category = require('./Category');
 
-// The Biomarker model is our "Dictionary" of all possible blood tests
+// The Biomarker model is our "Dictionary" of all possible blood tests.
+// Each biomarker has a single primary FunctionalSystem (see models/index.js).
 const Biomarker = sequelize.define('Biomarker', {
   id: {
     type: DataTypes.UUID,
@@ -12,20 +12,25 @@ const Biomarker = sequelize.define('Biomarker', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: 'e.g., Anti Nuclear Antibodies (ANA)'
+    comment: 'Canonical display name, e.g., Total testosterone'
+  },
+  canonicalName: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Normalized lookup key for matching messy lab test_names'
   },
   description: {
     type: DataTypes.TEXT,
+    allowNull: true
+  },
+  defaultUnit: {
+    type: DataTypes.STRING,
     allowNull: true
   }
 }, {
   timestamps: true
 });
 
-// Many-to-Many Relationship:
-// A Biomarker can belong to multiple Categories, and a Category can have multiple Biomarkers.
-// Sequelize will automatically manage a junction table named 'BiomarkerCategories' for us.
-Biomarker.belongsToMany(Category, { through: 'BiomarkerCategories', foreignKey: 'biomarkerId', onDelete: 'CASCADE' });
-Category.belongsToMany(Biomarker, { through: 'BiomarkerCategories', foreignKey: 'categoryId', onDelete: 'CASCADE' });
-
+// Associations (FunctionalSystem, Panels, ReferenceRanges) are defined centrally
+// in models/index.js.
 module.exports = Biomarker;

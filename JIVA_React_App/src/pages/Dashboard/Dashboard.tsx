@@ -172,6 +172,7 @@ const Dashboard: React.FC = () => {
             </Typography>
 
             <Button
+              onClick={() => navigate('/personal-info')}
               sx={{
                 width: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_WIDTH,
                 height: DASHBOARD_CONSTANTS.SCHEDULE_BUTTON_HEIGHT,
@@ -247,7 +248,10 @@ const Dashboard: React.FC = () => {
                   Scheduled Lab Visit
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', mt: '4px' }}>
-                  <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#1447E6', cursor: 'pointer', }}>
+                  <Typography
+                    onClick={() => navigate('/follow-up-test')}
+                    sx={{ fontSize: '14px', fontWeight: 500, color: '#1447E6', cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+                  >
                     Visit 1
                   </Typography>
                   <Typography sx={{ fontSize: '14px', fontWeight: 400, color: '#475467' }}>

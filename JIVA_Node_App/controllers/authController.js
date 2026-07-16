@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -10,7 +10,7 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, firstName, lastName, phone, email, password } = req.body;
 
   try {
     const userExists = await User.findOne({ where: { email } });
@@ -22,8 +22,15 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Prefer an explicit first/last name; fall back to `name`, then the email.
+    const fullName = [firstName, lastName].filter(Boolean).join(' ').trim()
+      || name || (email ? email.split('@')[0] : 'User');
+
     const user = await User.create({
-      name,
+      name: fullName,
+      firstName: firstName || null,
+      lastName: lastName || null,
+      phone: phone || null,
       email,
       password: hashedPassword
     });
@@ -39,6 +46,9 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       id: user.id,
       name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
       email: user.email,
       token: token // Keep it in JSON too just in case existing logic relies on it temporarily
     });

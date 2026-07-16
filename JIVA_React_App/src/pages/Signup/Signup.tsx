@@ -6,20 +6,25 @@ import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
 import { SIGNUP_LABELS } from './labels';
 import { SIGNUP_CONSTANTS } from './constants';
+import { apiUrl } from '../../config';
+import { flushDraftToServer } from '../../questionnaire/storage';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState(''); // optional
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!email || !password) {
-      setError('Please fill in all fields.');
+    // Phone is optional; first name, last name, email and password are required.
+    if (!firstName || !lastName || !email || !password) {
+      setError('Please fill in your name, email and password.');
       return;
     }
 
@@ -32,18 +37,27 @@ const Signup: React.FC = () => {
     setError('');
     setLoading(true);
     try {
-      const name = email.split('@')[0] || 'User';
-      const res = await fetch('http://localhost:5001/api/auth/register', {
+      const res = await fetch(apiUrl('/api/auth/register'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          phone: phone.trim() || undefined,
+          email,
+          password,
+        })
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'Registration failed.');
       }
-      
+      localStorage.setItem('token', data.token);
+      // The intake questions were answered before the account existed — flush
+      // that draft to the server now that we can attach it to the user.
+      await flushDraftToServer().catch(() => {});
+      // Intake is already complete, so move on to choosing a package.
       navigate('/select-packages');
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
@@ -102,6 +116,65 @@ const Signup: React.FC = () => {
             {error}
           </Alert>
         )}
+
+        <Box sx={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              sx={{
+                fontFamily: FONTS.SATOSHI,
+                fontWeight: FONT_WEIGHTS.MEDIUM,
+                fontSize: '14px',
+                lineHeight: LINE_HEIGHTS.NORMAL,
+                color: COLORS.TEXT_PRIMARY,
+                marginBottom: '4px',
+                textAlign: 'left',
+              }}
+            >
+              {SIGNUP_LABELS.FIRST_NAME}
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder={SIGNUP_LABELS.ENTER}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  height: '40px', borderRadius: '8px', fontSize: '13px',
+                  '& input': { padding: '0 14px', height: '40px', display: 'flex', alignItems: 'center' },
+                  '& fieldset': { borderColor: COLORS.BORDER, borderWidth: '1px' },
+                },
+              }}
+            />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              sx={{
+                fontFamily: FONTS.SATOSHI,
+                fontWeight: FONT_WEIGHTS.MEDIUM,
+                fontSize: '14px',
+                lineHeight: LINE_HEIGHTS.NORMAL,
+                color: COLORS.TEXT_PRIMARY,
+                marginBottom: '4px',
+                textAlign: 'left',
+              }}
+            >
+              {SIGNUP_LABELS.LAST_NAME}
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder={SIGNUP_LABELS.ENTER}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  height: '40px', borderRadius: '8px', fontSize: '13px',
+                  '& input': { padding: '0 14px', height: '40px', display: 'flex', alignItems: 'center' },
+                  '& fieldset': { borderColor: COLORS.BORDER, borderWidth: '1px' },
+                },
+              }}
+            />
+          </Box>
+        </Box>
 
         <Box sx={{ marginBottom: '8px' }}>
           <Typography

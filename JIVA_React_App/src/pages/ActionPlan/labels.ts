@@ -2,7 +2,7 @@
 export const ACTION_PLAN_LABELS = {
   TITLE: "Your Action Plan",
   TAB_FOOD: "Food",
-  TAB_EXERCISE: "Exercise",
+  TAB_EXERCISE: "Movement",
   TAB_SUPPLEMENTS: "Suppliments",
   DESC_PART1: "Here is your personalised Jan 27th Action plan, targeting your ",
   DESC_BIOMARKERS: "19 vital biomarkers",

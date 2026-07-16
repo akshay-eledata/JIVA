@@ -14,10 +14,11 @@ const Navbar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { label: NAVBAR_LABELS.WELLNESS_PROFILE, path: '/wellness-profile' },
+    { label: NAVBAR_LABELS.WELLNESS_PROFILE, path: '/dashboard' },
     { label: NAVBAR_LABELS.VITALITY_MAP, path: '/vitality-map' },
-    { label: NAVBAR_LABELS.WELLNESS_PLAN, path: '/wellness-plan' },
-    { label: NAVBAR_LABELS.SCHEDULE, path: '/schedule' },
+    { label: NAVBAR_LABELS.VITALITY_MAP_2, path: '/vitality-map-2' },
+    { label: NAVBAR_LABELS.WELLNESS_PLAN, path: '/action-plan' },
+    { label: NAVBAR_LABELS.SCHEDULE, path: '/personal-info' },
   ];
 
 
@@ -75,35 +76,34 @@ const Navbar: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            {navItems.map((item) => (
+            {navItems.map((item) => {
+              const active = isActive(item.path);
+              return (
               <Button
                 key={item.path}
                 component={Link}
                 to={item.path}
                 sx={{
                   fontFamily: NAVBAR_CONSTANTS.NAV_FONT_FAMILY,
-                  fontWeight: item.label === NAVBAR_LABELS.WELLNESS_PROFILE ? 600 : 500,
+                  fontWeight: active ? 600 : 500,
                   fontSize: NAVBAR_CONSTANTS.NAV_FONT_SIZE,
                   lineHeight: NAVBAR_CONSTANTS.NAV_LINE_HEIGHT,
                   letterSpacing: NAVBAR_CONSTANTS.NAV_LETTER_SPACING,
-                  color: item.label === NAVBAR_LABELS.WELLNESS_PROFILE
-                    ? '#000000'
-                    : '#256111',
+                  color: active ? '#000000' : '#256111',
                   textTransform: 'none',
                   textDecoration: 'none',
                   padding: 0,
                   minWidth: 'auto',
                   '&:hover': {
                     backgroundColor: 'transparent',
-                    color: item.label === NAVBAR_LABELS.WELLNESS_PROFILE
-                      ? '#000000'
-                      : '#256111',
+                    color: active ? '#000000' : '#256111',
                   },
                 }}
               >
                 {item.label}
               </Button>
-            ))}
+              );
+            })}
           </Box>
         </Box>
 
@@ -115,8 +115,10 @@ const Navbar: React.FC = () => {
             alignItems: 'center',
           }}
         >
-          {/* Questioner Button */}
+          {/* Questionnaire Button */}
           <Button
+            component={Link}
+            to="/questionnaire"
             sx={{
               fontFamily: NAVBAR_CONSTANTS.BUTTON_FONT_FAMILY,
               fontWeight: NAVBAR_CONSTANTS.BUTTON_FONT_WEIGHT,
@@ -142,6 +144,8 @@ const Navbar: React.FC = () => {
 
           {/* Schedule Button */}
           <Button
+            component={Link}
+            to="/personal-info"
             sx={{
               fontFamily: NAVBAR_CONSTANTS.BUTTON_FONT_FAMILY,
               fontWeight: NAVBAR_CONSTANTS.BUTTON_FONT_WEIGHT,
