@@ -52,10 +52,14 @@ const Intake: React.FC = () => {
     setError('');
     const token = localStorage.getItem('token');
     if (!token) {
-      // Draft stays in localStorage; it is flushed to the server after auth.
-      setDone(true);
+      // Pre-signup flow: the answers are held in the localStorage draft and
+      // flushed to the server right after the account is created. Move the user
+      // on to create their account.
+      saveDraft(answers);
+      navigate('/signup');
       return;
     }
+    // Already signed in (e.g. revisiting intake): save straight away.
     setSaving(true);
     try {
       await submitQuestionnaire(answers);

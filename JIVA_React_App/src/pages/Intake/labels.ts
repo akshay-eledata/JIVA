@@ -6,7 +6,7 @@ export const INTAKE_LABELS = {
   OF: 'of',
   BACK: 'Back',
   CONTINUE: 'Continue',
-  SUBMIT: 'Finish & continue',
+  SUBMIT: 'Create your account',
   SUBMITTING: 'Saving…',
   CONFIRM_TITLE: "You're all set, thank you!",
   CONFIRM_BODY:

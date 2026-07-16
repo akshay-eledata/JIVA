@@ -156,7 +156,7 @@ const Welcome: React.FC = () => {
 
           {/* GET STARTED BUTTON ADDED HERE */}
           <Button
-            onClick={() => navigate('/signin')}
+            onClick={() => navigate('/intake')}
             sx={{
               backgroundColor: '#61CC3E',
               color: '#FFFFFF',
@@ -178,6 +178,24 @@ const Welcome: React.FC = () => {
           >
             Get Started
           </Button>
+          <Typography
+            sx={{
+              fontFamily: '"Source Sans Pro", sans-serif',
+              fontSize: '14px',
+              color: '#475467',
+              mb: 5,
+              mt: -3,
+            }}
+          >
+            Already have an account?{' '}
+            <Box
+              component="span"
+              onClick={() => navigate('/signin')}
+              sx={{ color: '#256111', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              Sign in
+            </Box>
+          </Typography>
         </Box>
 
         {/* Main Interactive Circle and Floating Cards Container */}
