@@ -30,6 +30,9 @@ const LabReport = sequelize.define('LabReport', {
     type: DataTypes.DATEONLY,
     allowNull: true
   },
+  // Draw sequence for the same patient: 1 = first test, 2 = 6-month retest, …
+  // Enables the Vitality Map 2 before/after comparison without disturbing visit 1.
+  visit: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
   totalLabsReviewed: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
   inRangeCount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
   borderlineCount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },

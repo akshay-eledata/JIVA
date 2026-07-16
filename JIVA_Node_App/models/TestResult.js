@@ -37,6 +37,14 @@ const TestResult = sequelize.define('TestResult', {
     type: DataTypes.FLOAT,
     allowNull: true
   },
+  // 4-tier boundaries (Lab_Ranges) used to classify this value, kept so the
+  // biomarker trend graph can draw the in-range / borderline / out / critical
+  // zones consistently with the stored status. Shape:
+  //   { inLow, inHigh, bLow, bHigh, critLow, critHigh } (any may be null)
+  tierBand: {
+    type: DataTypes.JSONB,
+    allowNull: true
+  },
   status: {
     type: DataTypes.ENUM('in_range', 'borderline', 'out_of_range', 'critical', 'abnormal', 'unknown'),
     allowNull: false,

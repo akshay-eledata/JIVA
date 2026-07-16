@@ -12,6 +12,7 @@ import Payment from './pages/Payment/Payment';
 import Dashboard from './pages/Dashboard/Dashboard';
 import PersonalInfo from './pages/PersonalInfo/PersonalInfo';
 import VitalityMap from './pages/VitalityMap/VitalityMap';
+import VitalityMap2 from './pages/VitalityMap2/VitalityMap2';
 import ActionPlan from './pages/ActionPlan/ActionPlan';
 import VideoPlayer from './pages/VideoPlayer/VideoPlayer';
 import { ScheduleProvider } from './context/ScheduleContext';
@@ -69,6 +70,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/personal-info" element={<PersonalInfo />} />
               <Route path="/vitality-map" element={<VitalityMap />} />
+              <Route path="/vitality-map-2" element={<VitalityMap2 />} />
               <Route path="/biomarker/:name" element={<BiomarkerDetail />} />
               <Route path="/action-plan" element={<ActionPlan />} />
               <Route path="/auto-immunity" element={<AutoImmunity />} />

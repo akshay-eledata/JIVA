@@ -2,8 +2,9 @@
  * Phase 2 — one-command demo bootstrap.
  *
  * Resets the DB, seeds reference data, creates the demo user, and ingests the
- * rebuilt female_29 patient (input + v5 engine output) end-to-end so the
- * Vitality Map can render a real report.
+ * female_29 patient across TWO visits (input + v5 engine output) end-to-end so
+ * both the Vitality Map (visit 1) and Vitality Map 2 (visit 2, the 6-month
+ * retest) can render real, comparable reports.
  *
  * ⚠ Runs sequelize.sync({ force: true }) — DROPS AND RECREATES ALL TABLES.
  * Run: node scripts/seedDemo.js
@@ -26,8 +27,20 @@ const { canonicalKey, classify, classifyExplicit } = require('./lib/classify');
 const TESTS_DIR = path.resolve(__dirname, '..', '..', 'Data', 'Tests');
 const DATA_DIR = path.resolve(__dirname, '..', '..', 'Data');
 const ranges = require(path.join(TESTS_DIR, 'reference_ranges.json'));
-const patientInput = require(path.join(DATA_DIR, 'Sample Patients', 'female_29.json'));
-const engineOutput = require(path.join(DATA_DIR, 'Sample Output', 'female_29_output.json'));
+
+// Both visits of the same patient. Visit 1 = baseline, Visit 2 = 6-month retest.
+const VISITS = [
+  {
+    visit: 1,
+    input: require(path.join(DATA_DIR, 'Sample Patients', 'female_29.json')),
+    output: require(path.join(DATA_DIR, 'Sample Output', 'female_29_output.json')),
+  },
+  {
+    visit: 2,
+    input: require(path.join(DATA_DIR, 'Sample Patients', 'female_29_visit2.json')),
+    output: require(path.join(DATA_DIR, 'Sample Output', 'female_29_visit2_output.json')),
+  },
+];
 
 const DEMO_EMAIL = 'test@jiva.com';
 const DEMO_PASSWORD = 'password123';
@@ -55,43 +68,18 @@ const rangeFor = (testName, sex) =>
   rangeByKey[`${canonicalKey(testName)}|${String(sex || '').toLowerCase()}`] ||
   rangeByKey[`${canonicalKey(testName)}|general`] || null;
 
-async function run() {
-  console.log('Resetting database (force sync)…');
-  await sequelize.sync({ force: true });
-
-  console.log('Seeding reference data…');
-  const ref = await seedReference();
-  console.log(`  systems=${ref.systems} biomarkers=${ref.biomarkers} panels=${ref.panels} links=${ref.panelLinks}`);
-
-  // Demo user ---------------------------------------------------------------
-  const hashed = await bcrypt.hash(DEMO_PASSWORD, await bcrypt.genSalt(10));
-  const user = await User.create({ name: 'Demo Patient', email: DEMO_EMAIL, password: hashed });
-
-  // Patient profile + questionnaire (from input) ----------------------------
-  const p = patientInput.patient;
-  const profile = await PatientProfile.create({
-    userId: user.id,
-    externalPatientId: p.id,
-    name: p.name,
-    age: p.age,
-    sex: p.sex,
-    dateOfCollection: p.date_of_collection,
-  });
-  await Questionnaire.create({
-    userId: user.id,
-    patientProfileId: profile.id,
-    data: patientInput.questionnaire || {},
-  });
-
+// Ingest one visit (LabReport + TestResults + engine output) for a user.
+async function ingestVisit(user, ref, { visit, input, output }) {
   // Lab report (rollup from engine output) ----------------------------------
-  const la = engineOutput.lab_analysis;
+  const la = output.lab_analysis;
   const report = await LabReport.create({
     userId: user.id,
-    externalPatientId: engineOutput.patient_id,
-    patientName: engineOutput.patient_name,
-    age: engineOutput.age,
-    sex: engineOutput.sex,
-    dateProcessed: engineOutput.date_processed,
+    visit,
+    externalPatientId: output.patient_id,
+    patientName: output.patient_name,
+    age: output.age,
+    sex: output.sex,
+    dateProcessed: output.date_processed,
     totalLabsReviewed: la.total_labs_reviewed,
     inRangeCount: la.in_range_count,
     borderlineCount: la.borderline_count,
@@ -99,20 +87,20 @@ async function run() {
     criticalCount: la.critical_count,
     criticalAlert: la.critical_alert,
     panelsPresent: la.panels_present || [],
-    patientSummary: engineOutput.patient_summary,
-    overallSummary: engineOutput.overall_summary,
-    biologicalAge: engineOutput.biological_age,
-    biologicalAgeExplanation: engineOutput.biological_age_explanation,
+    patientSummary: output.patient_summary,
+    overallSummary: output.overall_summary,
+    biologicalAge: output.biological_age,
+    biologicalAgeExplanation: output.biological_age_explanation,
   });
 
   // Test results (from input labs, classified with 4-tier Lab_Ranges) --------
-  const patientSex = patientInput.patient.sex;
+  const patientSex = input.patient.sex;
   const tierTally = { in_range: 0, borderline: 0, out_of_range: 0, critical: 0, unknown: 0 };
   let matched = 0, unmatched = 0;
-  for (const lab of patientInput.labs) {
+  for (const lab of input.labs) {
     const key = canonicalKey(lab.test_name);
     const bm = ref.biomarkerByKey[key];
-    if (bm) matched++; else { unmatched++; console.warn(`  ⚠ no biomarker for lab "${lab.test_name}"`); }
+    if (bm) matched++; else { unmatched++; console.warn(`  ⚠ [v${visit}] no biomarker for lab "${lab.test_name}"`); }
     const band = rangeFor(lab.test_name, patientSex);
     const cls = band
       ? classifyExplicit(lab.value, band)
@@ -132,12 +120,13 @@ async function run() {
       status: cls.status,
       isNormal: cls.isNormal,
       panel: lab.panel || null,
+      tierBand: band || null,
     });
   }
 
   // Re-sync the report rollup to the 4-tier classification (Lab_Ranges).
   await report.update({
-    totalLabsReviewed: patientInput.labs.length,
+    totalLabsReviewed: input.labs.length,
     inRangeCount: tierTally.in_range,
     borderlineCount: tierTally.borderline,
     outOfRangeCount: tierTally.out_of_range,
@@ -145,7 +134,7 @@ async function run() {
   });
 
   // Diagnoses ---------------------------------------------------------------
-  for (const d of engineOutput.diagnoses || []) {
+  for (const d of output.diagnoses || []) {
     await Diagnosis.create({
       labReportId: report.id,
       rank: d.rank,
@@ -157,13 +146,13 @@ async function run() {
   }
 
   // Foods (eat + avoid) -----------------------------------------------------
-  for (const f of engineOutput.foods_to_eat || []) {
+  for (const f of output.foods_to_eat || []) {
     await FoodRecommendation.create({
       labReportId: report.id, kind: 'eat', rank: f.rank, food: f.food,
       quantityFrequency: f.quantity_frequency, targetDiagnosis: f.target_diagnosis, rationale: f.why_it_helps,
     });
   }
-  for (const f of engineOutput.foods_to_avoid || []) {
+  for (const f of output.foods_to_avoid || []) {
     await FoodRecommendation.create({
       labReportId: report.id, kind: 'avoid', rank: f.rank, food: f.food,
       avoidanceLevel: f.avoidance_level, reductionTarget: f.reduction_target,
@@ -172,7 +161,7 @@ async function run() {
   }
 
   // Exercise ----------------------------------------------------------------
-  for (const e of engineOutput.exercise_recommendations || []) {
+  for (const e of output.exercise_recommendations || []) {
     await ExerciseRecommendation.create({
       labReportId: report.id, rank: e.rank, exerciseType: e.exercise_type,
       frequency: e.frequency, duration: e.duration, intensity: e.intensity,
@@ -181,7 +170,7 @@ async function run() {
   }
 
   // Supplements -------------------------------------------------------------
-  for (const s of engineOutput.supplement_recommendations || []) {
+  for (const s of output.supplement_recommendations || []) {
     await SupplementRecommendation.create({
       labReportId: report.id, rank: s.rank, supplementName: s.supplement_name,
       dosageRange: s.dosage_range, timing: s.timing, targetDiagnosis: s.target_diagnosis,
@@ -191,7 +180,7 @@ async function run() {
   }
 
   // System summaries (linked to canonical FunctionalSystem by name) ---------
-  for (const s of engineOutput.system_summaries || []) {
+  for (const s of output.system_summaries || []) {
     const sys = ref.systemByName[s.system_name];
     await SystemSummary.create({
       labReportId: report.id,
@@ -202,10 +191,49 @@ async function run() {
     });
   }
 
-  console.log('\n✅ Demo seeded.');
+  return { report, matched, unmatched, tierTally };
+}
+
+async function run() {
+  console.log('Resetting database (force sync)…');
+  await sequelize.sync({ force: true });
+
+  console.log('Seeding reference data…');
+  const ref = await seedReference();
+  console.log(`  systems=${ref.systems} biomarkers=${ref.biomarkers} panels=${ref.panels} links=${ref.panelLinks}`);
+
+  // Demo user ---------------------------------------------------------------
+  const hashed = await bcrypt.hash(DEMO_PASSWORD, await bcrypt.genSalt(10));
+  const user = await User.create({ name: 'Demo Patient', email: DEMO_EMAIL, password: hashed });
+
+  // Patient profile + questionnaire (from visit 1 input) --------------------
+  const p = VISITS[0].input.patient;
+  const profile = await PatientProfile.create({
+    userId: user.id,
+    externalPatientId: p.id,
+    name: p.name,
+    age: p.age,
+    sex: p.sex,
+    dateOfCollection: p.date_of_collection,
+  });
+
+  // Ingest each visit; one questionnaire snapshot per visit.
+  for (const v of VISITS) {
+    await Questionnaire.create({
+      userId: user.id,
+      patientProfileId: profile.id,
+      data: v.input.questionnaire || {},
+    });
+    const { report, matched, unmatched, tierTally } = await ingestVisit(user, ref, v);
+    console.log(
+      `  visit ${v.visit}: report ${report.id} | labs ${matched} matched/${unmatched} unmatched | ` +
+      `in=${tierTally.in_range} borderline=${tierTally.borderline} out=${tierTally.out_of_range} crit=${tierTally.critical} | ` +
+      `bioAge=${v.output.biological_age}`
+    );
+  }
+
+  console.log('\n✅ Demo seeded (2 visits).');
   console.log(`   user: ${DEMO_EMAIL} / ${DEMO_PASSWORD}`);
-  console.log(`   labs: ${matched} matched, ${unmatched} unmatched | report ${report.id}`);
-  console.log(`   diagnoses=${(engineOutput.diagnoses||[]).length} foods_eat=${(engineOutput.foods_to_eat||[]).length} foods_avoid=${(engineOutput.foods_to_avoid||[]).length} exercise=${(engineOutput.exercise_recommendations||[]).length} supplements=${(engineOutput.supplement_recommendations||[]).length} systemSummaries=${(engineOutput.system_summaries||[]).length}`);
 }
 
 run()

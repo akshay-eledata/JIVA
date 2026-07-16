@@ -16,6 +16,7 @@ const Navbar: React.FC = () => {
   const navItems = [
     { label: NAVBAR_LABELS.WELLNESS_PROFILE, path: '/dashboard' },
     { label: NAVBAR_LABELS.VITALITY_MAP, path: '/vitality-map' },
+    { label: NAVBAR_LABELS.VITALITY_MAP_2, path: '/vitality-map-2' },
     { label: NAVBAR_LABELS.WELLNESS_PLAN, path: '/action-plan' },
     { label: NAVBAR_LABELS.SCHEDULE, path: '/personal-info' },
   ];
