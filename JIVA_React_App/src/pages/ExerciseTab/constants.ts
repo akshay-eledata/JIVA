@@ -8,6 +8,7 @@ export interface YogaItem {
   img: string;
   title: string;
   desc: string;
+  videoUrl?: string;
 }
 
 // ExerciseTab Page Constants
@@ -29,9 +30,9 @@ export const EXERCISE_TAB_CONSTANTS = {
   RECOMMENDED_IMAGE_HEIGHT: '180px',
   
   RECOMMENDED_YOGA: [
-    { id: 1, img: Yoga1, title: "Today's Top Hits", desc: "Pranayama is on top of the\nExcercise!" },
-    { id: 2, img: Yoga2, title: "Today's Top Hits", desc: "Pranayama is on top of the\nExcercise!" },
-    { id: 3, img: Yoga3, title: "Today's Top Hits", desc: "Pranayama is on top of the\nExcercise!" },
-    { id: 4, img: Yoga4, title: "Today's Top Hits", desc: "Pranayama is on top of the\nExcercise!" },
+    { id: 1, img: Yoga1, title: "Today's Top Hits", desc: "Pranayama is on top of the\nExcercise!", videoUrl: '/yoga.mp4' },
+    { id: 2, img: Yoga2, title: "Flexibility Routine", desc: "Pranayama is on top of the\nExcercise!", videoUrl: '/yoga.mp4' },
+    { id: 3, img: Yoga3, title: "Strength & Balance", desc: "Pranayama is on top of the\nExcercise!", videoUrl: '/yoga.mp4' },
+    { id: 4, img: Yoga4, title: "Mindfulness Flow", desc: "Pranayama is on top of the\nExcercise!", videoUrl: '/yoga.mp4' },
   ] as YogaItem[]
 };

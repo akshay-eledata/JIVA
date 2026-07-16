@@ -35,6 +35,14 @@ const registerUser = async (req, res) => {
       password: hashedPassword
     });
 
+    const token = generateToken(user.id);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+    });
+
     res.status(201).json({
       id: user.id,
       name: user.name,
@@ -42,7 +50,7 @@ const registerUser = async (req, res) => {
       lastName: user.lastName,
       phone: user.phone,
       email: user.email,
-      token: generateToken(user.id)
+      token: token // Keep it in JSON too just in case existing logic relies on it temporarily
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -59,11 +67,19 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ where: { email } });
 
     if (user && (await bcrypt.compare(password, user.password))) {
+      const token = generateToken(user.id);
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      });
+
       res.json({
         id: user.id,
         name: user.name,
         email: user.email,
-        token: generateToken(user.id)
+        token: token // Keep it in JSON too
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });

@@ -20,7 +20,7 @@ const ScheduleConfirmDialog: React.FC<ScheduleConfirmDialogProps> = ({ open, onC
         if (isReschedule) {
             confirmReschedule();
             onClose();
-            navigate('/vitality-map');
+            navigate('/vitality-map', { state: { rescheduleIntent: false } });
         } else {
             confirmSchedule();
             onClose();

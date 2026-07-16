@@ -36,13 +36,15 @@ const Signin: React.FC = () => {
       const res = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || 'Login failed.');
       }
-      // Store JWT token
+      // JWT token is now also stored in an HttpOnly cookie automatically;
+      // keep it in localStorage too for the existing Bearer-based fetches.
       localStorage.setItem('token', data.token);
       // Persist any intake answers drafted before this session had a token.
       await flushDraftToServer().catch(() => {});
