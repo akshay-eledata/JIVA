@@ -6,6 +6,15 @@ const {
   PatientProfile, Questionnaire, LabReport, TestResult, FunctionalSystem, Biomarker,
   Diagnosis, FoodRecommendation, ExerciseRecommendation, SupplementRecommendation, SystemSummary,
 } = require('../models');
+const { filterFoodsToEat } = require('../utils/foodPreferences');
+
+// Latest questionnaire answers for a user ({} if none yet).
+async function latestQuestionnaireData(userId) {
+  const q = await Questionnaire.findOne({
+    where: { userId }, order: [['createdAt', 'DESC']],
+  });
+  return (q && q.data) || {};
+}
 
 // Resolve a report for a user, optionally pinned to a specific `visit`.
 //
@@ -123,6 +132,13 @@ async function getLatestReport(req, res) {
     const foods = report.FoodRecommendations || [];
     const byRank = (a, b) => (a.rank || 0) - (b.rank || 0);
 
+    // Respect the patient's current questionnaire (diet, restrictions,
+    // allergies, dislikes) even though recommendations were pre-computed.
+    const questionnaire = await latestQuestionnaireData(req.user.id);
+    const { kept: foodsToEat, excluded } = filterFoodsToEat(
+      foods.filter((f) => f.kind === 'eat').sort(byRank), questionnaire,
+    );
+
     res.json({
       patient: {
         externalPatientId: report.externalPatientId,
@@ -146,8 +162,9 @@ async function getLatestReport(req, res) {
       biological_age: report.biologicalAge,
       biological_age_explanation: report.biologicalAgeExplanation,
       diagnoses: (report.Diagnoses || []).sort(byRank),
-      foods_to_eat: foods.filter((f) => f.kind === 'eat').sort(byRank),
+      foods_to_eat: foodsToEat,
       foods_to_avoid: foods.filter((f) => f.kind === 'avoid').sort(byRank),
+      foods_excluded_by_preferences: excluded,
       exercise_recommendations: (report.ExerciseRecommendations || []).sort(byRank),
       supplement_recommendations: (report.SupplementRecommendations || []).sort(byRank),
       system_summaries: report.SystemSummaries || [],
@@ -362,8 +379,11 @@ async function getRecommendations(req, res) {
     if (!type || type === 'food') {
       const foods = await FoodRecommendation.findAll({ where, order: byRank });
       const f = filterDx(foods).filter((r) => !kind || r.kind === kind);
-      result.foods_to_eat = f.filter((r) => r.kind === 'eat');
+      const questionnaire = await latestQuestionnaireData(req.user.id);
+      const { kept, excluded } = filterFoodsToEat(f.filter((r) => r.kind === 'eat'), questionnaire);
+      result.foods_to_eat = kept;
       result.foods_to_avoid = f.filter((r) => r.kind === 'avoid');
+      result.foods_excluded_by_preferences = excluded;
     }
     if (!type || type === 'exercise') {
       result.exercise_recommendations = filterDx(await ExerciseRecommendation.findAll({ where, order: byRank }));
@@ -377,4 +397,37 @@ async function getRecommendations(req, res) {
   }
 }
 
-module.exports = { getProfile, getLatestReport, getBiomarkersBySystem, getCompare, getBiomarkerHistory, getRecommendations };
+// POST /api/me/questionnaire — merge answers into the user's questionnaire.
+// Called from the pre-payment intake wizard and the anytime questionnaire
+// page; the stored JSONB is the `questionnaire` block of the engine input.
+async function saveQuestionnaire(req, res) {
+  try {
+    const incoming = req.body && req.body.data;
+    if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) {
+      return res.status(400).json({ message: 'Expected { data: { ...answers } }' });
+    }
+
+    let questionnaire = await Questionnaire.findOne({
+      where: { userId: req.user.id }, order: [['createdAt', 'DESC']],
+    });
+    if (questionnaire) {
+      questionnaire.data = { ...questionnaire.data, ...incoming };
+      await questionnaire.save();
+    } else {
+      const profile = await PatientProfile.findOne({ where: { userId: req.user.id } });
+      questionnaire = await Questionnaire.create({
+        userId: req.user.id,
+        patientProfileId: profile ? profile.id : null,
+        data: incoming,
+      });
+    }
+    res.json({ questionnaire: questionnaire.data });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+module.exports = {
+  getProfile, getLatestReport, getBiomarkersBySystem, getCompare, getBiomarkerHistory,
+  getRecommendations, saveQuestionnaire,
+};

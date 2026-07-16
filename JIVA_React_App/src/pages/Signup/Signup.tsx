@@ -7,6 +7,7 @@ import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING }
 import { SIGNUP_LABELS } from './labels';
 import { SIGNUP_CONSTANTS } from './constants';
 import { apiUrl } from '../../config';
+import { flushDraftToServer } from '../../questionnaire/storage';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
 
@@ -44,7 +45,10 @@ const Signup: React.FC = () => {
         throw new Error(data.message || 'Registration failed.');
       }
       localStorage.setItem('token', data.token);
-      navigate('/select-packages');
+      // If intake answers were drafted before the account existed, persist them now.
+      await flushDraftToServer().catch(() => {});
+      // Intake questionnaire comes before package selection & payment.
+      navigate('/intake');
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
     } finally {
