@@ -1124,11 +1124,11 @@ const VitalityMap: React.FC = () => {
                                                         mt: 0.5
                                                     }}
                                                 />
-                                                <Box>
-                                                    <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2' }}>
+                                                <Box sx={{ textAlign: 'left' }}>
+                                                    <Typography sx={{ fontSize: '16px', fontFamily: 'source sans pro', fontWeight: 600, color: '#1A212B', mb: 0.5, lineHeight: '1.2', textAlign: 'left' }}>
                                                         {item.biomarkerName || item.testName}
                                                     </Typography>
-                                                    <Typography sx={{ fontSize: '15px', color: '#728197' }}>
+                                                    <Typography sx={{ fontSize: '15px', color: '#728197', textAlign: 'left' }}>
                                                         <span style={{ color: txtColor, fontWeight: 600 }}>{label}</span> {item.value} {item.unit || ''}
                                                     </Typography>
                                                 </Box>

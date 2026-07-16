@@ -454,9 +454,9 @@ const VitalityMap2: React.FC = () => {
                                     return (
                                         <Box key={idx} onClick={() => openBiomarker(item.testName)} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', cursor: 'pointer', borderRadius: '8px', py: 0.5, '&:hover': { backgroundColor: '#F8FAFC' } }}>
                                             <Box sx={{ width: '4px', height: '46px', backgroundColor: barColor, borderRadius: '2px', flexShrink: 0, mt: 0.5 }} />
-                                            <Box>
-                                                <Typography sx={{ fontSize: '16px', fontWeight: 600, color: '#1A212B', mb: 0.5 }}>{item.biomarkerName || item.testName}</Typography>
-                                                <Typography sx={{ fontSize: '15px', color: '#728197' }}><span style={{ color: txtColor, fontWeight: 600 }}>{label}</span> {item.value} {item.unit || ''}</Typography>
+                                            <Box sx={{ textAlign: 'left' }}>
+                                                <Typography sx={{ fontSize: '16px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left' }}>{item.biomarkerName || item.testName}</Typography>
+                                                <Typography sx={{ fontSize: '15px', color: '#728197', textAlign: 'left' }}><span style={{ color: txtColor, fontWeight: 600 }}>{label}</span> {item.value} {item.unit || ''}</Typography>
                                             </Box>
                                         </Box>
                                     );
