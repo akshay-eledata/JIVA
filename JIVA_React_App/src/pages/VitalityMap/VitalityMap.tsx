@@ -826,7 +826,7 @@ const VitalityMap: React.FC = () => {
                     }}
                 >
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 1.5, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
-                        What is the Range ?
+                        Range Breakdown
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 3, width: '100%' }}>

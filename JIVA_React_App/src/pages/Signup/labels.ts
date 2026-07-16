@@ -3,7 +3,7 @@ export const SIGNUP_LABELS = {
   WELCOME_TITLE: 'Welcome to Jiva',
   FIRST_NAME: 'First name',
   LAST_NAME: 'Last name',
-  EMAIL_ID: 'Email id',
+  EMAIL_ID: 'Email',
   PASSWORD: 'Password',
   PHONE_NO: 'Phone No (optional)',
   FORGOT_PASSWORD: 'Forgot Password?',

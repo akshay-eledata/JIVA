@@ -1,6 +1,6 @@
 // PersonalInfo Page Labels
 export const PERSONAL_INFO_LABELS = {
-  TITLE_DEFAULT: "Lets Get Started",
+  TITLE_DEFAULT: "Let's Get Started",
   TITLE_RESCHEDULE: "Reschedule Your Visit",
   STEP_PERSONAL_INFO: "Personal Info",
   STEP_SCHEDULE: "Schedule",

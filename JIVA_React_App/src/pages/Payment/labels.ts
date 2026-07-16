@@ -1,7 +1,7 @@
 // Payment Page Labels
 export const PAYMENT_LABELS = {
   TITLE: 'Make Payment',
-  SUBTITLE: "Effortlessly turn your health into a fully functional, proactive in just months with the Jiva's plan.",
+  SUBTITLE: "Turn your health into a proactive, data-driven routine in just a few months with your JIVA plan.",
   CONTACT_INFORMATION: 'Contact information',
   EMAIL: 'Email',
   PAYMENT_METHOD: 'Payment method',

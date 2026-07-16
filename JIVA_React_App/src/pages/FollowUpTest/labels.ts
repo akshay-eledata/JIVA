@@ -7,7 +7,7 @@ export const FOLLOW_UP_TEST_LABELS = {
   BUTTON_DIRECTIONS: "Directions",
   
   LAB_NAME: "Quest Diagnostics",
-  LAB_ADDRESS: "11914 Astoria Blvd Ste 110, Housten, TX 77089 (ANA) Pattern",
+  LAB_ADDRESS: "11914 Astoria Blvd Ste 110, Houston, TX 77089",
   PHONE_LABEL: "Lab Phone (Text Only)",
   PHONE_NUMBER: "(914) 735-1876",
   ORDERED_BY_LABEL: "Who Ordered My Tests?",
@@ -21,13 +21,13 @@ export const FOLLOW_UP_TEST_LABELS = {
   PREP_HEADING_VISIT: "At visit",
   
   PREP_SUPPLEMENTS_TITLE: "Stop Supplements",
-  PREP_SUPPLEMENTS_DESC: "Stop taking supplements staring from Monday August 25th, At least 24 hours before your visit, as it can screw results. Continue doctor prescribed medication.",
+  PREP_SUPPLEMENTS_DESC: "Stop taking supplements staring from Monday August 25th, At least 24 hours before your visit, as it can affect your results. Continue doctor prescribed medication.",
   
-  PREP_FAST_TITLE: "8- Hours Fast",
+  PREP_FAST_TITLE: "8-Hour Fast",
   PREP_FAST_DESC: "Enjoy the light Healthy meal prior to fasting. Start Fasting 8 Hours before the visit, with no food or drinks (Including coffee and alcohol)",
   
   PREP_EXERCISE_TITLE: "Continue Exercise",
-  PREP_EXERCISE_DESC: "Stop taking supplements staring from Monday August 25th, At least 24 hours before your visit, as it can screw results. Continue doctor prescribed medication. However drink plenty of water during and after your fast",
+  PREP_EXERCISE_DESC: "Avoid intense exercise for 24 hours before your visit; it can affect certain results.",
   
   PREP_DRINK_TITLE: "Drink at least 1L(4 Cups of water)",
   PREP_DRINK_DESC: "Good Hydration helps for easier blood draw and Urine Samples",
@@ -36,7 +36,7 @@ export const FOLLOW_UP_TEST_LABELS = {
   PREP_ARRIVE_DESC: "If you arrive even 10 min late you will likely lose your slot.",
   
   PREP_ID_TITLE: "Proper Identification",
-  PREP_ID_DESC: "Bring your ID to the appointment from Monday August 25th, At least 24 hours before your visit, as it can screw results. Continue doctor prescribed medication.",
+  PREP_ID_DESC: "Bring a valid photo ID to your appointment. Continue any doctor-prescribed medication.",
   
-  BIOMARKERS_COMING_SOON: "Biomarkers List Coming Soon",
+  BIOMARKERS_COMING_SOON: "Biomarker list coming soon",
 } as const;

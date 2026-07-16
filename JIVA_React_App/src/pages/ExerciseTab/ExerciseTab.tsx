@@ -152,7 +152,7 @@ const ExerciseTab: React.FC<MovementProps> = ({ exercise = [] }) => {
                 </Box>
                 <Box>
                   <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#1A212B' }}>Guided audio session</Typography>
-                  <Typography sx={{ fontSize: '12px', color: '#667085' }}>{selected.duration || 'Audio'} · placeholder track</Typography>
+                  <Typography sx={{ fontSize: '12px', color: '#667085' }}>{selected.duration || 'Audio'}</Typography>
                 </Box>
               </Box>
             ) : (

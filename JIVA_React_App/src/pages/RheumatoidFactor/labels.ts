@@ -10,15 +10,15 @@ export const RHEUMATOID_FACTOR_LABELS = {
   BIO_AGE_DESC: "Your Biological age is 7.2 years younger than your calendar age.",
   IN_RANGE: "In Range",
   RANGE_VALUE: "<10 IU/ml",
-  RF_DESC: "Check for any indicators for auto immunity disorder like Rheumatoid Factor like rheumatoid Factor",
+  RF_DESC: "Checks for autoimmune indicators such as Rheumatoid Factor.",
   RESULT_BASE: "This result is based on the lab test from January 2025",
   VIEW_MORE: "View More",
   
   ABOVE_RANGE: "Above Range",
-  CALC_CHANGES: "We made slight changes to how we calculate this",
+  CALC_CHANGES: "How we calculate this result.",
   LEARN_MORE: "Learn More",
   
-  ARTICLE_TITLE: "Why It matters",
+  ARTICLE_TITLE: "Why It Matters",
   ABOUT_PARAGRAPH_1: "Hello there! As a marketing manager in the SaaS industry, you might be looking for innovative ways to engage your audience. I bet generative AI has crossed your mind as an option for creating content. Well, let me share from my firsthand experience.",
   ABOUT_PARAGRAPH_2_PART_1: "Google encourages high-quality blogs regardless of whether they're ",
   ABOUT_PARAGRAPH_2_SPAN_1: "written by humans or created using artificial intelligence",
