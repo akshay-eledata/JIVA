@@ -312,7 +312,9 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
         showIf: { questionId: 'chronic_conditions', equals: 'Yes' },
         addLabel: 'Add condition',
         columns: [
-          { id: 'condition', label: 'Condition', type: 'text', placeholder: 'e.g. Hypothyroidism' },
+          // ICD-11 autocomplete over free text (per the intake spec: codes are
+          // resolved in the back end from whatever the patient types).
+          { id: 'condition', label: 'Condition', type: 'icd', placeholder: 'Start typing, e.g. thyroid' },
           { id: 'year_diagnosed', label: 'Year of diagnosis', type: 'text', placeholder: 'e.g. 2019' },
         ],
       },
@@ -422,7 +424,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
         label: 'Family medical conditions',
         addLabel: 'Add family condition',
         columns: [
-          { id: 'condition', label: 'Condition', type: 'select', options: CONDITION_OPTIONS },
+          { id: 'condition', label: 'Condition', type: 'icd', placeholder: 'Start typing, e.g. diabetes' },
           { id: 'relationship', label: 'Relative', type: 'select', options: RELATIVE_OPTIONS },
         ],
       },

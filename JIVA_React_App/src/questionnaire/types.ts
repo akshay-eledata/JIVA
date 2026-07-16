@@ -79,7 +79,12 @@ export interface TagsQuestion extends QuestionBase {
 export interface RowsColumn {
   id: string;
   label: string;
-  type: 'select' | 'text';
+  /**
+   * 'icd' renders a free-text box with ICD-11 autocomplete. Picking a
+   * suggestion also stores its code at `${id}_icd_code` on the row; free text
+   * is still accepted when nothing matches.
+   */
+  type: 'select' | 'text' | 'icd';
   options?: string[];
   placeholder?: string;
 }

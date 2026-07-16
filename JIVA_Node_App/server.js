@@ -24,6 +24,7 @@ app.use('/api/packages', require('./routes/packageRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/test-results', require('./routes/testResultRoutes'));
 app.use('/api/me', require('./routes/meRoutes'));
+app.use('/api/icd', require('./routes/icdRoutes'));
 
 app.get('/', (req, res) => {
   res.send('JIVA API is running...');

@@ -11,6 +11,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { COLORS, FONTS, FONT_WEIGHTS } from '../../constants/constants';
+import IcdConditionField from './IcdConditionField';
 import {
   Question, Answers, AnswerValue, RepeatRow, RowsQuestion,
 } from '../../questionnaire/types';
@@ -304,30 +305,47 @@ const RowsField: React.FC<{
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       {rows.map((row, i) => (
-        <Box key={i} sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          {q.columns.map((col) => (
-            <TextField
-              key={col.id}
-              select={col.type === 'select'}
-              size="small"
-              fullWidth
-              label={col.label}
-              placeholder={col.placeholder}
-              value={row[col.id] || ''}
-              onChange={(e) => {
-                const next = rows.map((r, j) => (j === i ? { ...r, [col.id]: e.target.value } : r));
-                setRows(next);
-              }}
-              sx={textFieldSx}
-            >
-              {col.type === 'select' &&
-                (col.options || []).map((opt) => (
-                  <MenuItem key={opt} value={opt} sx={{ fontSize: '14px' }}>
-                    {opt}
-                  </MenuItem>
-                ))}
-            </TextField>
-          ))}
+        <Box key={i} sx={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+          {q.columns.map((col) => {
+            const patchRow = (patch: RepeatRow) =>
+              setRows(rows.map((r, j) => (j === i ? { ...r, ...patch } : r)));
+
+            // ICD-11 autocomplete: stores the text plus its code on the row.
+            if (col.type === 'icd') {
+              return (
+                <IcdConditionField
+                  key={col.id}
+                  label={col.label}
+                  placeholder={col.placeholder}
+                  value={row[col.id] || ''}
+                  code={row[`${col.id}_icd_code`] || ''}
+                  onChange={(text, code) => patchRow({ [col.id]: text, [`${col.id}_icd_code`]: code })}
+                  sx={textFieldSx}
+                />
+              );
+            }
+
+            return (
+              <TextField
+                key={col.id}
+                select={col.type === 'select'}
+                size="small"
+                fullWidth
+                label={col.label}
+                placeholder={col.placeholder}
+                value={row[col.id] || ''}
+                onChange={(e) => patchRow({ [col.id]: e.target.value })}
+                sx={textFieldSx}
+              >
+                {col.type === 'select' &&
+                  (col.options || []).map((opt) => (
+                    <MenuItem key={opt} value={opt} sx={{ fontSize: '14px' }}>
+                      {opt}
+                    </MenuItem>
+                  ))}
+              </TextField>
+            );
+          })}
           <IconButton size="small" onClick={() => setRows(rows.filter((_, j) => j !== i))} aria-label="Remove row">
             <CloseIcon fontSize="small" />
           </IconButton>
