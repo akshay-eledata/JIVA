@@ -30,8 +30,10 @@ interface Props {
   sx?: object;
 }
 
-const DEBOUNCE_MS = 250;
-const MIN_CHARS = 2;
+const DEBOUNCE_MS = 220;
+// Wait for a few letters before searching: enough signal for WHO's
+// typo-tolerant (flexisearch) matching to work even when the spelling is off.
+const MIN_CHARS = 3;
 
 const IcdConditionField: React.FC<Props> = ({ label, placeholder, value, code, onChange, sx }) => {
   const [input, setInput] = useState(value || '');
@@ -102,26 +104,34 @@ const IcdConditionField: React.FC<Props> = ({ label, placeholder, value, code, o
       }}
       getOptionLabel={(o) => (typeof o === 'string' ? o : o.title)}
       isOptionEqualToValue={(o, v) => o.code === (v as IcdSuggestion).code}
-      renderOption={(props, o) => (
-        <Box component="li" {...props} key={o.code} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-          <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '14px', color: COLORS.TEXT_PRIMARY }}>
-              {o.title}
-            </Typography>
-            {o.matchedOn && o.matchedOn.toLowerCase() !== o.title.toLowerCase() && (
-              <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '12px', color: COLORS.TEXT_SECONDARY }}>
-                also known as {o.matchedOn}
+      renderOption={(props, o) => {
+        // Lead with the everyday term the patient recognizes (the synonym that
+        // matched), then show the formal ICD-11 name under "also known as".
+        const layRaw = o.matchedOn && o.matchedOn.toLowerCase() !== o.title.toLowerCase() ? o.matchedOn : null;
+        const lay = layRaw ? layRaw.charAt(0).toUpperCase() + layRaw.slice(1) : null;
+        const primary = lay || o.title;
+        return (
+          <Box component="li" {...props} key={o.code} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '14px', color: COLORS.TEXT_PRIMARY }}>
+                {primary}
               </Typography>
-            )}
+              {lay && (
+                <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '12px', color: COLORS.TEXT_SECONDARY }}>
+                  also known as {o.title}
+                </Typography>
+              )}
+            </Box>
+            <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '11px', fontWeight: 700, color: COLORS.PRIMARY, whiteSpace: 'nowrap', mt: '2px' }}>
+              {o.code}
+            </Typography>
           </Box>
-          <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '11px', fontWeight: 700, color: COLORS.PRIMARY, whiteSpace: 'nowrap', mt: '2px' }}>
-            {o.code}
-          </Typography>
-        </Box>
-      )}
+        );
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
+          size="small"
           label={label}
           placeholder={placeholder}
           helperText={helper}
