@@ -7,8 +7,8 @@ export const EXERCISE_TAB_LABELS = {
   VIEW_PLAYLIST: "View playlist",
   RECOMMENDED_YOGA: "Recommended Yoga",
   YOGA_PLAYLIST: "Yoga Playlist",
-  EXERCISE_CONTENT_PLACEHOLDER: "Exercise content goes here",
-  
-  YOGA_TYPE_1_TITLE: "YOGA TYPE 1",
-  YOGA_TYPE_1_DESC: "Pranayama is on top of the\n Excercise!",
+  EXERCISE_CONTENT_PLACEHOLDER: "Your movement plan will appear here.",
+
+  YOGA_TYPE_1_TITLE: "Guided Yoga Session",
+  YOGA_TYPE_1_DESC: "Breath-led yoga to complement your movement plan.",
 } as const;

@@ -255,7 +255,7 @@ const Dashboard: React.FC = () => {
                     Visit 1
                   </Typography>
                   <Typography sx={{ fontSize: '14px', fontWeight: 400, color: '#475467' }}>
-                    Tommrow 9:10 AM
+                    Tomorrow, 9:10 AM
                   </Typography>
                 </Box>
               </Box>

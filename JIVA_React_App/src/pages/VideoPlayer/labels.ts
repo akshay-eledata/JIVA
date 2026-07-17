@@ -10,7 +10,7 @@ export const VIDEO_PLAYER_LABELS = {
   LABEL_DOWNLOAD: "Download",
   
   DESCRIPTION_TITLE: "Description",
-  DESCRIPTION_TEXT: "Bizli, is a 2018 Bangladeshi Superhero film directed by Iftakar Chowdhury, and produced by Bobstar Films. It stars Bobby as the protagonist and Indian actress Satabdi Roy as the antagonist. The film was released countrywide on . t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.",
+  DESCRIPTION_TEXT: "A guided session to support your movement and recovery. Follow along at your own pace.",
   
   RELATED_VIDEOS_TITLE: "Related Videos",
   PLAYLISTS_TITLE: "Playlists",

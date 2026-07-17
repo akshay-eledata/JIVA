@@ -1,0 +1,71 @@
+# One-command local setup for the JIVA app.
+#
+#   docker compose up
+#
+# then open http://localhost:5173 and log in with the demo account
+# (test@jiva.com / password123). See README.md for details.
+#
+# Services:
+#   db        PostgreSQL database                     (host port 5433)
+#   icd-api   WHO ICD-11 API for condition lookup     (host port 8382)
+#   backend   Express API (seeds demo data on start)  (host port 5001)
+#   frontend  React app (Vite)                         (host port 5173)
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jiva_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - jiva-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d jiva_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  icd-api:
+    # WHO ICD-11 API — powers the condition autocomplete in the intake
+    # questionnaire. No account or API key needed for the local container.
+    image: whoicd/icd-api
+    environment:
+      acceptLicense: "true"
+      saveAnalytics: "false"
+    ports:
+      - "8382:80"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: JIVA_Node_App/Dockerfile
+    environment:
+      PORT: "5001"
+      DATABASE_URL: postgres://postgres:postgres@db:5432/jiva_db
+      JWT_SECRET: supersecretjivatoken
+      ICD_API_BASE: http://icd-api:80
+    ports:
+      - "5001:5001"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./JIVA_React_App
+    environment:
+      # The browser calls the backend on the host-mapped port.
+      VITE_API_BASE_URL: http://localhost:5001
+    # Vite is configured to serve on 5174 (see vite.config.ts).
+    ports:
+      - "5174:5174"
+    depends_on:
+      - backend
+
+volumes:
+  jiva-db-data:

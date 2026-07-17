@@ -315,7 +315,7 @@ const SystemCompare: React.FC<{ compare: ComparePayload | null; onSelectBiomarke
             </Box>
 
             <Typography sx={{ fontSize: '12px', color: '#98A2B3', mt: 2, px: 1, textAlign: 'left' }}>
-                Each bar counts the biomarkers that moved in that system. Tap a row to see exactly which ones changed.
+                Each bar counts the biomarkers that moved in that system. Click a row to see exactly which ones changed.
             </Typography>
         </Box>
     );

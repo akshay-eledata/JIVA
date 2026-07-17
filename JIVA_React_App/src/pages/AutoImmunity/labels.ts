@@ -5,19 +5,19 @@ export const AUTO_IMMUNITY_LABELS = {
   BREADCRUMB_BLOG_WRITING: "Blog writing",
   BREADCRUMB_HERE: "You are here",
   
-  TITLE: "Auto Immunity",
+  TITLE: "Autoimmunity",
   SUBTITLE: "Autoimmunity is when your immune system attacks your body's own tissues rather than harmful pathogens.",
   
   BIOMARKER_TITLE: "Anti Nuclear Antibodies (ANA) Pattern",
   BIOMARKER_RANGE: "In Range",
-  BIOMARKER_VALUE: " 410 nmol/ L",
+  BIOMARKER_VALUE: "410 nmol/L",
   
   FAQ_TITLE: "Frequently asked questions about Auto Immunity",
   FAQ_DATE: "Oct 19",
   FAQ_READ_TIME: "10 min read",
   
-  RANGE_TITLE: "What is the Range ?",
-  RANGE_TEXT: "30.1 is the bio Jan 2025",
+  RANGE_TITLE: "Range Breakdown",
+  RANGE_TEXT: "Your most recent result and where it falls in range.",
   RANGE_LEGEND_IN: "IN RANGE",
   RANGE_LEGEND_OUT: "OUT OF RANGE",
   
@@ -57,7 +57,7 @@ export const AUTO_IMMUNITY_LABELS = {
   EXPLORING_PARAGRAPH_2_PART_2: "). This tool identifies specific firmographics or psychographic drivers behind customer success - a valuable guide for creating targeted outputs catering to arrayed reader types.",
   EXPLORING_PARAGRAPH_3: "Simultaneously, SEO aspects also need attention: identifying suitable keywords & phrases people commonly use enhances reach (SEO.COM reference). Yet remember – human appeal doesn’t mean packing text up finely into presentable semblances bearing little value substance and stuffing it full with only 'keywords.'",
   
-  BEST_PRACTISE_TITLE: "Best Practise",
+  BEST_PRACTISE_TITLE: "Best Practices",
   BEST_PRACTISE_PARAGRAPH_1: "Creating brilliant AI-powered blogs is a fun blending of logic with just the right dose of creativity. From defining your target audience to tuning in ChatGPT's language style, every step counts towards creating content that's not only SEO-friendly but also enjoyable and valuable for readers.",
   BEST_PRACTISE_PARAGRAPH_2: "One tactic I've found useful is maintaining originality in message essence, with unique perspectives infusing life beyond words onto pages!",
   BEST_PRACTISE_PARAGRAPH_3: "Incorporating trusted references while optimizing blog posts intelligently (rather than keyword stuffing) can significantly aid quality enhancements. Remember, it isn't about writing for Google here, so avoid tunnel vision focusing solely on algorithm-driven success rate, aiming at heart-touching human connections, building loyal reader bases, and sharing knowledge benefiting others!",

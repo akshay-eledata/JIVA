@@ -11,7 +11,7 @@ export const YOUR_HEALTH_LABELS = {
   IMPROVING: "Improving",
   
   // Banner
-  BANNER_HEADER: "HEY! YOUR KINDLY CHECK IF OTHER TEST ARE NEEDED",
+  BANNER_HEADER: "Check whether any additional tests are needed",
   BANNER_DESC: "Your doctor can personalize these tests based on your medical history, lifestyle, and family risk factors. Take control of your health—book your preventive screenings today and stay ahead of potential risks.",
   
   // Detailed Table Headers
