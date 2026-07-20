@@ -17,7 +17,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
         kind: 'single', id: 'sleep_hours', phase: 'pre',
         label: 'How would you describe your sleep?',
         helper: 'Hours per night on average',
-        options: ['Less than 5', '5–6 hrs', '6–7 hrs', '7–8 hrs', '8–9 hrs', '9+ hrs'],
+        options: ['Less than 5', '5-6 hrs', '6-7 hrs', '7-8 hrs', '8-9 hrs', '9+ hrs'],
       },
       {
         kind: 'single', id: 'work_shift', phase: 'anytime',
@@ -56,7 +56,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
       {
         kind: 'single', id: 'alcohol_frequency', phase: 'pre',
         label: 'How often do you consume alcohol?',
-        options: ['Never', 'Rarely (social only)', '1–2x per week', '3–5x per week', 'Daily'],
+        options: ['Never', 'Rarely (social only)', '1-2x per week', '3-5x per week', 'Daily'],
       },
       {
         kind: 'yesno', id: 'tobacco_use', phase: 'pre',
@@ -166,7 +166,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
       {
         kind: 'single', id: 'water_intake', phase: 'pre',
         label: 'Daily water intake',
-        options: ['Less than 1L', '1–2 L', '2–3 L', '3L+'],
+        options: ['Less than 1L', '1-2 L', '2-3 L', '3L+'],
       },
       {
         kind: 'text', id: 'nutrition_goals', phase: 'anytime', multiline: true,
@@ -183,15 +183,15 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
         kind: 'single', id: 'exercise_frequency', phase: 'pre',
         label: 'How often are you physically active?',
         options: [
-          'Sedentary (rarely move)', '1–2x per week', '3–4x per week',
-          '5–6x per week', 'Daily', 'Twice daily',
+          'Sedentary (rarely move)', '1-2x per week', '3-4x per week',
+          '5-6x per week', 'Daily', 'Twice daily',
         ],
       },
       {
         kind: 'single', id: 'exercise_duration_per_session', phase: 'pre',
         label: 'On active days, how long do you typically exercise?',
         options: [
-          'Under 15 min', '15–30 min', '30–45 min', '45–60 min', '60–90 min', '90+ min',
+          'Under 15 min', '15-30 min', '30-45 min', '45-60 min', '60-90 min', '90+ min',
         ],
       },
       {
@@ -228,7 +228,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
         label: 'How long have you been practicing yoga?',
         showIf: { questionId: 'practices_yoga', equals: 'Yes' },
         options: [
-          'Just starting', 'Under 1 year', '1–3 years', '3–5 years', '5–10 years',
+          'Just starting', 'Under 1 year', '1-3 years', '3-5 years', '5-10 years',
           '10+ years',
         ],
       },
@@ -273,14 +273,14 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
   {
     id: 'medical',
     title: 'Medical History',
-    subtitle: 'Confidential — used only to personalize your lab panel',
+    subtitle: 'Confidential, used only to personalize your lab panel',
     note: 'All medical information is handled under strict data privacy protocols and is never shared without explicit consent.',
     questions: [
       {
         kind: 'single', id: 'last_doctor_visit', phase: 'pre',
         label: 'When did you last see a physician?',
         options: [
-          'Within 6 months', '6–12 months ago', '1–2 years ago',
+          'Within 6 months', '6-12 months ago', '1-2 years ago',
           'More than 2 years ago', 'Never / unsure',
         ],
       },
@@ -386,7 +386,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
       {
         kind: 'yesno', id: 'blood_draw_concerns', phase: 'pre',
         label: 'Do you have concerns about blood draws?',
-        helper: 'Lab visits require 10–12 vials per session.',
+        helper: 'Lab visits require 10-12 vials per session.',
       },
       {
         kind: 'multi', id: 'blood_draw_concern_list', phase: 'pre', sub: true,
@@ -453,12 +453,12 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
   {
     id: 'goals',
     title: 'Your Health Goals',
-    subtitle: 'What matters most to you — this guides your panel design',
+    subtitle: 'What matters most to you. This guides your panel design',
     questions: [
       {
         kind: 'multi', id: 'health_interests', phase: 'pre',
         label: 'What are you most interested in understanding about your health?',
-        helper: 'Select all that apply — each unlocks specific biomarker panels',
+        helper: 'Select all that apply. Each unlocks specific biomarker panels',
         options: [
           'Whole body health', 'Heart health', 'Blood sugar & metabolic',
           'Thyroid health', 'Hormone health', 'Fertility', 'Inflammation', 'Gut health',
@@ -510,7 +510,7 @@ export const INTAKE_SECTIONS: QuestionnaireSection[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Mind–Body Constitution quiz — all questions are 'anytime' (post-payment).
+// Mind-Body Constitution quiz — all questions are 'anytime' (post-payment).
 // Answers are stored under data.constitution.<id>.
 // ---------------------------------------------------------------------------
 

@@ -650,12 +650,10 @@ const AutoImmunity: React.FC = () => {
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3.5, pl: 3, textAlign: 'left' }}>
                                 {[
                                     { text: AUTO_IMMUNITY_LABELS.ABOUT_TITLE, active: true },
-                                    { text: 'Steering Clear - Facts', active: false },
+                                    { text: AUTO_IMMUNITY_LABELS.FACTS_TITLE, active: false },
                                     { text: AUTO_IMMUNITY_LABELS.UNDERSTANDING_TITLE, active: false },
-                                    { text: 'Steering Clear - Facts', active: false },
-                                    { text: 'Creating Quality AI-powered Blogs that Stand Out', active: false },
-                                    { text: 'Conclusion', active: false },
-                                    { text: 'Afterword: Behind This Article', active: false }
+                                    { text: AUTO_IMMUNITY_LABELS.EXPLORING_TITLE, active: false },
+                                    { text: AUTO_IMMUNITY_LABELS.BEST_PRACTISE_TITLE, active: false }
                                 ].map((item, index) => (
                                     <Typography
                                         key={index}

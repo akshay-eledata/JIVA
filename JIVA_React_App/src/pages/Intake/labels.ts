@@ -13,5 +13,5 @@ export const INTAKE_LABELS = {
     'Responses received. A JIVA Health care team member will review your intake and reach out within 24 hours to schedule your lab visit. You can now choose the package that fits your goals.',
   CONFIRM_CTA: 'Choose your package',
   ANYTIME_HINT:
-    'A few optional questions were skipped for now — you can answer them any time from the Questionnaire page after you sign in.',
+    'A few optional questions were skipped for now. You can answer them any time from the Questionnaire page after you sign in.',
 } as const;

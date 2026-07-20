@@ -113,7 +113,7 @@ const BiomarkerDetail: React.FC = () => {
         })()
         : '';
     const refText = marker && marker.refLow != null && marker.refHigh != null
-        ? (marker.refLow <= 0 ? `< ${marker.refHigh}` : marker.refHigh >= 999 ? `> ${marker.refLow}` : `${marker.refLow}–${marker.refHigh}`) + (marker.unit ? ` ${marker.unit}` : '')
+        ? (marker.refLow <= 0 ? `< ${marker.refHigh}` : marker.refHigh >= 999 ? `> ${marker.refLow}` : `${marker.refLow}-${marker.refHigh}`) + (marker.unit ? ` ${marker.unit}` : '')
         : '';
 
     if (loading) {
@@ -192,7 +192,7 @@ const BiomarkerDetail: React.FC = () => {
                                 </Typography>
                                 {marker.refLow != null && marker.refHigh != null && (
                                     <Typography sx={{ fontSize: '15px', color: '#728197' }}>
-                                        Reference: {marker.refLow}–{marker.refHigh}{marker.unit ? ` ${marker.unit}` : ''}
+                                        Reference: {marker.refLow}-{marker.refHigh}{marker.unit ? ` ${marker.unit}` : ''}
                                     </Typography>
                                 )}
                             </Box>

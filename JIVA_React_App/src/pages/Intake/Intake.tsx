@@ -125,7 +125,7 @@ const Intake: React.FC = () => {
           <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '13px', fontWeight: FONT_WEIGHTS.BOLD, color: COLORS.PRIMARY }}>
             {done
               ? 'Complete'
-              : `${L.SECTION_PREFIX} ${step + 1} ${L.OF} ${SECTIONS.length} — ${section.title}`}
+              : `${L.SECTION_PREFIX} ${step + 1} ${L.OF} ${SECTIONS.length}: ${section.title}`}
           </Typography>
           <Typography sx={{ fontFamily: FONTS.SATOSHI, fontSize: '13px', color: COLORS.TEXT_SECONDARY }}>
             {Math.round(progress * 100)}%

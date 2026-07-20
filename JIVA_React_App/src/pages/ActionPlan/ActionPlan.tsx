@@ -23,7 +23,7 @@ const parseRec = (s: string): { name: string; detail: string; sub: string } => {
     let name = base;
     let detail = '';
     const parts = base.split(/\s*[—–]\s*|\s+-\s+/);
-    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(' — ').trim(); }
+    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(', ').trim(); }
     return { name, detail, sub };
 };
 

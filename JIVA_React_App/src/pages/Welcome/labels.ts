@@ -15,7 +15,7 @@ export const WELCOME_LABELS = {
   
   WHAT_PEOPLE_SAY: "What People say ",
   ABOUT_US: "About Us",
-  TESTIMONIALS_SUBTITLE: "It's not just about living longer — it's about living better.",
+  TESTIMONIALS_SUBTITLE: "It's not just about living longer, it's about living better.",
   
   TESTIMONIAL_TITLE: "Right in my pocket",
   TESTIMONIAL_DESC: "Jiva has completely changed how I monitor my wellness. The daily insights and personalized recommendations keep me motivated....",

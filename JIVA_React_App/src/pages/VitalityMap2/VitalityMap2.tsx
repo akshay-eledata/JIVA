@@ -26,7 +26,7 @@ const parseRec = (s: string): { name: string; detail: string; sub: string } => {
     let name = base;
     let detail = '';
     const parts = base.split(/\s*[—–]\s*|\s+-\s+/);
-    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(' — ').trim(); }
+    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(', ').trim(); }
     return { name, detail, sub };
 };
 
@@ -287,7 +287,7 @@ const VitalityMap2: React.FC = () => {
                     <Box sx={{ display: 'flex', gap: 3 }}>
                         <StatTile label="Biomarkers Improved" value={headline.improved} sub={`${headline.enteredRange} moved back into range`} accent="#027A48" bg="#F6FEF9" />
                         <StatTile label="Biomarkers Declined" value={headline.worsened} sub={headline.leftRange ? `${headline.leftRange} moved out of range` : 'need a closer look'} accent="#D92D20" bg="#FEF3F2" />
-                        <StatTile label="Out Of Range" value={outPrev != null && outNow != null ? <>{outPrev}<span style={{ color: '#98A2B3', fontWeight: 700 }}> → </span>{outNow}</> : (outNow ?? '—')} sub={outPrev != null && outNow != null ? (outNow < outPrev ? `${outPrev - outNow} fewer flagged markers` : outNow > outPrev ? `${outNow - outPrev} more flagged markers` : 'no change in flagged markers') : 'flagged markers'} accent="#1A212B" bg="#FFFFFF" />
+                        <StatTile label="Out Of Range" value={outPrev != null && outNow != null ? <>{outPrev}<span style={{ color: '#98A2B3', fontWeight: 700 }}> to </span>{outNow}</> : (outNow ?? '—')} sub={outPrev != null && outNow != null ? (outNow < outPrev ? `${outPrev - outNow} fewer flagged markers` : outNow > outPrev ? `${outNow - outPrev} more flagged markers` : 'no change in flagged markers') : 'flagged markers'} accent="#1A212B" bg="#FFFFFF" />
                         <StatTile label="Biological Age" value={bioAge != null ? <>{bioAge}</> : '—'} sub={bioAgeChange != null ? `${bioAgeChange < 0 ? '▼' : bioAgeChange > 0 ? '▲' : ''} ${Math.abs(bioAgeChange)} yrs vs first test` : ''} accent={bioAgeChange != null && bioAgeChange < 0 ? '#027A48' : '#D92D20'} bg="#F6FEF9" />
                     </Box>
                 </Box>
@@ -302,7 +302,7 @@ const VitalityMap2: React.FC = () => {
                         </Box>
                         <Box sx={{ textAlign: 'left' }}>
                             <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#B54708', mb: 0.5 }}>
-                                {declinedCount} biomarker{declinedCount === 1 ? '' : 's'} moved out of range — worth a closer look
+                                {declinedCount} biomarker{declinedCount === 1 ? '' : 's'} moved out of range, worth a closer look
                             </Typography>
                             <Typography sx={{ fontSize: '14px', color: '#7A4B12', lineHeight: '20px', maxWidth: '660px' }}>
                                 {decliningSystemNames.length > 0
@@ -315,7 +315,7 @@ const VitalityMap2: React.FC = () => {
                         onClick={() => navigate('/select-packages')}
                         sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '15px', px: 3.5, py: 1.25, whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
                     >
-                        Order follow-up test →
+                        Order follow-up test
                     </Button>
                 </Box>
             )}

@@ -65,7 +65,7 @@ const parseRec = (s: string): { name: string; detail: string; sub: string } => {
     let name = base;
     let detail = '';
     const parts = base.split(/\s*[—–]\s*|\s+-\s+/); // em/en dash or spaced hyphen
-    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(' — ').trim(); }
+    if (parts.length > 1) { name = parts[0].trim(); detail = parts.slice(1).join(', ').trim(); }
     return { name, detail, sub };
 };
 
@@ -361,7 +361,7 @@ const VitalityMap: React.FC = () => {
                         {bioAgeExplanation}
                     </Typography>
                     <Typography sx={{ fontSize: '12px', color: '#98A2B3', mt: 3, lineHeight: '18px' }}>
-                        Method: PhenoAge (Levine et al., 2018) — a validated estimate derived from nine routine blood markers (albumin, creatinine, fasting glucose, hs-CRP, lymphocyte %, MCV, RDW, alkaline phosphatase, and white-cell count) together with your calendar age. Add-on panel results are used as supporting context.
+                        Method: PhenoAge (Levine et al., 2018), a validated estimate derived from nine routine blood markers (albumin, creatinine, fasting glucose, hs-CRP, lymphocyte %, MCV, RDW, alkaline phosphatase, and white-cell count) together with your calendar age. Add-on panel results are used as supporting context.
                     </Typography>
                 </Box>
             </Dialog>
