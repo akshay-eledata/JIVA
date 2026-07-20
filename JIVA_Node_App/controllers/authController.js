@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Order } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -67,11 +67,15 @@ const loginUser = async (req, res) => {
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
 
+      const orderCount = await Order.count({ where: { userId: user.id } });
+      const hasPurchased = orderCount > 0;
+
       res.json({
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
+        hasPurchased: hasPurchased,
         token: token // Keep it in JSON too
       });
     } else {

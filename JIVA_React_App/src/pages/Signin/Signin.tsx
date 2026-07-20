@@ -45,6 +45,8 @@ const Signin: React.FC = () => {
       // Smart redirection based on role
       if (data.role === 'admin') {
         navigate('/admin');
+      } else if (data.hasPurchased) {
+        navigate('/dashboard');
       } else {
         navigate('/select-packages');
       }

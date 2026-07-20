@@ -8,6 +8,7 @@ import { PAYMENT_CONSTANTS } from '../Payment/constants';
 import cardsFixed from '../../assets/cardsFixed.png';
 import CvcIcon from '../../assets/Cvc.png';
 import { COLORS, FONTS } from '../../constants/constants';
+import { apiUrl } from '../../config';
 
 const Payment: React.FC = () => {
   const location = useLocation();
@@ -18,6 +19,7 @@ const Payment: React.FC = () => {
   const totalPrice = state.totalPrice || 299.00;
   const hasBasic = state.hasBasic !== false;
   const basicPrice = state.basicPrice || 299.00;
+  const basicPanelId = state.basicPanelId || null;
 
   const [formData, setFormData] = useState({
     email: '00Chukwudaniel@gmail.com',
@@ -34,11 +36,36 @@ const Payment: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Payment submitted:', formData);
-    // Navigate to Success screen
-    navigate('/success');
+    
+    try {
+      const packageIds = [];
+      if (hasBasic && basicPanelId) {
+        packageIds.push(basicPanelId);
+      }
+      selectedAddons.forEach((addon: any) => {
+        packageIds.push(addon.id);
+      });
+
+      const res = await fetch(apiUrl('/api/orders'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ packageIds })
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to create order');
+      }
+
+      // Navigate to Success screen
+      navigate('/success');
+    } catch (err: any) {
+      console.error('Checkout error:', err);
+      alert(err.message || 'Failed to complete purchase. Please try again.');
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 const Order = require('../models/Order');
-const Package = require('../models/Package');
+const Panel = require('../models/Panel');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
     }
 
     // 1. Fetch the actual packages from the DB to verify prices and types
-    const selectedPackages = await Package.findAll({
+    const selectedPackages = await Panel.findAll({
       where: {
         id: packageIds
       }

@@ -101,7 +101,8 @@ const SelectPackages: React.FC = () => {
         })),
         totalPrice: totalPrice,
         hasBasic: true,
-        basicPrice: basePrice
+        basicPrice: basePrice,
+        basicPanelId: basicPanel?.id
       }
     });
   };
