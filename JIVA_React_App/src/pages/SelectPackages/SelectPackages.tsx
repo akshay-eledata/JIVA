@@ -189,8 +189,9 @@ const SelectPackages: React.FC = () => {
         <Typography sx={{ fontFamily: FONT, fontSize: '14px', color: '#98A2B3' }}>$99 each · optional · each includes both visits</Typography>
       </Box>
 
-      {/* ADD-ON card grid */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2 }}>
+      {/* ADD-ON card grid. alignItems 'start' keeps each card at its natural
+          height — otherwise expanding one card stretches its row neighbor. */}
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2, alignItems: 'start' }}>
         {packages.map((addon) => {
           const isSel = selectedAddons.includes(addon.id);
           const isOpen = expanded.has(addon.id);
