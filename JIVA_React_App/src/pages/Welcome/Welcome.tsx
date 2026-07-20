@@ -42,7 +42,7 @@ const Welcome: React.FC = () => {
       id: 1,
       icon: ReportIcon,
       title: 'Health Reports',
-      description: 'Help detect thousands of diseases—cardiovascular, metabolic, hormonal, neurological, and more through detailed trend summaries.',
+      description: 'Help detect thousands of diseases across cardiovascular, metabolic, hormonal, and neurological systems through detailed trend summaries.',
     },
     {
       id: 2,

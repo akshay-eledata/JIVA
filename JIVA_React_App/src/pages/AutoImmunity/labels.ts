@@ -1,66 +1,66 @@
 // AutoImmunity Page Labels
 export const AUTO_IMMUNITY_LABELS = {
   BREADCRUMB_HOME: "Home",
-  BREADCRUMB_BLOG: "Blog",
-  BREADCRUMB_BLOG_WRITING: "Blog writing",
-  BREADCRUMB_HERE: "You are here",
-  
+  BREADCRUMB_BLOG: "Your Health",
+  BREADCRUMB_BLOG_WRITING: "Conditions",
+  BREADCRUMB_HERE: "Autoimmunity",
+
   TITLE: "Autoimmunity",
   SUBTITLE: "Autoimmunity is when your immune system attacks your body's own tissues rather than harmful pathogens.",
-  
+
   BIOMARKER_TITLE: "Anti Nuclear Antibodies (ANA) Pattern",
   BIOMARKER_RANGE: "In Range",
   BIOMARKER_VALUE: "410 nmol/L",
-  
+
   FAQ_TITLE: "Frequently asked questions about Auto Immunity",
   FAQ_DATE: "Oct 19",
   FAQ_READ_TIME: "10 min read",
-  
+
   RANGE_TITLE: "Range Breakdown",
   RANGE_TEXT: "Your most recent result and where it falls in range.",
   RANGE_LEGEND_IN: "IN RANGE",
   RANGE_LEGEND_OUT: "OUT OF RANGE",
-  
+
   CLINICAL_NOTES_TITLE: "Clinical Notes",
-  CLINICAL_NOTES_DESC: "Autoimmunity is when your immune system attacks your body's own tissues rather than harmful pathogens. You may be left with more questions than answers. And that's ok. Education is the first step.",
+  CLINICAL_NOTES_DESC: "Autoimmunity is when your immune system attacks your body's own tissues rather than harmful pathogens. You may be left with more questions than answers, and that is okay. Education is the first step.",
   BUTTON_READ_MORE: "Read More",
-  
+
   ABOUT_TITLE: "About Auto Immunity",
-  ABOUT_PARAGRAPH_1: "Hello there! As a marketing manager in the SaaS industry, you might be looking for innovative ways to engage your audience. I bet generative AI has crossed your mind as an option for creating content. Well, let me share from my firsthand experience.",
-  ABOUT_PARAGRAPH_2_PART_1: "Google encourages high-quality blogs regardless of whether they're ",
-  ABOUT_PARAGRAPH_2_SPAN_1: "written by humans or created using artificial intelligence",
-  ABOUT_PARAGRAPH_2_PART_2: " like ChatGPT. Here's what matters: producing original material with expertise and trustworthiness based on Google ",
-  ABOUT_PARAGRAPH_2_SPAN_2: "E-E-A-T principles",
-  ABOUT_PARAGRAPH_2_PART_3: ".",
-  ABOUT_PARAGRAPH_3: "This means focusing more on people-first writing rather than primarily employing AI tools to manipulate search rankings. There comes a time when many experienced professionals want to communicate their insights but get stuck due to limited writing skills – that's where Generative AI can step in.",
-  ABOUT_PARAGRAPH_4: "So, together, we're going explore how this technology could help us deliver valuable content without sounding robotic or defaulting into mere regurgitations of existing materials (spoiler alert – common pitfalls!). Hang tight - it'll be a fun learning journey!",
-  
+  ABOUT_PARAGRAPH_1: "Your immune system is built to tell the difference between your own cells and outside threats like bacteria and viruses. In an autoimmune response, that self-recognition breaks down and the immune system begins to target healthy tissue as if it were foreign.",
+  ABOUT_PARAGRAPH_2_PART_1: "One of the earliest signals we look for is the presence of ",
+  ABOUT_PARAGRAPH_2_SPAN_1: "anti-nuclear antibodies (ANA)",
+  ABOUT_PARAGRAPH_2_PART_2: ", proteins that mistakenly bind to structures inside your own cells. A positive result does not diagnose a specific disease on its own, but it is a useful ",
+  ABOUT_PARAGRAPH_2_SPAN_2: "early marker",
+  ABOUT_PARAGRAPH_2_PART_3: " worth tracking over time.",
+  ABOUT_PARAGRAPH_3: "Autoimmune conditions can affect almost any part of the body, from joints and skin to the thyroid and connective tissue. Many share overlapping symptoms such as fatigue, joint pain, and low-grade inflammation, which is why lab testing matters so much for an accurate picture.",
+  ABOUT_PARAGRAPH_4: "The goal of this panel is not to alarm you. It is to catch subtle shifts early, so that you and your doctor can act with lifestyle changes, monitoring, or treatment well before symptoms become disruptive.",
+
   FACTS_TITLE: "Facts",
-  FACTS_PARAGRAPH_1_PART_1: "Jumping headfirst into using AI, like ",
-  FACTS_PARAGRAPH_1_SPAN_1: "ChatGPT",
-  FACTS_PARAGRAPH_1_PART_2: ", without a content strategy can lead to some unfortunate results. One common pitfall I've seen is people opting for quantity over quality - they churn out blogs, but each one feels robotic and soulless, reading just like countless others on the internet.",
-  FACTS_PARAGRAPH_2: "Another fault line lies in creating reproductions rather than delivering unique perspectives that offer value to readers; it often happens if you let an AI tool write your full blog unrestrained! Trust me on this – Ask any experienced marketer or writer about their takeaways from using generative AI tools. They'll all agree that adding a human touch and following specific guidelines are key when implementing these tech pieces.",
-  FACTS_PARAGRAPH_3: "Remember, our goal here isn't merely satisfying search engines but, more importantly, knowledge-hungry humans seeking reliable information online. So keep your audience's needs at heart while leveraging technology's assistance!",
-  
+  FACTS_PARAGRAPH_1_PART_1: "Autoimmune conditions are more common than most people realize, and they affect ",
+  FACTS_PARAGRAPH_1_SPAN_1: "women far more often than men",
+  FACTS_PARAGRAPH_1_PART_2: ". Researchers believe this is linked to hormonal and genetic factors, though the full picture is still being studied.",
+  FACTS_PARAGRAPH_2: "A single abnormal antibody result rarely tells the whole story. Doctors interpret these markers alongside your symptoms, family history, and other blood work before drawing any conclusions, which is why context always matters more than one number.",
+  FACTS_PARAGRAPH_3: "Many people carry low levels of autoantibodies for years without ever developing disease. Regular monitoring helps distinguish a harmless finding from an early trend that deserves closer attention.",
+
   UNDERSTANDING_TITLE: "Understanding & Recommendations",
-  UNDERSTANDING_PARAGRAPH_1_PART_1: "Welcome to the intriguing world of ChatGPT! Its ability and potential can truly be mind-boggling. I have learned from experience how capable it is in dealing with diverse content generation tasks, only that its text sounded slightly \"unnatural\" ",
-  UNDERSTANDING_PARAGRAPH_1_SPAN_1: "in accordance with TechTarget",
-  UNDERSTANDING_PARAGRAPH_1_PART_2: ". However, fear not – there are ways around this!",
-  UNDERSTANDING_PARAGRAPH_2: "One strategic move I’ve seen work wonders is defining your unique writing style first before handing over the reins to AI; you treat it like a canvas whereupon our vision opens up. If we clearly instruct who we're targeting or what tone resonates more effectively, generative AI tools such as ChatGPT will comply remarkably well.",
-  UNDERSTANDING_PARAGRAPH_3: "In framing guidelines, remember to keep audience interests at heart while adopting technology's benefits for efficient output – trust me on this because neglecting these aspects could backfire by generating unappealing robotic-like reads.",
-  UNDERSTANDING_PARAGRAPH_4: "Ultimately, aiming towards reader-focused driven creativity illuminated under authentically humanized narratives holds priority above all else when crafting blogs using auto-generation toolkits!",
-  
+  UNDERSTANDING_PARAGRAPH_1_PART_1: "If your results show elevated autoimmune markers, the most important next step is a conversation with your physician who can order ",
+  UNDERSTANDING_PARAGRAPH_1_SPAN_1: "confirmatory testing",
+  UNDERSTANDING_PARAGRAPH_1_PART_2: " and review your symptoms in detail. Early clarity gives you more options.",
+  UNDERSTANDING_PARAGRAPH_2: "Lifestyle plays a meaningful role in how autoimmune conditions progress. An anti-inflammatory diet, consistent sleep, stress management, and regular movement all support a calmer immune response and can ease day-to-day symptoms.",
+  UNDERSTANDING_PARAGRAPH_3: "Vitamin D status, gut health, and smoking are all modifiable factors tied to autoimmune activity. Addressing them will not cure an autoimmune condition, but it can reduce flares and improve how you feel.",
+  UNDERSTANDING_PARAGRAPH_4: "Above all, treat these results as a starting point for a plan rather than a verdict. With the right monitoring and habits, most people manage autoimmune tendencies well and keep living full, active lives.",
+
   EXPLORING_TITLE: "Exploring the Condition",
-  EXPLORING_PARAGRAPH_1: "Understanding your readers is vital when producing blog posts. It's not about filling blanks with popular search terms, no matter how much keyword research you do. Real readability goes beyond that! Your content has to 'speak' directly to your target audience.",
-  EXPLORING_PARAGRAPH_2_PART_1: "Building an Ideal Customer Profile (ICP) can help immensely in this respect (",
-  EXPLORING_PARAGRAPH_2_SPAN_1: "Dan Martell",
-  EXPLORING_PARAGRAPH_2_PART_2: "). This tool identifies specific firmographics or psychographic drivers behind customer success - a valuable guide for creating targeted outputs catering to arrayed reader types.",
-  EXPLORING_PARAGRAPH_3: "Simultaneously, SEO aspects also need attention: identifying suitable keywords & phrases people commonly use enhances reach (SEO.COM reference). Yet remember – human appeal doesn’t mean packing text up finely into presentable semblances bearing little value substance and stuffing it full with only 'keywords.'",
-  
+  EXPLORING_PARAGRAPH_1: "Autoimmune activity often builds quietly over months or years before it shows up as symptoms. That slow build is exactly why periodic lab testing is so valuable, because it can reveal a direction of travel that you would never notice day to day.",
+  EXPLORING_PARAGRAPH_2_PART_1: "Your ANA pattern and titer give clinicians useful clues about which conditions to consider (",
+  EXPLORING_PARAGRAPH_2_SPAN_1: "speckled, homogeneous, and nucleolar patterns",
+  EXPLORING_PARAGRAPH_2_PART_2: " each point in slightly different directions). These details help guide any follow-up testing your doctor may recommend.",
+  EXPLORING_PARAGRAPH_3: "Remember that these markers describe risk and tendency, not certainty. Two people with similar results can have very different outcomes depending on their genetics, environment, and the choices they make every day.",
+
   BEST_PRACTISE_TITLE: "Best Practices",
-  BEST_PRACTISE_PARAGRAPH_1: "Creating brilliant AI-powered blogs is a fun blending of logic with just the right dose of creativity. From defining your target audience to tuning in ChatGPT's language style, every step counts towards creating content that's not only SEO-friendly but also enjoyable and valuable for readers.",
-  BEST_PRACTISE_PARAGRAPH_2: "One tactic I've found useful is maintaining originality in message essence, with unique perspectives infusing life beyond words onto pages!",
-  BEST_PRACTISE_PARAGRAPH_3: "Incorporating trusted references while optimizing blog posts intelligently (rather than keyword stuffing) can significantly aid quality enhancements. Remember, it isn't about writing for Google here, so avoid tunnel vision focusing solely on algorithm-driven success rate, aiming at heart-touching human connections, building loyal reader bases, and sharing knowledge benefiting others!",
-  
+  BEST_PRACTISE_PARAGRAPH_1: "The most effective approach to autoimmune health is consistency. Retesting on a regular schedule lets you and your doctor watch trends rather than react to a single snapshot, and trends are what really matter here.",
+  BEST_PRACTISE_PARAGRAPH_2: "Keep a simple record of how you feel between tests. Notes on fatigue, joint stiffness, and skin changes give your physician context that lab values alone cannot provide.",
+  BEST_PRACTISE_PARAGRAPH_3: "Finally, build a care team you trust. Autoimmune conditions are highly manageable when caught early, and a good partnership with your doctor is the single biggest factor in staying ahead of them.",
+
   ARTICLE_SIDEBAR_TITLE: "In this article",
 } as const;

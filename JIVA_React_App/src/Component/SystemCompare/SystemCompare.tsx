@@ -122,7 +122,7 @@ const SystemRow: React.FC<{ s: SystemDelta; maxMove: number; open: boolean; onTo
                         {SHORT_SYSTEM_LABELS[s.name] || s.displayName || s.name}
                     </Typography>
                     <Typography sx={{ fontSize: '12px', color: '#667085', mt: 0.25 }}>
-                        {outFrom != null ? `${outFrom} → ${outTo} out of range` : `${outTo} out of range`}
+                        {outFrom != null ? `${outFrom} to ${outTo} out of range` : `${outTo} out of range`}
                     </Typography>
                 </Box>
 
@@ -136,7 +136,7 @@ const SystemRow: React.FC<{ s: SystemDelta; maxMove: number; open: boolean; onTo
                                 <Box sx={{ width: `${decW}%`, height: '16px', borderRadius: '8px', background: `linear-gradient(90deg, ${RED} 0%, #F79892 100%)` }} />
                             </>
                         ) : (
-                            <Typography sx={{ fontSize: '12px', color: '#CBD5E1' }}>—</Typography>
+                            <Typography sx={{ fontSize: '12px', color: '#CBD5E1' }}>0</Typography>
                         )}
                     </Box>
                     {/* Center axis */}
@@ -149,7 +149,7 @@ const SystemRow: React.FC<{ s: SystemDelta; maxMove: number; open: boolean; onTo
                                 {armLabel(imp, '#027A48')}
                             </>
                         ) : (
-                            <Typography sx={{ fontSize: '12px', color: '#CBD5E1' }}>—</Typography>
+                            <Typography sx={{ fontSize: '12px', color: '#CBD5E1' }}>0</Typography>
                         )}
                     </Box>
                 </Box>

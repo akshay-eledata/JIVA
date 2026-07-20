@@ -127,7 +127,7 @@ const SelectPackages: React.FC = () => {
           Build your panel
         </Typography>
         <Typography sx={{ fontFamily: FONT, fontSize: { xs: '15px', md: '16.5px' }, color: '#667085', maxWidth: '640px', mx: 'auto', lineHeight: 1.5 }}>
-          Everyone starts with the Basic Panel. Layer on any specialized panels you'd like — every panel includes both of your lab visits.
+          Everyone starts with the Basic Panel. Layer on any specialized panels you'd like. Every panel includes both of your lab visits.
         </Typography>
         <Box sx={{ mt: 2 }}><TwoVisitPill /></Box>
       </Box>
@@ -154,7 +154,7 @@ const SelectPackages: React.FC = () => {
               </Box>
               <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '26px', lineHeight: 1.1 }}>Basic Panel</Typography>
               <Typography sx={{ fontFamily: FONT, fontSize: '14px', color: 'rgba(255,255,255,0.85)', mt: 0.5 }}>
-                {basicPanel?.testCount || 27} essential biomarkers — the foundation of your health picture
+                {basicPanel?.testCount || 27} essential biomarkers, the foundation of your health picture
               </Typography>
             </Box>
             <Box sx={{ textAlign: 'right' }}>

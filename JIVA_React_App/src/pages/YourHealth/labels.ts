@@ -12,7 +12,7 @@ export const YOUR_HEALTH_LABELS = {
   
   // Banner
   BANNER_HEADER: "Check whether any additional tests are needed",
-  BANNER_DESC: "Your doctor can personalize these tests based on your medical history, lifestyle, and family risk factors. Take control of your health—book your preventive screenings today and stay ahead of potential risks.",
+  BANNER_DESC: "Your doctor can personalize these tests based on your medical history, lifestyle, and family risk factors. Take control of your health and book your preventive screenings today and stay ahead of potential risks.",
   
   // Detailed Table Headers
   PRODUCT_NAME: "Product Name",

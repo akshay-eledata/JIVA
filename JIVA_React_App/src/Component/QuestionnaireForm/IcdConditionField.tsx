@@ -75,9 +75,9 @@ const IcdConditionField: React.FC<Props> = ({ label, placeholder, value, code, o
   const helper = useMemo(() => {
     // Confirm a match without ever surfacing the ICD code to the patient.
     if (code) return '✓ Recognized condition';
-    if (unavailable) return 'Condition lookup unavailable — type it in and we’ll match it later.';
+    if (unavailable) return 'Condition lookup unavailable. Type it in and we’ll match it later.';
     if (input.trim().length >= MIN_CHARS && !loading && options.length === 0) {
-      return 'No match found — your own wording is fine.';
+      return 'No match found, but your own wording is fine.';
     }
     return ' ';
   }, [code, unavailable, input, loading, options.length]);

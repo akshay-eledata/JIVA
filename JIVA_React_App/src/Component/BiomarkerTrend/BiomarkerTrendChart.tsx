@@ -77,7 +77,7 @@ const BiomarkerTrendChart: React.FC<{ data: BiomarkerHistory }> = ({ data }) => 
     {
         const t = inHi != null ? Math.max(yTop, y(inHi)) : yTop;
         const b = inLo != null ? Math.min(yBot, y(inLo)) : yBot;
-        const sub = inLo != null && inHi != null ? `${inLo}–${inHi}` : inHi != null ? `< ${inHi}` : inLo != null ? `> ${inLo}` : '';
+        const sub = inLo != null && inHi != null ? `${inLo}-${inHi}` : inHi != null ? `< ${inHi}` : inLo != null ? `> ${inLo}` : '';
         regions.push({ text: 'In range', sub, color: '#12B76A', yc: (t + b) / 2 });
     }
     if (inLo != null && y(inLo) < yBot - 14) {
