@@ -1,11 +1,12 @@
-// Movement library content.
+// Movement + Therapeutic Yoga library content.
 //
-// Placeholder data for the four Movement subsections (Exercise, Yoga,
-// Breathwork, Meditation). The Exercise subsection is additionally populated at
-// runtime from the engine's `exercise_recommendations`; everything else is
-// static placeholder content until the engine generates yoga / breathwork /
-// meditation plans. Keep MovementItem stable — swapping placeholders for engine
-// output later should be a data change only, not a component change.
+// Placeholder data for the Movement tab (Exercise) and the Therapeutic Yoga tab
+// (Yoga, Breathwork, Meditation). The Exercise section is additionally
+// populated at runtime from the engine's `exercise_recommendations`; everything
+// else is static placeholder content until the engine generates yoga /
+// breathwork / meditation plans. Keep MovementItem stable — swapping
+// placeholders for engine output later should be a data change only, not a
+// component change.
 
 import Yoga1 from '../../assets/yoga1.svg';
 import Yoga2 from '../../assets/yoga 2.svg';

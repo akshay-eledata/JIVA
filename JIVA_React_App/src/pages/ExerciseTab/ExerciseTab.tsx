@@ -33,11 +33,16 @@ const mapEngineExercise = (e: any, i: number): MovementItem => ({
 
 interface MovementProps {
   exercise?: any[];
+  /**
+   * Which subsections this instance shows. Movement passes ['exercise'];
+   * Therapeutic Yoga passes ['yoga', 'breathwork', 'meditation'].
+   */
+  categories?: MovementCategory[];
 }
 
-const ExerciseTab: React.FC<MovementProps> = ({ exercise = [] }) => {
+const ExerciseTab: React.FC<MovementProps> = ({ exercise = [], categories = ['exercise'] }) => {
   const navigate = useNavigate();
-  const [active, setActive] = useState<MovementCategory>('exercise');
+  const [active, setActive] = useState<MovementCategory>(categories[0]);
   const [selected, setSelected] = useState<MovementItem | null>(null);
 
   // Exercise subsection = real engine recommendations first, then placeholders.
@@ -45,13 +50,15 @@ const ExerciseTab: React.FC<MovementProps> = ({ exercise = [] }) => {
   const items: MovementItem[] =
     active === 'exercise' ? [...engineItems, ...MOVEMENT_LIBRARY.exercise] : MOVEMENT_LIBRARY[active];
 
+  const visibleCategories = MOVEMENT_CATEGORIES.filter((c) => categories.includes(c.id));
   const activeMeta = MOVEMENT_CATEGORIES.find((c) => c.id === active)!;
 
   return (
     <Box sx={{ width: '100%', textAlign: 'left' }}>
-      {/* Category pills */}
+      {/* Category pills (hidden when the section houses a single category) */}
+      {visibleCategories.length > 1 && (
       <Box sx={{ display: 'flex', gap: '12px', mb: 4, flexWrap: 'wrap' }}>
-        {MOVEMENT_CATEGORIES.map((c) => {
+        {visibleCategories.map((c) => {
           const isActive = active === c.id;
           return (
             <Box
@@ -72,6 +79,7 @@ const ExerciseTab: React.FC<MovementProps> = ({ exercise = [] }) => {
           );
         })}
       </Box>
+      )}
 
       {/* Section blurb */}
       <Typography sx={{ fontSize: '14px', color: '#667085', mb: 4, maxWidth: 620 }}>
