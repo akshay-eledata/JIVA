@@ -3,6 +3,7 @@ import { Box, Typography, InputAdornment, TextField, Dialog, IconButton } from '
 import SearchIcon from '@mui/icons-material/Search';
 import SaladIcon from '../../assets/salad.svg';
 import DumbellIcon from '../../assets/Dumbell.svg';
+import LotusIcon from '../../assets/Lotus.svg';
 import MedicineIcon from '../../assets/Medicine-Bottle.svg';
 import CancelIcon from '../../assets/cancel.svg';
 import ExerciseTab from '../ExerciseTab/ExerciseTab';
@@ -84,6 +85,7 @@ const ActionPlan: React.FC = () => {
     const tabs = [
         { id: 'Food', label: ACTION_PLAN_LABELS.TAB_FOOD, icon: SaladIcon },
         { id: 'Exercise', label: ACTION_PLAN_LABELS.TAB_EXERCISE, icon: DumbellIcon },
+        { id: 'TherapeuticYoga', label: ACTION_PLAN_LABELS.TAB_THERAPEUTIC_YOGA, icon: LotusIcon },
         { id: 'Supplements', label: ACTION_PLAN_LABELS.TAB_SUPPLEMENTS, icon: MedicineIcon },
     ];
 
@@ -162,7 +164,33 @@ const ActionPlan: React.FC = () => {
             {/* Content Sections */}
             {activeTab === 'Exercise' ? (
                 <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>
-                    <ExerciseTab exercise={exercise} />
+                    <ExerciseTab exercise={exercise} categories={['exercise']} />
+                </Box>
+            ) : activeTab === 'TherapeuticYoga' ? (
+                <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>
+                    {/* Calming intro strip — sets this section apart from the training-focused Movement tab */}
+                    <Box sx={{
+                        display: 'flex', alignItems: 'center', gap: 3, mb: 4, p: '24px 28px',
+                        borderRadius: '20px', border: '1px solid #D9EBE1',
+                        background: 'linear-gradient(135deg, #F1F8F5 0%, #FDFDF8 60%, #F1F8F5 100%)',
+                    }}>
+                        <Box sx={{
+                            width: 64, height: 64, borderRadius: '50%', backgroundColor: '#FFFFFF',
+                            border: '1px solid #D9EBE1', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            flexShrink: 0, boxShadow: '0px 4px 12px rgba(47, 92, 62, 0.08)',
+                        }}>
+                            <Box component="img" src={LotusIcon} alt="" sx={{ width: 34, height: 34 }} />
+                        </Box>
+                        <Box>
+                            <Typography sx={{ fontSize: '20px', fontWeight: 800, color: '#153226', mb: 0.5 }}>
+                                {ACTION_PLAN_LABELS.THERAPEUTIC_YOGA_TITLE}
+                            </Typography>
+                            <Typography sx={{ fontSize: '14px', color: '#4E6659', lineHeight: '22px', maxWidth: 640 }}>
+                                {ACTION_PLAN_LABELS.THERAPEUTIC_YOGA_INTRO}
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <ExerciseTab categories={['yoga', 'breathwork', 'meditation']} />
                 </Box>
             ) : activeTab === 'Supplements' ? (
                 <Box sx={{ width: ACTION_PLAN_CONSTANTS.FOOD_CONTAINER_WIDTH, margin: '0 auto', textAlign: 'left' }}>
