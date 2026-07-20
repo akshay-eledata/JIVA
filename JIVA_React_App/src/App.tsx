@@ -55,7 +55,6 @@ const App: React.FC = () => {
               flex: 1,
               width: '100%',
               backgroundColor: 'transparent',
-              overflowY: 'auto',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center', // Default centering for content

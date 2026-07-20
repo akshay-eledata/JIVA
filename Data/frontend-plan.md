@@ -1,0 +1,176 @@
+# JIVA Homepage Overhaul — Frontend Plan
+
+## What the app is (context for the redesign)
+
+JIVA is a patient-facing precision-wellness product. A member fills out an intake
+questionnaire, buys a Basic lab panel (plus optional add-on panels), gets blood drawn,
+and a physician-led clinical engine turns their biomarker results into a Vitality Map:
+biological age, ten functional body systems, and personalized food, supplement,
+movement, and yoga plans, with a follow-up test to track change over time.
+
+The homepage has one job: make a first-time visitor trust the product ("medical")
+and want it ("human"), then push them to **Get Started** (`/intake`) or **Sign in**.
+
+## Brand system (from Data/Brand_Guidelines.pdf)
+
+| Token | Value | Use |
+|---|---|---|
+| Jiva Green | `#2A6130` | Primary. Health, growth, trust. Logo on light backgrounds. |
+| Jiva Lime | `#D5E274` | Accent. Brightness and optimism. Highlights, underlines, glows. |
+| Whispering Saga | `#DDEEDE` | Warm section tint, cards. |
+| Dewdrop Glow | `#F3F9F3` | Soft page background. |
+
+- **Headlines:** Mustachio (licensed display face — not currently in the repo).
+  Until it is licensed, options below use loaded fallbacks with similar weight and
+  personality (Alegreya Sans 800, Lexend, Plus Jakarta Sans — all already installed).
+- **Body:** Inter (already the MUI theme default).
+- **Logo:** green version on light backgrounds, white version on dark; clear space of
+  half the "J" height; never tint, tilt, gradient, or shadow the mark.
+- **Icons:** minimal, geometric, single line weight.
+- Note: the codebase currently uses two unofficial greens (`#256111` homepage,
+  `#006045` constants.ts). The redesign standardizes on brand `#2A6130`.
+
+## Modern UX/UI component ideas (the menu we drew from)
+
+Graphics, movement, and animation patterns that fit a health/longevity product:
+
+1. **Scroll-triggered reveals** — sections fade/slide in as they enter the viewport.
+2. **Animated hero orbit** — biomarker chips floating/orbiting a central visual.
+3. **Radial biological-age gauge** — an animated score dial as the hero centerpiece.
+4. **Animated number counters** — "100+ biomarkers", "10 body systems" counting up on scroll.
+5. **Kinetic typography** — headlines that reveal word-by-word or letter-by-letter.
+6. **Scroll-linked storytelling (pin + progress)** — a section that pins while steps of
+   the journey (Test → Analyze → Plan → Retest) advance with scroll.
+7. **Marquee / ticker** — an infinite horizontal scroll of biomarkers or testimonials.
+8. **Bento grid** — mixed-size feature tiles, the modern replacement for uniform card grids.
+9. **Glassmorphism cards** — frosted, blurred cards floating over imagery or gradients.
+10. **Aurora / gradient mesh backgrounds** — slow-moving color fields behind dark heros.
+11. **Magnetic / lift micro-interactions** — buttons and cards that respond to hover.
+12. **Animated line/spark charts** — a biomarker trend drawing itself in.
+13. **Curved and wave section dividers** — soft organic transitions between sections.
+14. **Sticky side-by-side** — text scrolls while a visual stays pinned.
+15. **Accordion FAQ with smooth height animation.**
+16. **Parallax layers** — background art moving slower than foreground content.
+17. **Before/after comparison** — first test vs follow-up test visual.
+18. **Testimonial carousel with drag/swipe.**
+
+## Library shortlist
+
+### Installed and used by the three options
+
+| Library | Why |
+|---|---|
+| **framer-motion (`framer-motion`)** | The workhorse. Scroll reveals, `useScroll`/`useTransform` parallax and pinned storytelling, layout animation, marquees, counters, kinetic text, micro-interactions. One dependency covers ~90% of the motion menu above. |
+| **MUI v7** (already installed) | Layout, buttons, accordions, responsive `sx` system. Keeps the new pages consistent with the rest of the app. |
+| **ApexCharts / react-apexcharts** (already installed) | Radial biological-age gauge and self-drawing biomarker trend lines. Matches the charts used inside the product, so the homepage previews the real thing. |
+
+### Worth adopting later (not needed for these prototypes)
+
+| Library | What it adds |
+|---|---|
+| **GSAP + ScrollTrigger** | Heavier-duty scroll choreography (scrubbed timelines, horizontal scroll scenes). Overlaps framer-motion; adopt only if a scene outgrows it. |
+| **Lenis** | Buttery smooth-scrolling that makes scroll-linked animation feel premium. Tiny, drop-in. |
+| **Lottie (`lottie-react`)** | Designer-authored vector animations (e.g. an animated blood-draw or body illustration) once brand illustrations exist. |
+| **Rive** | Interactive state-machine animations (a body map that reacts to hover). |
+| **Swiper** | Full-featured touch carousels if testimonials grow beyond a marquee. |
+| **tsparticles** | Particle fields for dark heros. Use sparingly. |
+| **react-fast-marquee** | Simplest possible ticker if we drop the hand-rolled one. |
+
+## The three homepage options
+
+All three live behind a fixed switcher bar (Option 1 / Option 2 / Option 3) rendered
+at the top of `/`, driven by a `?option=` query param so a specific option can be
+shared by URL. Copy follows the repo convention: strings in `labels.ts` per option.
+
+### Option 1 — "Vitality in Motion" (brand-faithful, light and airy)
+
+The safest evolution of today's page: keeps the light mint feel but rebuilds it on the
+official palette with real motion and a data-forward hero.
+
+- **Palette:** Dewdrop Glow `#F3F9F3` page, Whispering Saga `#DDEEDE` alternate
+  sections, Jiva Green headings, Lime accents. Green logo.
+- **Type:** Alegreya Sans 800 display (Mustachio stand-in), Inter body.
+- **Sections (7):**
+  1. **Hero** — huge headline with a lime-underlined keyword, sub-copy, Get Started +
+     Sign in. Right side: an animated **biological-age radial gauge** (ApexCharts)
+     orbited by six floating glass biomarker chips (framer-motion float loops),
+     over soft concentric rings.
+  2. **Biomarker marquee** — infinite ticker of biomarker names ("ApoB · HbA1c ·
+     hs-CRP · Ferritin…") separating hero from content.
+  3. **How it works** — four steps (Test, Analyze, Plan, Retest) on an animated
+     connector line; each step card reveals on scroll with a stagger.
+  4. **Ten body systems** — chip grid of the ten functional systems with hover lift
+     and stagger-in; sells the Vitality Map's breadth.
+  5. **Stats band** — Whispering Saga strip with counters: 100+ biomarkers, 10 systems,
+     2 tests/year, 1 plan.
+  6. **Testimonials** — three cards, scroll reveal, lime rating pills.
+  7. **CTA banner + footer** — Jiva Green banner (white logo) with a lime CTA;
+     compact footer.
+- **Motion language:** gentle. Everything eases in softly; floats are slow (4–6s);
+  nothing moves unless it just entered the viewport.
+- **Libraries:** framer-motion, react-apexcharts, MUI.
+
+### Option 2 — "The Longevity Lab" (dark, premium, data-forward)
+
+A confident, high-end longevity-brand look (in the spirit of modern diagnostics
+brands): dark green-black canvas, white logo, lime glow, charts everywhere.
+
+- **Palette:** near-black green `#0C1A10` / `#122417` canvas, white text, Jiva Lime
+  as the single accent, Dewdrop Glow only inside cards. White logo per guidelines.
+- **Type:** Lexend for display (clean, technical), Inter body, mono-style numerals
+  for data.
+- **Sections (6):**
+  1. **Hero** — full-viewport dark hero with a slow-moving **aurora gradient** (green
+     to lime mesh), kinetic headline that reveals word-by-word, and a **self-drawing
+     biomarker trend chart** with a live-updating readout chip. Lime Get Started.
+  2. **Scroll-pinned journey** — the signature scene: the section pins while the four
+     journey steps advance as you scroll, with a lime progress rail
+     (framer-motion `useScroll` + sticky).
+  3. **Bento grid** — mixed-size glass tiles: big biological-age tile with radial
+     gauge, panels tile, yoga/movement tile, physician-review tile, follow-up tile.
+  4. **Numbers band** — oversized lime counters on black.
+  5. **Testimonial marquee** — two counter-scrolling rows of quote cards.
+  6. **CTA + footer** — lime block ("Your baseline is waiting"), dark footer.
+- **Motion language:** cinematic. Scroll drives the page; the aurora never stops;
+  hover states glow.
+- **Libraries:** framer-motion (heavily: useScroll/useTransform), react-apexcharts, MUI.
+
+### Option 3 — "The Human Practice" (editorial, warm, physician-led)
+
+A magazine-like page that leads with people and care rather than data. Feels like a
+modern clinic, not a dashboard.
+
+- **Palette:** warm paper `#FAFBF7` and Whispering Saga `#DDEEDE` blocks, Jiva Green
+  ink, lime used only as a highlighter stroke. Green logo.
+- **Type:** Alegreya Sans (light 300 + black 900 contrast) for editorial headlines,
+  Inter body, generous line-height, oversized pull-quotes.
+- **Sections (8):**
+  1. **Editorial hero** — asymmetric split: left, an oversized serif-feel headline
+     with a hand-drawn-style lime underline (animated draw-on) and a short
+     manifesto paragraph; right, the AI-doctor imagery in a tall arched
+     (portrait-window) frame with slow parallax. CTAs beneath the manifesto.
+  2. **Manifesto line** — one full-width kinetic sentence ("Prevention is the
+     strongest form of care.") that reveals word-by-word as you scroll.
+  3. **Sticky care chapters** — sticky left rail with chapter titles (Your tests,
+     Your physician, Your plan) while the right column scrolls through each chapter's
+     card; the active chapter highlights.
+  4. **Bento of services** — soft-cornered tiles in Whispering Saga tones for the
+     four services (tests, reports, thermal, yoga) with minimal geometric icons.
+  5. **Pull-quote testimonial** — one big rotating quote with drag/swipe, not a grid.
+  6. **FAQ accordion** — smooth-height MUI accordions restyled to the brand.
+  7. **Arched CTA** — arch-shaped green panel echoing the hero frame ("Begin with a
+     conversation about your health").
+  8. **Footer** — editorial columns with a large wordmark.
+- **Motion language:** quiet. Draw-on underlines, slow parallax on imagery, soft
+  crossfades; motion supports reading rather than performing.
+- **Libraries:** framer-motion, MUI (accordion, layout). No charts — imagery-led.
+
+## Implementation notes
+
+- Routes: `/` renders `Welcome` which now hosts the switcher + the three options at
+  `src/pages/Welcome/options/{option1,option2,option3}/`.
+- The switcher is a fixed pill bar (Option 1 · Option 2 · Option 3) synced to
+  `?option=n`; the previous production homepage remains in git history.
+- All motion respects `prefers-reduced-motion` via framer-motion's `useReducedMotion`.
+- Fonts and colors defined per option in that option's `constants.ts`; brand tokens
+  shared from `src/pages/Welcome/brand.ts`.
