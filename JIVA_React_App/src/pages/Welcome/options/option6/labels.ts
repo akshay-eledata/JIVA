@@ -1,4 +1,4 @@
-export const OPTION1_LABELS = {
+export const OPTION6_LABELS = {
   HERO_TITLE_1: 'Know your body.',
   HERO_TITLE_HIGHLIGHT: 'Own your health.',
   HERO_SUBTITLE:
