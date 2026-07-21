@@ -165,6 +165,63 @@ modern clinic, not a dashboard.
   crossfades; motion supports reading rather than performing.
 - **Libraries:** framer-motion, MUI (accordion, layout). No charts — imagery-led.
 
+### Option 4 — "The Clear Signal" (light, scroll-driven)
+
+Round-two request: Option 2's scroll energy translated into a bright, daylight
+palette. The scroll itself is the show.
+
+- **Palette:** Dewdrop Glow `#F3F9F3` canvas, Whispering Saga `#DDEEDE` gallery band,
+  white cards, Jiva Green ink, lime blobs and progress accents. Green logo.
+- **Type:** Manrope 700/800 display (crisp, geometric), Inter body.
+- **Sections (7):**
+  1. **Lime scroll progress bar** fixed to the top edge, springs along with the page.
+  2. **Scrub-out hero** — centered kinetic headline over parallax lime/mint blobs;
+     the whole hero fades and shrinks as you scroll past it; bobbing scroll hint.
+  3. **Biomarker marquee** on white.
+  4. **Sticky split chapters** — the signature scene: a visual card pins on the left
+     and crossfades between three states (biological-age gauge → self-drawing
+     ferritin area chart → plan checklist) while three chapters scroll by on the
+     right. Mobile falls back to inline visuals.
+  5. **Horizontal sweep** — a 280vh pinned section where vertical scroll drags the
+     ten body-system cards sideways across the screen.
+  6. **Count-up stats band.**
+  7. **Green CTA banner + footer.**
+- **Motion language:** scroll-scrubbed. Almost nothing loops; nearly every motion is
+  driven by scroll position (progress bar, hero scale, gallery sweep).
+- **Libraries:** framer-motion (useScroll/useTransform/useSpring, AnimatePresence),
+  react-apexcharts, MUI.
+
+### Option 5 — "Mission Control" (dark, graphics-rich)
+
+Option 2's palette and confidence, with the graphic density turned all the way up:
+every section carries a drawn, charted, or orbiting visual.
+
+- **Palette:** same near-black greens as Option 2 (`#0C1A10` / `#122417`), Jiva Lime
+  accents, white logo — plus a repeating blueprint grid (the existing `Vector.svg`
+  asset) washed over the hero and CTA at low opacity.
+- **Type:** Lexend display, Inter body (matches its sibling, Option 2).
+- **Sections (8):**
+  1. **Orbit hero** — the centerpiece: a biological-age radial gauge inside two
+     counter-rotating dashed orbit rings carrying six biomarker chips, over aurora
+     gradients, a 26-dot twinkling particle field, and the blueprint grid. Left side:
+     kinetic headline plus two floating glass status cards (Inflammation, Metabolic).
+  2. **ECG interlude** — a heartbeat line that draws itself across the screen,
+     scrubbed by scroll position, with a soft lime glow.
+  3. **Live systems board** — a 4-column dashboard bento: radial gauge tile,
+     self-drawing area chart, count-up "8/10 systems in range" tile, per-system bar
+     chart, and a next-best-actions card.
+  4. **Systems ticker** — infinite marquee of the ten body systems, each with a mini
+     progress meter.
+  5. **Count-up stats band.**
+  6. **Counter-scrolling quote marquees** (two rows).
+  7. **Lime CTA block** with the blueprint grid washed over it.
+  8. **Dark footer** with white logo.
+- **Motion language:** cinematic and continuous like Option 2, but with more
+  *things* moving: orbits rotate, particles twinkle, the ECG scrubs, and four
+  different chart types animate in.
+- **Libraries:** framer-motion (loops + scroll-scrubbed SVG pathLength),
+  react-apexcharts (radialBar, area, bar), MUI.
+
 ## Implementation notes
 
 - Routes: `/` renders `Welcome` which now hosts the switcher + the three options at

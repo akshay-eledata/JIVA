@@ -5,8 +5,10 @@ import { BRAND, BRAND_FONTS } from './brand';
 import Option1 from './options/option1/Option1';
 import Option2 from './options/option2/Option2';
 import Option3 from './options/option3/Option3';
+import Option4 from './options/option4/Option4';
+import Option5 from './options/option5/Option5';
 
-const OPTIONS = [1, 2, 3] as const;
+const OPTIONS = [1, 2, 3, 4, 5] as const;
 type OptionNumber = (typeof OPTIONS)[number];
 
 /**
@@ -17,7 +19,7 @@ type OptionNumber = (typeof OPTIONS)[number];
 const Welcome: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const parsed = Number(searchParams.get('option'));
-  const option: OptionNumber = parsed === 2 ? 2 : parsed === 3 ? 3 : 1;
+  const option: OptionNumber = OPTIONS.includes(parsed as OptionNumber) ? (parsed as OptionNumber) : 1;
 
   const selectOption = (n: OptionNumber) => {
     setSearchParams({ option: String(n) });
@@ -73,6 +75,8 @@ const Welcome: React.FC = () => {
       {option === 1 && <Option1 />}
       {option === 2 && <Option2 />}
       {option === 3 && <Option3 />}
+      {option === 4 && <Option4 />}
+      {option === 5 && <Option5 />}
     </Box>
   );
 };
