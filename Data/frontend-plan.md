@@ -311,6 +311,69 @@ Show, don't tell: the homepage demos the actual product while you scroll.
 - **Libraries:** framer-motion (layout animation for tabs, scroll-linked frame
   swaps, pointer tracking), react-apexcharts, MUI.
 
+> Note (round 4): Options 11-13 are the boundary-pushers. Each is built around a
+> different animation engine at full power: GSAP + ScrollTrigger, anime.js v4, and
+> framer-motion. `gsap` and `animejs` are now real dependencies.
+
+### Option 11 — "Sequence" (GSAP + ScrollTrigger, dark, cinematic)
+
+The page is a film and the scrollbar is the timeline. Almost nothing animates on
+its own clock; the scroll position drives everything, scrubbed and pinned.
+
+- **Palette:** near-black greens (Options 2/5 lineage), lime highlights, white logo.
+- **Type:** Lexend display, oversized.
+- **Signature scenes (all ScrollTrigger):**
+  1. **Title card** — "LISTEN" fills the viewport at 9x scale and scrubs down to
+     size as you scroll, while the tagline's characters stagger in.
+  2. **Four acts, sideways** — a pinned viewport translates a 4-panel horizontal
+     strip (Test / Analyze / Plan / Retest) as vertical scroll continues.
+  3. **The countdown** — a pinned scene where biological age scrubs 41 → 34 tied
+     directly to scroll progress, with a conic progress ring filling behind it.
+  4. **Card stack** — testimonial cards pin and stack, each scaling back as the
+     next slides over it.
+  5. **Magnetic CTA** — gsap.quickTo cursor-follow on the final button.
+- **Library:** gsap (ScrollTrigger, quickTo). No framer-motion in this option.
+
+### Option 12 — "Pulse Grid" (anime.js v4, light, playful precision)
+
+Anime.js is the staggering engine: hundreds of tiny elements moving as one
+organism. Light theme, toy-like, tactile.
+
+- **Palette:** Dewdrop canvas, Saga surfaces, green ink, lime energy.
+- **Type:** Manrope display.
+- **Signature elements:**
+  1. **Ripple dot grid hero** — a 220-dot grid ripples outward from the center
+     on load (grid stagger, elastic ease) and re-ripples from wherever you click.
+  2. **Letter cascade headline** — characters drop in with overshoot, per-letter.
+  3. **One-line ECG draw** — an SVG pulse line draws itself via
+     `svg.createDrawable` when it enters the viewport.
+  4. **Elastic cards** — service cards squash and rebound (outElastic) on hover.
+  5. **Staggered system chips** — the ten systems pop in as a wave; clicking a
+     chip makes the whole row shiver outward from it.
+- **Library:** animejs v4 (`animate`, `stagger`, `svg`) + IntersectionObserver
+  triggers. No framer-motion in this option.
+
+### Option 13 — "Chroma Flow" (framer-motion at full power)
+
+One continuous surface whose color, skew, and depth all answer to scroll physics.
+
+- **Palette:** the page itself morphs — Dewdrop → Saga → lime wash → deep green —
+  as one scroll-linked background interpolation; content stays green-ink/white.
+- **Type:** Plus Jakarta Sans display.
+- **Signature elements:**
+  1. **Scroll-morphing background** — the whole page's color interpolates through
+     four brand hues via useScroll + useTransform.
+  2. **Velocity-skewed marquee** — a giant outlined-text marquee that shears and
+     accelerates with your scroll velocity, springing back at rest.
+  3. **Draggable story deck** — a stack of member-story cards you throw aside;
+     each flies off with your gesture's velocity and the stack springs forward.
+  4. **Shared-element expansion** — capability chips that expand in place into
+     full panels (layoutId shared-element transition with a scrim).
+  5. **Center-zoom panels** — sections scale from 0.9 to 1 and un-blur as they
+     cross the viewport center.
+- **Library:** framer-motion only, pushed hard (useScroll, useVelocity, springs,
+  drag with momentum, AnimatePresence + layoutId).
+
 ## Implementation notes
 
 - Routes: `/` renders `Welcome` which now hosts the switcher + the three options at
