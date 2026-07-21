@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Typography, TextField, Button, Alert } from '@mui/material';
+import { Box, Typography, TextField, Button, Alert, Checkbox } from '@mui/material';
 import GoogleIcon from '../../assets/Google.png';
 import AppleIcon from '../../assets/Apple.png';
 import { COLORS, FONTS, FONT_SIZES, FONT_WEIGHTS, LINE_HEIGHTS, SIZES, SPACING } from '../../constants/constants';
@@ -10,6 +10,11 @@ import { apiUrl } from '../../config';
 import { flushDraftToServer } from '../../questionnaire/storage';
 
 import AuthLeftSide from '../../Component/AuthLeftSide/AuthLeftSide';
+import DemoSkip from '../../Component/DemoSkip/DemoSkip';
+import { nextStepAfter } from '../../onboarding/steps';
+import { ensureDemoAccount } from '../../onboarding/demoAccount';
+
+const NEXT = nextStepAfter('/signup');
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +23,7 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState(''); // optional
+  const [twoFactor, setTwoFactor] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +42,7 @@ const Signup: React.FC = () => {
 
     setError('');
     setLoading(true);
+    const wantsTwoFactor = twoFactor && Boolean(phone.trim());
     try {
       const res = await fetch(apiUrl('/api/auth/register'), {
         method: 'POST',
@@ -45,6 +52,7 @@ const Signup: React.FC = () => {
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           phone: phone.trim() || undefined,
+          twoFactorEnabled: wantsTwoFactor,
           email,
           password,
         })
@@ -54,11 +62,16 @@ const Signup: React.FC = () => {
         throw new Error(data.message || 'Registration failed.');
       }
       localStorage.setItem('token', data.token);
-      // The intake questions were answered before the account existed — flush
-      // that draft to the server now that we can attach it to the user.
+      // Picks up any answers drafted before the account existed (someone who
+      // started the questionnaire, backed out, and signed up afterwards).
       await flushDraftToServer().catch(() => {});
-      // Intake is already complete, so move on to choosing a package.
-      navigate('/select-packages');
+      // Two factor is opt in, so only detour through the code screen when the
+      // user asked for it and gave us a number.
+      if (wantsTwoFactor) {
+        navigate('/verify-phone', { state: { phone: phone.trim() } });
+      } else {
+        navigate(NEXT);
+      }
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
     } finally {
@@ -67,6 +80,7 @@ const Signup: React.FC = () => {
   };
 
   return (
+    <>
     <Box
       sx={{
         display: 'flex',
@@ -293,6 +307,40 @@ const Signup: React.FC = () => {
               },
             }}
           />
+
+          {/* Two factor is opt in and only meaningful once a number is typed. */}
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: '4px', mt: '6px' }}>
+            <Checkbox
+              checked={twoFactor}
+              disabled={!phone.trim()}
+              onChange={(e) => setTwoFactor(e.target.checked)}
+              size="small"
+              sx={{ padding: '2px 6px 0 0', color: COLORS.BORDER, '&.Mui-checked': { color: COLORS.PRIMARY } }}
+            />
+            <Box>
+              <Typography
+                sx={{
+                  fontFamily: FONTS.SATOSHI,
+                  fontSize: '13px',
+                  fontWeight: FONT_WEIGHTS.MEDIUM,
+                  color: phone.trim() ? COLORS.TEXT_PRIMARY : COLORS.TEXT_SECONDARY,
+                  textAlign: 'left',
+                }}
+              >
+                {SIGNUP_LABELS.TWO_FACTOR_LABEL}
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: FONTS.SATOSHI,
+                  fontSize: '11.5px',
+                  color: COLORS.TEXT_SECONDARY,
+                  textAlign: 'left',
+                }}
+              >
+                {SIGNUP_LABELS.TWO_FACTOR_HELPER}
+              </Typography>
+            </Box>
+          </Box>
         </Box>
 
         <Button
@@ -487,6 +535,11 @@ const Signup: React.FC = () => {
         </Box>
       </Box>
     </Box>
+
+    {/* Demo walkthrough: creates a throwaway account so the rest of the flow
+        still has a session, then jumps ahead. */}
+    <DemoSkip to={NEXT} label="Skip account setup" beforeSkip={ensureDemoAccount} />
+    </>
   );
 };
 

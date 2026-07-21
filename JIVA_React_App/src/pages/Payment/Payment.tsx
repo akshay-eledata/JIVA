@@ -8,6 +8,10 @@ import { PAYMENT_CONSTANTS } from '../Payment/constants';
 import cardsFixed from '../../assets/cardsFixed.png';
 import CvcIcon from '../../assets/Cvc.png';
 import { COLORS, FONTS } from '../../constants/constants';
+import DemoSkip from '../../Component/DemoSkip/DemoSkip';
+import { nextStepAfter } from '../../onboarding/steps';
+
+const NEXT = nextStepAfter('/payment');
 
 const Payment: React.FC = () => {
   const location = useLocation();
@@ -20,7 +24,7 @@ const Payment: React.FC = () => {
   const basicPrice = state.basicPrice || 299.00;
 
   const [formData, setFormData] = useState({
-    email: '00Chukwudaniel@gmail.com',
+    email: '',
     cardNumber: '',
     expiryDate: '',
     cvc: '',
@@ -37,11 +41,12 @@ const Payment: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log('Payment submitted:', formData);
-    // Navigate to Success screen
-    navigate('/success');
+    // Payment done, book the first lab visit before the welcome screen.
+    navigate(NEXT);
   };
 
   return (
+    <>
     <Box
       sx={{
         width: '100%',
@@ -550,6 +555,9 @@ const Payment: React.FC = () => {
         </Box>
       </Box>
     </Box>
+
+    <DemoSkip to={NEXT} label="Skip payment" />
+    </>
   );
 };
 

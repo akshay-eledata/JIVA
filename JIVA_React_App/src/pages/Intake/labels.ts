@@ -6,12 +6,12 @@ export const INTAKE_LABELS = {
   OF: 'of',
   BACK: 'Back',
   CONTINUE: 'Continue',
-  SUBMIT: 'Create your account',
-  SUBMITTING: 'Saving…',
+  SUBMIT: 'Save my answers',
+  SUBMITTING: 'Saving',
   CONFIRM_TITLE: "You're all set, thank you!",
   CONFIRM_BODY:
-    'Responses received. A JIVA Health care team member will review your intake and reach out within 24 hours to schedule your lab visit. You can now choose the package that fits your goals.',
+    'Responses received. Your answers shape which panel we suggest and the recommendations you get back once your labs are in. Next, choose the package that fits your goals.',
   CONFIRM_CTA: 'Choose your package',
   ANYTIME_HINT:
-    'A few optional questions were skipped for now. You can answer them any time from the Questionnaire page after you sign in.',
+    'A few optional questions were skipped for now. You can answer them any time from the Questionnaire page.',
 } as const;

@@ -315,7 +315,7 @@ const Option2: React.FC = () => {
             <Reveal delay={0.85}>
               <Box sx={{ mt: 4.5, display: 'flex', gap: 2.5, alignItems: 'center', flexWrap: 'wrap' }}>
                 <Button
-                  onClick={() => navigate('/intake')}
+                  onClick={() => navigate('/signup')}
                   sx={{
                     backgroundColor: BRAND.LIME,
                     color: DARK.BG,
@@ -569,7 +569,7 @@ const Option2: React.FC = () => {
               {L.CTA_SUBTITLE}
             </Typography>
             <Button
-              onClick={() => navigate('/intake')}
+              onClick={() => navigate('/signup')}
               sx={{
                 mt: 4,
                 backgroundColor: DARK.BG,
