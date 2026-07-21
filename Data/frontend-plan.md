@@ -248,6 +248,69 @@ graphic density, opposite mood.
 - **Motion language:** identical to Option 5; only the surfaces change.
 - **Libraries:** framer-motion, react-apexcharts, MUI.
 
+> Note (round 3): the client direction is Option 7's combination of light theme +
+> heavy animation and graphics. Options 8-10 push that direction further, each with
+> a distinct personality and a set of modern interaction patterns not yet used in
+> the showcase. (Options 1 and 6 were swapped so the original page is Option 1,
+> the default.)
+
+### Option 8 — "The Glasshouse" (light, interactive depth)
+
+The page responds to the cursor, not just the scroll. Everything has depth.
+
+- **Palette:** Dewdrop canvas, frosted glass cards, Jiva Green ink, lime energy.
+- **Type:** Plus Jakarta Sans display, Inter body.
+- **Signature elements:**
+  1. **Mouse-parallax hero** — layered lime/saga blobs, floating biomarker chips,
+     and the central gauge card all drift at different rates as the cursor moves
+     (spring-smoothed), over a shimmering gradient headline.
+  2. **Magnetic CTA** — the Get Started button leans toward the cursor.
+  3. **3D tilt cards** — the four service cards tilt in perspective under the
+     pointer with a moving glare highlight.
+  4. **Scan-beam systems section** — a sticky scroll scene where a lime beam
+     sweeps down the list of ten systems, lighting each up with its marker count.
+  5. Biomarker marquee, count-up stats, green CTA banner.
+- **Libraries:** framer-motion (springs, pointer tracking), react-apexcharts, MUI.
+
+### Option 9 — "Bloom" (light, organic, calm motion)
+
+Health as a living thing: soft, breathing, continuous motion. The calmest of the
+high-animation options — nothing snaps, everything breathes.
+
+- **Palette:** warm Dewdrop + Saga washes, Jiva Green, lime blossoms.
+- **Type:** Alegreya Sans display (300/800 contrast), Inter body.
+- **Signature elements:**
+  1. **Morphing blob hero** — an organic SVG blob continuously morphs behind the
+     headline; breathing rings pulse around a floating vitality badge.
+  2. **Activity rings** — three concentric rings (systems in range, plan
+     adherence, retest progress) draw themselves on scroll, Apple-Watch style.
+  3. **Draw-on timeline** — the four-step journey on a vertical line that draws
+     with scroll while milestones bloom in.
+  4. **Flip cards** — services flip in 3D on hover to reveal detail.
+  5. **Auto-advancing pull-quote** with soft crossfade, breathing CTA button.
+- **Libraries:** framer-motion (SVG path morph, scroll-linked strokeDashoffset,
+  3D flips), MUI. No charts — rings and lines are hand-drawn SVG.
+
+### Option 10 — "The Guided Tour" (light, product-led)
+
+Show, don't tell: the homepage demos the actual product while you scroll.
+
+- **Palette:** Dewdrop canvas, white app frames with green chrome, lime accents.
+- **Type:** Lexend display (matches the product options), Inter body.
+- **Signature elements:**
+  1. **Typewriter headline** — "Know your **heart.**" where the last word types,
+     deletes, and retypes through heart / thyroid / hormones / kidneys / future.
+  2. **Product-tour scroll scene** — a sticky browser-style app frame on the
+     right rebuilds itself three times (Vitality Map view → biomarker trend view
+     → action-plan view) as tour steps scroll past on the left.
+  3. **Cursor-spotlight grid** — six capability cards where a radial glow follows
+     the pointer inside each card.
+  4. **Animated tab switcher** — Heart / Metabolic / Hormones tabs with a sliding
+     lime underline that swap a live-drawing chart.
+  5. Count-up stats, quote marquee, green CTA banner.
+- **Libraries:** framer-motion (layout animation for tabs, scroll-linked frame
+  swaps, pointer tracking), react-apexcharts, MUI.
+
 ## Implementation notes
 
 - Routes: `/` renders `Welcome` which now hosts the switcher + the three options at
