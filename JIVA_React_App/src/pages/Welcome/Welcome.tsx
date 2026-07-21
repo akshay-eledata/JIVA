@@ -9,8 +9,11 @@ import Option4 from './options/option4/Option4';
 import Option5 from './options/option5/Option5';
 import Option6 from './options/option6/Option6';
 import Option7 from './options/option7/Option7';
+import Option8 from './options/option8/Option8';
+import Option9 from './options/option9/Option9';
+import Option10 from './options/option10/Option10';
 
-const OPTIONS = [1, 2, 3, 4, 5, 6, 7] as const;
+const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
 type OptionNumber = (typeof OPTIONS)[number];
 
 /**
@@ -87,6 +90,9 @@ const Welcome: React.FC = () => {
       {option === 5 && <Option5 />}
       {option === 6 && <Option6 />}
       {option === 7 && <Option7 />}
+      {option === 8 && <Option8 />}
+      {option === 9 && <Option9 />}
+      {option === 10 && <Option10 />}
     </Box>
   );
 };
