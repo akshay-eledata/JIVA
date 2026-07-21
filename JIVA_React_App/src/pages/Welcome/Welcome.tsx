@@ -14,9 +14,13 @@ const OPTIONS = [1, 2, 3, 4, 5, 6, 7] as const;
 type OptionNumber = (typeof OPTIONS)[number];
 
 /**
- * Homepage design showcase: three candidate redesigns behind a fixed switcher.
- * The active option is kept in the ?option= query param so a specific design
- * can be shared by URL. See Data/frontend-plan.md for the design rationale.
+ * Homepage design showcase behind a fixed switcher.
+ *
+ * Option 1 is the live homepage and the default anyone lands on. Options 2
+ * through 7 are design explorations, kept around for review; they are not
+ * wired up beyond their sign up and sign in buttons. The active option lives
+ * in the ?option= query param so a specific design can be shared by URL. See
+ * Data/frontend-plan.md for the design rationale.
  */
 const Welcome: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
