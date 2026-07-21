@@ -7,8 +7,10 @@ import Option2 from './options/option2/Option2';
 import Option3 from './options/option3/Option3';
 import Option4 from './options/option4/Option4';
 import Option5 from './options/option5/Option5';
+import Option6 from './options/option6/Option6';
+import Option7 from './options/option7/Option7';
 
-const OPTIONS = [1, 2, 3, 4, 5] as const;
+const OPTIONS = [1, 2, 3, 4, 5, 6, 7] as const;
 type OptionNumber = (typeof OPTIONS)[number];
 
 /**
@@ -38,6 +40,8 @@ const Welcome: React.FC = () => {
           display: 'flex',
           gap: 0.5,
           p: 0.5,
+          maxWidth: 'calc(100vw - 24px)',
+          overflowX: 'auto',
           borderRadius: '999px',
           backgroundColor: 'rgba(23,48,27,0.82)',
           backdropFilter: 'blur(12px)',
@@ -77,6 +81,8 @@ const Welcome: React.FC = () => {
       {option === 3 && <Option3 />}
       {option === 4 && <Option4 />}
       {option === 5 && <Option5 />}
+      {option === 6 && <Option6 />}
+      {option === 7 && <Option7 />}
     </Box>
   );
 };

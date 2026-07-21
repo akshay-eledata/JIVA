@@ -222,6 +222,32 @@ every section carries a drawn, charted, or orbiting visual.
 - **Libraries:** framer-motion (loops + scroll-scrubbed SVG pathLength),
   react-apexcharts (radialBar, area, bar), MUI.
 
+### Option 6 — The original homepage (reference)
+
+The pre-redesign production page, kept in the showcase so it can be compared
+directly against the new candidates. Unchanged: mint hero with the hand-scan
+collage, 2x2 services grid, doctors' clinical notes, testimonials, curved footer.
+Uses the legacy `#256111`/`#61CC3E` greens and Source Sans Pro / Alegreya Sans.
+No animation library, MUI only.
+
+### Option 7 — "Mission Control, Daylight" (light, graphics-rich)
+
+Option 5 restyled onto the light brand palette: same section structure and
+graphic density, opposite mood.
+
+- **Palette:** Dewdrop Glow `#F3F9F3` canvas, white cards with soft green
+  shadows, Jiva Green as the working color, lime reserved for chips, glow strokes,
+  and the CTA button. Blueprint grid at higher opacity (it reads naturally on
+  light). Green logo.
+- **Type:** Lexend display, Inter body (matches Options 2 and 5).
+- **Sections:** identical skeleton to Option 5 — orbit hero (white chip pills and
+  a white-backed gauge over saga/lime blobs, green particle field, grid), scroll-
+  scrubbed ECG in green with a lime glow, live systems board bento on white
+  cards, systems ticker, count-up stats, quote marquees, green CTA block with
+  grid wash.
+- **Motion language:** identical to Option 5; only the surfaces change.
+- **Libraries:** framer-motion, react-apexcharts, MUI.
+
 ## Implementation notes
 
 - Routes: `/` renders `Welcome` which now hosts the switcher + the three options at
