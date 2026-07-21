@@ -156,7 +156,7 @@ const Welcome: React.FC = () => {
 
           {/* GET STARTED BUTTON ADDED HERE */}
           <Button
-            onClick={() => navigate('/intake')}
+            onClick={() => navigate('/signup')}
             sx={{
               backgroundColor: '#61CC3E',
               color: '#FFFFFF',

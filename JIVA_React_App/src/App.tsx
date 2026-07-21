@@ -26,13 +26,17 @@ import SelectPackages from './pages/SelectPackages/SelectPackages';
 import BiomarkerDetail from './pages/BiomarkerDetail/BiomarkerDetail';
 import Intake from './pages/Intake/Intake';
 import HealthQuestionnaire from './pages/HealthQuestionnaire/HealthQuestionnaire';
+import VerifyPhone from './pages/VerifyPhone/VerifyPhone';
+import ScheduleLabs from './pages/ScheduleLabs/ScheduleLabs';
 import theme from './theme';
 
 const App: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages', '/intake'];
-  const authPages = ['/', '/signin', '/signup', '/success', '/welcome', '/select-packages', '/intake'];
+  // Onboarding runs without the app navbar: there is nothing to navigate to
+  // until the user is through it.
+  const pagesWithoutNavbar = ['/', '/signin', '/signup', '/verify-phone', '/success', '/welcome', '/select-packages', '/intake', '/schedule-labs'];
+  const authPages = pagesWithoutNavbar;
   const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath);
   const shouldShowAuthLeftSide = authPages.includes(currentPath);
 
@@ -67,6 +71,8 @@ const App: React.FC = () => {
               <Route path="/signup" element={<Signup />} />
               {/* <Route path="/Signin" element={<Navigate to="/signin" replace />} />
                 <Route path="/Singup" element={<Navigate to="/signup" replace />} /> */}
+              <Route path="/verify-phone" element={<VerifyPhone />} />
+              <Route path="/schedule-labs" element={<ScheduleLabs />} />
               <Route path="/success" element={<Success />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/dashboard" element={<Dashboard />} />

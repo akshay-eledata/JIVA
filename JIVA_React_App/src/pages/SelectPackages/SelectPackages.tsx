@@ -19,6 +19,10 @@ import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import { PackageInfo } from './constants';
 import { apiUrl } from '../../config';
+import DemoSkip from '../../Component/DemoSkip/DemoSkip';
+import { nextStepAfter } from '../../onboarding/steps';
+
+const NEXT = nextStepAfter('/select-packages');
 
 const GREEN = '#006045';
 const GREEN_HOVER = '#004d35';
@@ -120,6 +124,7 @@ const SelectPackages: React.FC = () => {
   }
 
   return (
+    <>
     <Box sx={{ width: '100%', maxWidth: '1080px', margin: '0 auto', px: { xs: 2.5, md: 4 }, pt: { xs: 3, md: 5 }, pb: '150px', boxSizing: 'border-box' }}>
       {/* Header */}
       <Box sx={{ textAlign: 'center', mb: 3.5 }}>
@@ -304,6 +309,10 @@ const SelectPackages: React.FC = () => {
         </Box>
       </Box>
     </Box>
+
+    {/* Sits above the sticky checkout bar. */}
+    <DemoSkip to={NEXT} label="Skip panel selection" bottomOffset="112px" />
+    </>
   );
 };
 
