@@ -14,10 +14,13 @@ import QuestionField from '../../Component/QuestionnaireForm/QuestionField';
 import { sectionsForPhase, isVisible } from '../../questionnaire/definition';
 import { Answers, AnswerValue } from '../../questionnaire/types';
 import { loadDraft, saveDraft, clearDraft, submitQuestionnaire } from '../../questionnaire/storage';
+import DemoSkip from '../../Component/DemoSkip/DemoSkip';
+import { nextStepAfter } from '../../onboarding/steps';
 import { COLORS, FONTS, FONT_WEIGHTS } from '../../constants/constants';
 import { INTAKE_LABELS as L } from './labels';
 
 const SECTIONS = sectionsForPhase('pre');
+const NEXT = nextStepAfter('/intake');
 
 const Intake: React.FC = () => {
   const navigate = useNavigate();
@@ -78,6 +81,7 @@ const Intake: React.FC = () => {
   };
 
   return (
+    <>
     <Box
       ref={topRef}
       sx={{
@@ -267,6 +271,9 @@ const Intake: React.FC = () => {
         </Fade>
       )}
     </Box>
+
+    <DemoSkip to={NEXT} label="Skip questionnaire" />
+    </>
   );
 };
 

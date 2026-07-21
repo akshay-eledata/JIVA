@@ -10,7 +10,7 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res) => {
-  const { name, firstName, lastName, phone, email, password } = req.body;
+  const { name, firstName, lastName, phone, email, password, twoFactorEnabled } = req.body;
 
   try {
     const userExists = await User.findOne({ where: { email } });
@@ -32,7 +32,9 @@ const registerUser = async (req, res) => {
       lastName: lastName || null,
       phone: phone || null,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      // Two factor only makes sense if we actually have a number to text.
+      twoFactorEnabled: Boolean(twoFactorEnabled && phone)
     });
 
     const token = generateToken(user.id);
@@ -50,6 +52,7 @@ const registerUser = async (req, res) => {
       lastName: user.lastName,
       phone: user.phone,
       email: user.email,
+      twoFactorEnabled: user.twoFactorEnabled,
       token: token // Keep it in JSON too just in case existing logic relies on it temporarily
     });
   } catch (error) {
@@ -89,4 +92,29 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+// @desc    Confirm the SMS code for two factor setup
+// @route   POST /api/auth/verify-phone
+// @access  Private
+//
+// Demo build: no SMS provider is wired up yet, so any six digit code is
+// accepted. Swap the check below for a real provider lookup when we connect
+// one and the rest of the flow stays the same.
+const verifyPhone = async (req, res) => {
+  const { code } = req.body;
+
+  if (!/^\d{6}$/.test(String(code || ''))) {
+    return res.status(400).json({ message: 'Enter the six digit code we sent you.' });
+  }
+
+  try {
+    await User.update(
+      { phoneVerified: true },
+      { where: { id: req.user.id } }
+    );
+    res.json({ phoneVerified: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, verifyPhone };
