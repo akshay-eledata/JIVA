@@ -438,26 +438,29 @@ const VitalityMap: React.FC = () => {
                 <Box
                     sx={{
                         mb: 4,
-                        borderRadius: '24px',
-                        p: '22px 28px',
+                        borderRadius: '20px',
+                        p: { xs: '16px 18px', md: '18px 24px' },
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        gap: 3,
+                        gap: 2,
                         flexWrap: 'wrap',
-                        background: 'linear-gradient(90deg, #FFFAEB 0%, #FEF3F2 100%)',
-                        border: '1px solid #FEDF89',
+                        // Matches the cards below it; the amber is kept as an
+                        // accent on the icon and heading rather than a wash.
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
+                        boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1, minWidth: '280px' }}>
-                        <Box sx={{ width: 52, height: 52, borderRadius: '14px', backgroundColor: '#FFFFFF', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <Box component="img" src={BiomarkerIcon} sx={{ width: 24, height: 24 }} />
+                        <Box sx={{ width: 42, height: 42, borderRadius: '12px', backgroundColor: '#FFFAEB', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Box component="img" src={BiomarkerIcon} sx={{ width: 20, height: 20 }} />
                         </Box>
                         <Box sx={{ textAlign: 'left' }}>
-                            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#B54708', mb: 0.5 }}>
+                            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#B54708', mb: 0.25 }}>
                                 {flaggedTotal} biomarker{flaggedTotal === 1 ? '' : 's'} outside your optimal range
                             </Typography>
-                            <Typography sx={{ fontSize: '14px', color: '#7A4B12', lineHeight: '20px', maxWidth: '660px' }}>
+                            <Typography sx={{ fontSize: '13.5px', color: '#667085', lineHeight: '19px', maxWidth: '700px' }}>
                                 {flaggedSystemNames.length > 0
                                     ? `Most of these sit in your ${joinNames(flaggedSystemNames)} ${flaggedSystemNames.length === 1 ? 'system' : 'systems'}. Targeted panels go deeper on those areas and are drawn at your next lab visit.`
                                     : 'Targeted panels go deeper on the flagged areas and are drawn at your next lab visit.'}
@@ -466,7 +469,7 @@ const VitalityMap: React.FC = () => {
                     </Box>
                     <Button
                         onClick={() => navigate('/select-packages?mode=addon')}
-                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '15px', px: 3.5, py: 1.25, whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
+                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
                     >
                         Add targeted tests
                     </Button>

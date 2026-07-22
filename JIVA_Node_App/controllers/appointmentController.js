@@ -19,11 +19,24 @@ const today = () => new Date().toISOString().slice(0, 10);
  *   due      history exists and the due date has passed, prompt to rebook
  *   waiting  history exists and the due date is still ahead
  *   none     nothing has ever been drawn, prompt to book a baseline
+ *
+ * `afterVisit` scopes the answer to "what comes after the results you are
+ * looking at". The Vitality Map passes the visit it is rendering, so visit 1
+ * can show the booked second draw while visit 2 simultaneously shows that a
+ * third has not been booked. Omitted on the dashboard, which asks the global
+ * question instead.
  */
-async function computeRetestStatus(userId) {
-  const [upcoming, lastCompleted, completedCount, latestReport] = await Promise.all([
+async function computeRetestStatus(userId, afterVisit) {
+  const scoped = Number.isInteger(afterVisit);
+
+  const [upcoming, lastCompleted, completedCount, latestReport, anchorAppointment, anchorReport] = await Promise.all([
     Appointment.findOne({
-      where: { userId, status: 'scheduled', scheduledDate: { [Op.gte]: today() } },
+      where: {
+        userId,
+        status: 'scheduled',
+        scheduledDate: { [Op.gte]: today() },
+        ...(scoped ? { visit: { [Op.gt]: afterVisit } } : {}),
+      },
       order: [['scheduledDate', 'ASC']],
     }),
     Appointment.findOne({
@@ -32,13 +45,26 @@ async function computeRetestStatus(userId) {
     }),
     Appointment.count({ where: { userId, status: { [Op.ne]: 'cancelled' } } }),
     LabReport.findOne({ where: { userId }, order: [['visit', 'DESC']] }),
+    // When scoped, the cadence runs from the draw being viewed, not the most
+    // recent one overall.
+    scoped
+      ? Appointment.findOne({ where: { userId, visit: afterVisit }, order: [['scheduledDate', 'DESC']] })
+      : null,
+    scoped
+      ? LabReport.findOne({ where: { userId, visit: afterVisit } })
+      : null,
   ]);
 
-  // Anchor the cadence on the last completed draw. Fall back to the newest lab
-  // report, which covers patients whose history predates appointment tracking.
-  const anchorDate = (lastCompleted && lastCompleted.scheduledDate)
-    || (latestReport && latestReport.dateProcessed)
-    || null;
+  // Anchor the cadence on the relevant draw. Scoped: the visit being viewed.
+  // Unscoped: the last completed draw, falling back to the newest lab report
+  // for patients whose history predates appointment tracking.
+  const anchorDate = scoped
+    ? ((anchorAppointment && anchorAppointment.scheduledDate)
+      || (anchorReport && anchorReport.dateProcessed)
+      || null)
+    : ((lastCompleted && lastCompleted.scheduledDate)
+      || (latestReport && latestReport.dateProcessed)
+      || null);
 
   const dueDate = anchorDate ? addDays(anchorDate, RETEST_INTERVAL_DAYS) : null;
   const daysUntilDue = dueDate ? daysUntil(dueDate) : null;
@@ -53,7 +79,7 @@ async function computeRetestStatus(userId) {
     state,
     intervalDays: RETEST_INTERVAL_DAYS,
     // Next visit number the patient would book, so the UI can say "draw 3".
-    nextVisit: completedCount + (upcoming ? 0 : 1) || 1,
+    nextVisit: scoped ? afterVisit + 1 : (completedCount + (upcoming ? 0 : 1) || 1),
     upcoming: upcoming ? serialize(upcoming) : null,
     daysUntilAppointment: upcoming ? daysUntil(upcoming.scheduledDate) : null,
     lastDrawDate: anchorDate,
@@ -127,12 +153,13 @@ const listAppointments = async (req, res) => {
   }
 };
 
-// @desc    Next-draw card data for the dashboard.
-// @route   GET /api/me/appointments/retest-status
+// @desc    Next-draw card data for the dashboard and the Vitality Maps.
+// @route   GET /api/me/appointments/retest-status?afterVisit=2
 // @access  Private
 const getRetestStatus = async (req, res) => {
+  const afterVisit = req.query.afterVisit != null ? Number(req.query.afterVisit) : undefined;
   try {
-    res.json(await computeRetestStatus(req.user.id));
+    res.json(await computeRetestStatus(req.user.id, afterVisit));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

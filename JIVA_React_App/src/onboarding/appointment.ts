@@ -95,9 +95,18 @@ export async function bookAppointment(appointment: LabAppointment): Promise<bool
   }
 }
 
-export async function fetchRetestStatus(): Promise<RetestStatus | null> {
+/**
+ * Where the patient stands in the retest cycle.
+ *
+ * `afterVisit` scopes the answer to "what comes after this set of results", so
+ * the first Vitality Map can show the booked second draw while the retest view
+ * simultaneously shows that a third has not been booked. Omit it to ask the
+ * global question, which is what the dashboard wants.
+ */
+export async function fetchRetestStatus(afterVisit?: number): Promise<RetestStatus | null> {
   try {
-    const res = await fetch(apiUrl('/api/me/appointments/retest-status'), {
+    const qs = afterVisit != null ? `?afterVisit=${afterVisit}` : '';
+    const res = await fetch(apiUrl(`/api/me/appointments/retest-status${qs}`), {
       headers: authHeaders(),
     });
     return res.ok ? ((await res.json()) as RetestStatus) : null;

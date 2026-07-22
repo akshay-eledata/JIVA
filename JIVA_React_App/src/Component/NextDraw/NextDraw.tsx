@@ -52,15 +52,21 @@ interface NextDrawProps {
    * have on the calendar.
    */
   onResolved?: (rendered: boolean) => void;
+  /**
+   * Scope the card to "what comes after visit N". The Vitality Maps pass the
+   * visit they are rendering so each one answers for its own results. Omit on
+   * the dashboard, which asks the global question.
+   */
+  afterVisit?: number;
 }
 
-const NextDraw: React.FC<NextDrawProps> = ({ onResolved }) => {
+const NextDraw: React.FC<NextDrawProps> = ({ onResolved, afterVisit }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<RetestStatus | null>(null);
 
   useEffect(() => {
     let live = true;
-    fetchRetestStatus().then((s) => {
+    fetchRetestStatus(afterVisit).then((s) => {
       if (!live) return;
       setStatus(s);
       onResolved?.(Boolean(s));
@@ -69,23 +75,24 @@ const NextDraw: React.FC<NextDrawProps> = ({ onResolved }) => {
     // onResolved is intentionally excluded: callers pass an inline setter and
     // re-running the fetch on every dashboard render would be wasteful.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [afterVisit]);
 
   if (!status) return null;
 
   const shell = {
     width: '100%',
-    borderRadius: '16px',
-    padding: { xs: '20px 18px', md: '24px 28px' },
+    borderRadius: '20px',
+    padding: { xs: '16px 18px', md: '18px 24px' },
     boxSizing: 'border-box' as const,
-    background: 'linear-gradient(135deg, #F1F8F5 0%, #FDFDF8 60%, #F1F8F5 100%)',
-    border: '1px solid #D9EBE1',
+    backgroundColor: '#FFFFFF',
+    border: '1px solid #E2E8F0',
+    boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
   };
 
   const titleSx = {
     fontFamily: FONT,
     fontWeight: FONT_WEIGHTS.BOLD,
-    fontSize: { xs: '17px', md: '18px' },
+    fontSize: { xs: '16px', md: '17px' },
     color: '#1A212B',
   };
 
@@ -99,7 +106,7 @@ const NextDraw: React.FC<NextDrawProps> = ({ onResolved }) => {
 
   const primaryButtonSx = {
     flexShrink: 0,
-    height: '44px',
+    height: '40px',
     px: 3,
     borderRadius: '12px',
     backgroundColor: GREEN,
@@ -113,68 +120,74 @@ const NextDraw: React.FC<NextDrawProps> = ({ onResolved }) => {
   };
 
   /* ── booked: show the appointment and count down ───────────────────────── */
+  //
+  // Laid out as one compact band rather than stacked rows: this sits above the
+  // results on the Vitality Map and should not push them down the page.
   if (status.state === 'booked' && status.upcoming) {
     const a = status.upcoming;
+    const detail = [
+      { Icon: CalendarTodayIcon, text: longDate(a.scheduledDate) },
+      { Icon: AccessTimeIcon, text: a.timeSlot },
+      { Icon: LocationOnIcon, text: `${a.labName}${a.labAddress ? `, ${a.labAddress}` : ''}` },
+    ];
     return (
-      <Box sx={shell}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
-          <Box>
+      <Box sx={{ ...shell, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ flex: 1, minWidth: '260px', textAlign: 'left' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap', mb: 0.75 }}>
             <Typography sx={titleSx}>{L.BOOKED_TITLE}</Typography>
-            <Typography sx={{ fontFamily: FONT, fontSize: '13px', color: GREEN, fontWeight: FONT_WEIGHTS.BOLD, mt: 0.25 }}>
+            <Typography sx={{ fontFamily: FONT, fontSize: '12.5px', color: GREEN, fontWeight: FONT_WEIGHTS.BOLD }}>
               {fill(L.VISIT_LABEL, { n: a.visit })}
             </Typography>
-          </Box>
-          <Box
-            sx={{
-              px: 2,
-              py: 0.75,
-              borderRadius: '999px',
-              backgroundColor: GREEN,
-              color: '#FFFFFF',
-              fontFamily: FONT,
-              fontWeight: FONT_WEIGHTS.BOLD,
-              fontSize: '13px',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {countdown(status.daysUntilAppointment)}
-          </Box>
-        </Box>
-
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', mt: 2 }}>
-          {[
-            { Icon: CalendarTodayIcon, text: longDate(a.scheduledDate) },
-            { Icon: AccessTimeIcon, text: a.timeSlot },
-            { Icon: LocationOnIcon, text: `${a.labName}${a.labAddress ? `, ${a.labAddress}` : ''}` },
-          ].map(({ Icon, text }) => (
-            <Box key={text} sx={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-              <Icon sx={{ fontSize: '18px', color: GREEN, mt: '2px' }} />
-              <Typography sx={{ fontFamily: FONT, fontSize: '14.5px', color: '#1A212B' }}>{text}</Typography>
+            <Box
+              sx={{
+                px: 1.5,
+                py: '3px',
+                borderRadius: '999px',
+                backgroundColor: GREEN,
+                color: '#FFFFFF',
+                fontFamily: FONT,
+                fontWeight: FONT_WEIGHTS.BOLD,
+                fontSize: '12.5px',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {countdown(status.daysUntilAppointment)}
             </Box>
-          ))}
+          </Box>
+
+          {/* Date, time and place on one line, wrapping only when it has to. */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            {detail.map(({ Icon, text }) => (
+              <Box key={text} sx={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                <Icon sx={{ fontSize: '15px', color: GREEN, flexShrink: 0 }} />
+                <Typography sx={{ fontFamily: FONT, fontSize: '13.5px', color: '#1A212B' }}>{text}</Typography>
+              </Box>
+            ))}
+          </Box>
+
+          <Typography sx={{ fontFamily: FONT, fontSize: '12.5px', color: '#98A2B3', mt: 0.75 }}>
+            {L.BOOKED_PREP}
+          </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 2, mt: 2.5, flexWrap: 'wrap' }}>
-          <Typography sx={{ ...bodySx, mt: 0, flex: 1, minWidth: '220px' }}>{L.BOOKED_PREP}</Typography>
-          <Button
-            onClick={() => navigate(BOOK_RETEST)}
-            sx={{
-              flexShrink: 0,
-              height: '40px',
-              px: 2.5,
-              borderRadius: '12px',
-              border: `1.5px solid ${GREEN}`,
-              color: GREEN,
-              fontFamily: FONT,
-              fontWeight: FONT_WEIGHTS.BOLD,
-              fontSize: '13.5px',
-              textTransform: 'none',
-              '&:hover': { backgroundColor: 'rgba(0, 96, 69, 0.06)' },
-            }}
-          >
-            {L.BOOKED_RESCHEDULE}
-          </Button>
-        </Box>
+        <Button
+          onClick={() => navigate(BOOK_RETEST)}
+          sx={{
+            flexShrink: 0,
+            height: '38px',
+            px: 2.5,
+            borderRadius: '10px',
+            border: `1.5px solid ${GREEN}`,
+            color: GREEN,
+            fontFamily: FONT,
+            fontWeight: FONT_WEIGHTS.BOLD,
+            fontSize: '13.5px',
+            textTransform: 'none',
+            '&:hover': { backgroundColor: 'rgba(0, 96, 69, 0.06)' },
+          }}
+        >
+          {L.BOOKED_RESCHEDULE}
+        </Button>
       </Box>
     );
   }

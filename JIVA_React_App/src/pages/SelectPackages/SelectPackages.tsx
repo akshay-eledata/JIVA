@@ -58,12 +58,18 @@ const TwoVisitPill: React.FC = () => (
 interface PanelMatch {
   matchCount: number;
   matchedBiomarkers: string[];
+  declinedCount: number;
+  declinedBiomarkers: string[];
   coversFocus: boolean;
 }
 
 interface Targeting {
+  /** 'change' ranks by markers that declined since the previous draw. */
+  basis: 'flagged' | 'change';
   flaggedCount: number;
+  declinedCount: number;
   flaggedSystems: { name: string; count: number }[];
+  declinedSystems: { name: string; count: number }[];
   focusMatched: boolean;
   byPanelId: Record<string, PanelMatch>;
 }
@@ -79,6 +85,10 @@ const SelectPackages: React.FC = () => {
   // than rebuilding the whole panel from scratch.
   const isAddonMode = searchParams.get('mode') === 'addon';
   const focusMarker = searchParams.get('focus') || '';
+  // Arriving from the retest view: target what has changed, not just what is
+  // currently out of range.
+  const basis = searchParams.get('basis') === 'change' ? 'change' : 'flagged';
+  const visitParam = searchParams.get('visit') || '';
 
   const [packages, setPackages] = useState<PackageInfo[]>([]);
   const [basicPanel, setBasicPanel] = useState<PackageInfo | null>(null);
@@ -123,7 +133,11 @@ const SelectPackages: React.FC = () => {
     if (!isAddonMode) return;
     const token = localStorage.getItem('token');
     if (!token) return;
-    const qs = focusMarker ? `?biomarker=${encodeURIComponent(focusMarker)}` : '';
+    const params = new URLSearchParams();
+    if (focusMarker) params.set('biomarker', focusMarker);
+    if (basis === 'change') params.set('basis', 'change');
+    if (visitParam) params.set('visit', visitParam);
+    const qs = params.toString() ? `?${params.toString()}` : '';
     fetch(apiUrl(`/api/me/recommended-panels${qs}`), { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
@@ -133,18 +147,23 @@ const SelectPackages: React.FC = () => {
           byPanelId[p.id] = {
             matchCount: p.matchCount,
             matchedBiomarkers: p.matchedBiomarkers || [],
+            declinedCount: p.declinedCount || 0,
+            declinedBiomarkers: p.declinedBiomarkers || [],
             coversFocus: p.coversFocus,
           };
         }
         setTargeting({
+          basis: d.basis === 'change' ? 'change' : 'flagged',
           flaggedCount: d.flaggedCount || 0,
+          declinedCount: d.declinedCount || 0,
           flaggedSystems: d.flaggedSystems || [],
+          declinedSystems: d.declinedSystems || [],
           focusMatched: Boolean(d.focusMatched),
           byPanelId,
         });
       })
       .catch(() => { /* Targeting is an enhancement; the plain list still works. */ });
-  }, [isAddonMode, focusMarker]);
+  }, [isAddonMode, focusMarker, basis, visitParam]);
 
   const toggleSelect = (id: string) => {
     setSelectedAddons((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -168,6 +187,7 @@ const SelectPackages: React.FC = () => {
       const mb = targeting.byPanelId[b.id];
       return (
         (mb?.coversFocus ? 1 : 0) - (ma?.coversFocus ? 1 : 0) ||
+        (mb?.declinedCount || 0) - (ma?.declinedCount || 0) ||
         (mb?.matchCount || 0) - (ma?.matchCount || 0)
       );
     });
@@ -204,7 +224,9 @@ const SelectPackages: React.FC = () => {
         </Typography>
         <Typography sx={{ fontFamily: FONT, fontSize: { xs: '15px', md: '16.5px' }, color: '#667085', maxWidth: '640px', mx: 'auto', lineHeight: 1.5 }}>
           {isAddonMode
-            ? 'These panels go deeper on the markers flagged in your results. Anything you add is drawn at your next lab visit.'
+            ? (basis === 'change'
+              ? 'These panels go deeper on what changed between your last two tests. Anything you add is drawn at your next lab visit.'
+              : 'These panels go deeper on the markers flagged in your results. Anything you add is drawn at your next lab visit.')
             : "Everyone starts with the Basic Panel. Layer on any specialized panels you'd like. Every panel includes both of your lab visits."}
         </Typography>
         {!isAddonMode && <Box sx={{ mt: 2 }}><TwoVisitPill /></Box>}
@@ -216,14 +238,18 @@ const SelectPackages: React.FC = () => {
           <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '17px', color: '#B54708', mb: 0.5 }}>
             {focusMarker && targeting.focusMatched
               ? `Panels covering ${focusMarker}`
-              : `${targeting.flaggedCount} of your biomarkers need a closer look`}
+              : targeting.basis === 'change' && targeting.declinedCount > 0
+                ? `${targeting.declinedCount} biomarker${targeting.declinedCount === 1 ? '' : 's'} declined since your last test`
+                : `${targeting.flaggedCount} of your biomarkers need a closer look`}
           </Typography>
           <Typography sx={{ fontFamily: FONT, fontSize: '14px', color: '#7A4B12', lineHeight: 1.5 }}>
             {focusMarker && targeting.focusMatched
               ? `The panels listed first re-test ${focusMarker} along with related markers. Everything else you have flagged is covered by the panels below.`
-              : targeting.flaggedSystems.length > 0
-                ? `Most of the flagged markers sit in your ${joinNames(targeting.flaggedSystems.slice(0, 3).map((s) => s.name))} ${targeting.flaggedSystems.length === 1 ? 'system' : 'systems'}. The panels marked below test those areas in more depth.`
-                : 'The panels marked below test the flagged areas in more depth.'}
+              : targeting.basis === 'change' && targeting.declinedSystems.length > 0
+                ? `The declines are concentrated in your ${joinNames(targeting.declinedSystems.slice(0, 3).map((s) => s.name))} ${targeting.declinedSystems.length === 1 ? 'system' : 'systems'}. Panels covering those markers are listed first, followed by ones covering the ${targeting.flaggedCount} markers still outside range.`
+                : targeting.flaggedSystems.length > 0
+                  ? `Most of the flagged markers sit in your ${joinNames(targeting.flaggedSystems.slice(0, 3).map((s) => s.name))} ${targeting.flaggedSystems.length === 1 ? 'system' : 'systems'}. The panels marked below test those areas in more depth.`
+                  : 'The panels marked below test the flagged areas in more depth.'}
           </Typography>
         </Box>
       )}
@@ -299,7 +325,7 @@ const SelectPackages: React.FC = () => {
           const isSel = selectedAddons.includes(addon.id);
           const isOpen = expanded.has(addon.id);
           const match = targeting?.byPanelId[addon.id];
-          const isRecommended = Boolean(match && match.matchCount > 0);
+          const isRecommended = Boolean(match && (match.matchCount > 0 || match.declinedCount > 0));
           const cat = catFor(addon.name);
           const Icon = cat.icon;
           const preview = addon.tests.slice(0, 3);
@@ -327,12 +353,17 @@ const SelectPackages: React.FC = () => {
                 <Box sx={{ mb: 1.25, pr: isSel ? 3 : 0, textAlign: 'left' }}>
                   <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, px: 1, py: '3px', borderRadius: '999px', backgroundColor: '#FEF0C7', border: '1px solid #FEC84B', mb: 0.5 }}>
                     <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '10.5px', letterSpacing: '0.04em', color: '#B54708' }}>
-                      {match!.coversFocus ? 'COVERS THIS MARKER' : 'RECOMMENDED FOR YOU'}
+                      {match!.coversFocus
+                        ? 'COVERS THIS MARKER'
+                        : match!.declinedCount > 0
+                          ? 'TRACKS YOUR DECLINES'
+                          : 'RECOMMENDED FOR YOU'}
                     </Typography>
                   </Box>
                   <Typography sx={{ fontFamily: FONT, fontSize: '12px', color: '#7A4B12', lineHeight: 1.4 }}>
-                    Re-tests {match!.matchCount} of your flagged marker{match!.matchCount === 1 ? '' : 's'}
-                    {match!.matchedBiomarkers.length > 0 ? `: ${match!.matchedBiomarkers.join(', ')}` : ''}
+                    {match!.declinedCount > 0
+                      ? `Re-tests ${match!.declinedCount} marker${match!.declinedCount === 1 ? '' : 's'} that declined since your last test${match!.declinedBiomarkers.length > 0 ? `: ${match!.declinedBiomarkers.join(', ')}` : ''}`
+                      : `Re-tests ${match!.matchCount} of your flagged marker${match!.matchCount === 1 ? '' : 's'}${match!.matchedBiomarkers.length > 0 ? `: ${match!.matchedBiomarkers.join(', ')}` : ''}`}
                   </Typography>
                 </Box>
               )}
