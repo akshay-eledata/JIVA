@@ -1,12 +1,63 @@
 # JIVA Demo Video Plan
 
-Purpose: produce a video demonstration of the JIVA application for use in a PowerPoint presentation, showing both product functionality and business value.
+Purpose: produce presentation material that explains how JIVA works and demonstrates its look, feel, and business value. Two deliverables, in order:
 
-Delivery format: **8-10 short scene clips (10-30 seconds each), one per PowerPoint slide**, rather than one long continuous video. The presenter narrates live over looping clips. This avoids voiceover production, lets any scene be re-recorded independently as the UI evolves, and matches how the deck will actually be presented.
+1. **Step 1 — PowerPoint preface deck (this comes first):** a short slide deck built from real application screenshots that explains the core of how JIVA works and shows how the app looks and feels. This deck prefaces the video demo.
+2. **Step 2 — Video demo:** 8-10 short scene clips (10-30 seconds each), one per PowerPoint slide, rather than one long continuous video. The presenter narrates live over looping clips. This avoids voiceover production, lets any scene be re-recorded independently as the UI evolves, and matches how the deck will actually be presented.
+
+Both steps share the same foundation: the seeded demo environment (section 3), the female_29 patient story, and the brand constraints (section 5). Screenshots captured for Step 1 and recordings captured for Step 2 come from the same screens, so the polish audit is done once.
 
 ---
 
-## 1. Technology stack
+## 1. Step 1: the PowerPoint preface deck
+
+Goal: a **short deck (~9 slides)** that explains the core of how JIVA works, with a few real screens to convey look and feel. Minimal text, brand-faithful, presenter-narrated.
+
+### Tools
+
+| Tool | Role | Install |
+|---|---|---|
+| **Playwright screenshot script** | Capture stills of each app screen from the seeded stack. `playwright-core` is already a devDependency of the React app; a small Node script (`demo/capture-stills.mjs`) navigates each route with the demo JWT injected into localStorage and saves PNGs. Alternatively, TestReel recording JSONs with `screenshot` steps produce the same stills and are reusable for Step 2. | `npx playwright install chromium` |
+| **python-pptx** | Generate the .pptx programmatically: exact brand hexes, consistent layout, screenshots placed with uniform framing. Regenerating the deck after a UI change is two script runs, not an afternoon of re-pasting. | `pip install python-pptx Pillow` |
+| **Pillow** | Optional pre-processing of stills: uniform crops, rounded corners, subtle drop shadow on a Dewdrop Glow background. | (installed with the above) |
+
+Why generate instead of hand-building: the UI is still evolving (homepage options, Vitality Map polish), so screenshots **will** be recaptured. With a build script, the deck stays current for free. The generated .pptx is a base; the presenter can hand-tweak copy afterwards, but layout and screens regenerate.
+
+### Screenshot capture spec
+
+- 1920x1080 viewport at `deviceScaleFactor: 2` (3840x2160 PNGs) so screens stay crisp on projectors and when cropped.
+- Wait for network idle plus a settle delay per page so charts and animations finish rendering before capture.
+- Auth screens get the demo JWT injected (same mechanism as Step 2 recordings); onboarding screens are captured logged-out.
+- Output to `demo/stills/<route-name>.png` with stable names the deck script references.
+- Capture only after the Phase 1 polish audit (section 6) so no legacy off-brand greens appear.
+
+### Slide outline (~9 slides)
+
+| # | Slide | Content |
+|---|---|---|
+| 1 | Title | JIVA logo, "Precision Wellness · Personalized to You". Jiva Green on Dewdrop Glow. |
+| 2 | The problem | One claim: a lab report with 100+ biomarkers is data, not guidance. Minimal text. |
+| 3 | How JIVA works | The 4-step journey: Questionnaire → Panel + blood draw → Clinical engine → Vitality Map. Four small thumbnails or single-line icons, one line each. |
+| 4 | Screen: Intake | `/intake` screenshot. Claim: personalization starts before the blood draw. |
+| 5 | Screen: Vitality Map | `/vitality-map` screenshot (hero slide). Claim: 69 lab values become 10 color-coded body systems and a biological age (30.8 vs 29). |
+| 6 | Screen: Biomarker + Action Plan | `/biomarker/:name` and `/action-plan` screenshots side by side. Claim: every number explained; recommendations tied to her specific values. |
+| 7 | Screen: Retest | `/vitality-map-2` screenshot. Claim: six months later, measurably better. |
+| 8 | Why JIVA | Three bullets from the competitor survey: LatAm-native (Spanish, WhatsApp, local payments), physician-led engine (not generic AI advice), Nicoya Blue Zone heritage. |
+| 9 | See it in action | Transition slide into the video demo (Step 2). |
+
+Slide copy follows the brand voice rules in section 5. Headline font: Inter bold or Lexend as the Mustachio stand-in (python-pptx can only reference fonts installed on the presenting machine, so use a safe fallback).
+
+### Build steps
+
+1. `node demo/capture-stills.mjs` against a freshly seeded `docker compose up` stack → `demo/stills/`.
+2. `python demo/build_deck.py` → `demo/JIVA_Overview.pptx` (slide masters, brand colors, stills placed).
+3. Review pass: tighten copy by hand if needed; confirm screens are on-brand.
+
+Effort: about 1 day, after the shared polish audit.
+
+---
+
+## 2. Technology stack (video, Step 2)
 
 | Tool | Role | Status |
 |---|---|---|
@@ -27,7 +78,7 @@ Caveat: TestReel is young (v0.2.0, ~72 stars, actively maintained). If a scene n
 
 ---
 
-## 2. Demo environment and data
+## 3. Demo environment and data (shared by both steps)
 
 The app is unusually demo-friendly. All of this already exists:
 
@@ -49,7 +100,7 @@ The strongest and safest choice:
 
 ---
 
-## 3. Shot list
+## 4. Shot list (video scenes, Step 2)
 
 Each scene maps to one business-value claim, which becomes the slide title.
 
@@ -70,7 +121,7 @@ Suggested slide-title register (brand voice, plain clinician tone, no filler): e
 
 ---
 
-## 4. Brand constraints for everything on screen
+## 5. Brand constraints for everything on screen
 
 From `Brand_Guidelines.pdf` (tokens transcribed in `frontend-plan.md` / `brand.ts`):
 
@@ -82,26 +133,28 @@ From `Brand_Guidelines.pdf` (tokens transcribed in `frontend-plan.md` / `brand.t
 
 ---
 
-## 5. Production phases
+## 6. Production phases (combined timeline)
 
-**Phase 1 — Polish audit (half a day).** Record only after screens are on-brand. Finish the Vitality Map spectrum/watermark cleanup tracked in `frontend-plan.md`, and sweep the scene-list pages for legacy greens. The camera catches everything.
+**Phase 1 — Polish audit (half a day, shared).** Capture nothing until screens are on-brand. Finish the Vitality Map spectrum/watermark cleanup tracked in `frontend-plan.md`, and sweep the scene-list pages for legacy greens. The camera catches everything; so do stills.
 
-**Phase 2 — Scene definitions (1 day).** Create a `demo/` folder (in `JIVA_React_App` or repo root) with one TestReel recording JSON per scene plus a small runner script (`npm run demo:record`) that assumes a freshly seeded `docker compose up` stack. Shared config: viewport 1920x1080, localStorage JWT injection for authed scenes, brand-tinted background padding around the window chrome (Dewdrop Glow `#F3F9F3`).
+**Phase 2 — Preface PowerPoint, Step 1 (1 day).** Build the stills capture script and python-pptx deck generator per section 1; capture, generate, review. This ships first and is usable on its own while the video is produced.
 
-**Phase 3 — Capture and trim (half a day).** Run all recordings, review, adjust pacing (`pauseAfter`, `speed`, `zoom` targets), re-run. Trim with ffmpeg if needed. Evaluate scene 1: if scroll animation smoothness disappoints, recapture that one scene manually with Screen Studio.
+**Phase 3 — Video scene definitions (1 day).** Extend the same `demo/` folder with one TestReel recording JSON per scene plus a runner script (`npm run demo:record`) that assumes a freshly seeded `docker compose up` stack. Shared config: viewport 1920x1080, localStorage JWT injection for authed scenes, brand-tinted background padding around the window chrome (Dewdrop Glow `#F3F9F3`).
 
-**Phase 4 — Assemble deck (half a day).** One clip per slide, autoplay + loop. Slide title carries the business-value claim; add a short presenter talking-point note per slide in the brand voice. Scene 9 is a static roadmap slide.
+**Phase 4 — Video capture and trim (half a day).** Run all recordings, review, adjust pacing (`pauseAfter`, `speed`, `zoom` targets), re-run. Trim with ffmpeg if needed. Evaluate scene 1: if scroll animation smoothness disappoints, recapture that one scene manually with Screen Studio.
 
-Total: roughly 2-3 working days. Phases 1 and 2 are reusable forever; future re-records after design changes are `npm run demo:record`, not an afternoon of screen capture.
+**Phase 5 — Assemble the final deck (half a day).** Append the video slides to the preface deck: one clip per slide, autoplay + loop. Slide title carries the business-value claim; add a short presenter talking-point note per slide in the brand voice. Scene 9 is a static roadmap slide.
+
+Total: roughly 3-4 working days, with the preface deck delivered after Phase 2. Phases 1-3 are reusable forever; future refreshes after design changes are two script runs, not an afternoon of screen capture and re-pasting.
 
 ---
 
-## 6. Assumptions and open decisions
+## 7. Assumptions and open decisions
 
 1. **Language: English** for this deck. The LatAm story is told via Spanish food names on screen and the roadmap slide. A Spanish variant is a separate pass if the audience is Costa Rican.
 2. **Per-slide clips, presenter-narrated.** If a standalone 2-3 minute shareable video with music/VO is also wanted, add the Remotion assembly phase; the same clips feed it.
 3. **Homepage scene uses the current default (Option 1)**, with Option 11/12 as an optional flourish. Client direction on the 13 homepage options is still settling, so scene 1's recording JSON should be trivially re-pointable.
-4. **Demo subject: female_29** (see section 2). Secondary option for a male-skew or metabolic story: `male_44` or `james_whitfield`, but neither is seeded end-to-end today.
+4. **Demo subject: female_29** (see section 3). Secondary option for a male-skew or metabolic story: `male_44` or `james_whitfield`, but neither is seeded end-to-end today.
 
 ---
 
