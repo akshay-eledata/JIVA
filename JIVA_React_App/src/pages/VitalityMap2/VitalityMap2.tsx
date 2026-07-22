@@ -13,6 +13,7 @@ import { spectrumColor, spectrumTileGradient, SPECTRUM_GRADIENT } from '../../ut
 import SystemCompare, { ComparePayload } from '../../Component/SystemCompare/SystemCompare';
 import { VITALITY_MAP2_LABELS } from './labels';
 import NextDraw from '../../Component/NextDraw/NextDraw';
+import SystemIcon from '../../Component/SystemIcon/SystemIcon';
 
 const CARD_RADIUS = '32px';
 const CARD_HEIGHT = '340px';
@@ -462,7 +463,7 @@ const VitalityMap2: React.FC = () => {
                                                 <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467', textAlign: 'left' }}>{item.statusText}</Typography>
                                             </Box>
                                             <Box sx={{ width: '30px', height: '30px', backgroundColor: 'rgba(255,255,255,0.85)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0px 2px 6px rgba(23,48,27,0.10)' }}>
-                                                <Box component="img" src={BiomarkerIcon} alt="biomarker" sx={{ width: '16px', height: '16px' }} />
+                                                <SystemIcon system={item.systemName} size={16} />
                                             </Box>
                                         </Box>
                                     </Box>

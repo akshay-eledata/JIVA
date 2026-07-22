@@ -26,6 +26,7 @@ import ForkPlateIcon from '../../assets/fork-plate.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
 import NextDraw from '../../Component/NextDraw/NextDraw';
+import SystemIcon from '../../Component/SystemIcon/SystemIcon';
 import LabSamples from '../../assets/lab-samples.svg';
 import KitIcon from '../../assets/Kit.svg';
 import { VITALITY_MAP_CONSTANTS } from './constants';
@@ -890,12 +891,7 @@ const VitalityMap: React.FC = () => {
                                                     boxShadow: '0px 2px 6px rgba(23,48,27,0.10)'
                                                 }}
                                             >
-                                                <Box
-                                                    component="img"
-                                                    src={BiomarkerIcon}
-                                                    alt="biomarker"
-                                                    sx={{ width: '16px', height: '16px' }}
-                                                />
+                                                <SystemIcon system={item.systemName} size={16} />
                                             </Box>
                                         </Box>
                                     </Box>
