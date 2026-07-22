@@ -214,7 +214,7 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#F3F9F3', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#E6EFE7', borderRadius: '40px', p: 5, border: '1px solid #D3E2D5' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 4 }}>
                 {VITALITY_MAP_LABELS.RECOMMENDED_TITLE}
             </Typography>
@@ -377,7 +377,10 @@ const VitalityMap: React.FC = () => {
     const todayStr = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     return (
-        <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', }}>
+        // Full-bleed tinted canvas so the white cards separate from the page
+        // instead of white-on-white.
+        <Box sx={{ width: '100%', backgroundColor: '#EFF4EF', pb: 8 }}>
+        <Box sx={{ width: '100%', maxWidth: VITALITY_MAP_CONSTANTS.MAX_WIDTH, margin: '0 auto', px: { xs: 2, xl: 0 } }}>
             {/* Consultation Modal */}
             <ConsultationModal
                 open={isModalOpen}
@@ -479,8 +482,8 @@ const VitalityMap: React.FC = () => {
                         // Matches the cards below it; the amber is kept as an
                         // accent on the icon and heading rather than a wash.
                         backgroundColor: '#FFFFFF',
-                        border: '1px solid #E2E8F0',
-                        boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
+                        border: '1px solid #DCE7DD',
+                        boxShadow: '0px 2px 10px rgba(23,48,27,0.07)',
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1, minWidth: '280px' }}>
@@ -522,7 +525,8 @@ const VitalityMap: React.FC = () => {
                         backgroundColor: '#FFFFFF',
                         borderRadius: VITALITY_MAP_CONSTANTS.CARD_RADIUS,
                         p: 3,
-                        border: '1px solid #E2E8F0',
+                        border: '1px solid #DCE7DD',
+                        boxShadow: '0px 2px 10px rgba(23,48,27,0.07)',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -656,7 +660,8 @@ const VitalityMap: React.FC = () => {
                         backgroundColor: '#FFFFFF',
                         borderRadius: VITALITY_MAP_CONSTANTS.CARD_RADIUS,
                         p: 3,
-                        border: '1px solid #E2E8F0',
+                        border: '1px solid #DCE7DD',
+                        boxShadow: '0px 2px 10px rgba(23,48,27,0.07)',
                         height: VITALITY_MAP_CONSTANTS.CARD_HEIGHT,
                         display: 'flex',
                         flexDirection: 'column',
@@ -673,10 +678,10 @@ const VitalityMap: React.FC = () => {
                             // Derived from the heatmap spectrum's anchors so the
                             // whole screen shares one severity palette.
                             const bars = [
-                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#BBEDC4', c2: '#5FAE74' },
-                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#F5B79E', c2: '#D97A55' },
-                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#F8CA8B', c2: '#DCA854' },
-                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#F0968B', c2: '#C24C3D' },
+                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#A1E4AE', c2: '#67B373' },
+                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#ED9564', c2: '#C9683A' },
+                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#F2B86C', c2: '#C6811C' },
+                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#E37E68', c2: '#B54534' },
                             ];
                             const maxV = Math.max(1, ...bars.map((b) => b.count));
                             const MAX_H = 150, MIN_H = 20;
@@ -713,7 +718,8 @@ const VitalityMap: React.FC = () => {
                         backgroundColor: '#FFFFFF',
                         borderRadius: VITALITY_MAP_CONSTANTS.CARD_RADIUS,
                         p: 3,
-                        border: '1px solid #E2E8F0',
+                        border: '1px solid #DCE7DD',
+                        boxShadow: '0px 2px 10px rgba(23,48,27,0.07)',
                         height: VITALITY_MAP_CONSTANTS.CARD_HEIGHT,
                         display: 'flex',
                         flexDirection: 'column',
@@ -765,8 +771,8 @@ const VitalityMap: React.FC = () => {
                     pb: 4.5,
                     pl: 4.5,
                     pr: 0,
-                    border: '1px solid #E2E8F0',
-                    boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
+                    border: '1px solid #DCE7DD',
+                    boxShadow: '0px 2px 12px rgba(23,48,27,0.07)',
                 }}
             >
                 {/* Header for Biomarker Section */}
@@ -924,7 +930,7 @@ const VitalityMap: React.FC = () => {
                                     {(isExpanded ? displayedBiomarkers : displayedBiomarkers.slice(0, 3)).map((item: any, idx: number) => {
                                         const isIn = item.status === 'in_range';
                                         const isBord = item.status === 'borderline';
-                                        const barColor = isIn ? '#BBEDC4' : isBord ? '#F8CA8B' : '#F5B7A8';
+                                        const barColor = isIn ? '#A1E4AE' : isBord ? '#F2B86C' : '#ED8A70';
                                         const txtColor = isIn ? '#2A6130' : isBord ? '#A16B15' : '#C24C3D';
                                         const label = isIn ? 'In Range' : isBord ? 'Borderline' : 'Out of range';
                                         return (
@@ -988,6 +994,7 @@ const VitalityMap: React.FC = () => {
 
             {/* Biomarker Section Container */}
             <RecommendationSection report={report} />
+        </Box>
         </Box>
     );
 };

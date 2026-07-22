@@ -9,15 +9,16 @@
  * green → lime → amber → terracotta while chroma is held (RGB blending
  * desaturates midpoints into muddy olive) and lightness falls monotonically,
  * so severity stays readable in grayscale and under red-green color blindness.
- * Ink text (#1A212B) measures 7.8:1–12.4:1 across the whole ramp.
+ * Ink text (#1A212B) measures 5.8:1–11:1 across the whole ramp (≥4.8:1 at the
+ * darkest gradient bottom).
  */
 type LCH = { L: number; C: number; H: number };
 
 const STOPS: { at: number; lch: LCH }[] = [
-    { at: 0.0, lch: { L: 0.9, C: 0.076, H: 150 } }, // #BBEDC4 brand-green tint
-    { at: 0.35, lch: { L: 0.884, C: 0.095, H: 108 } }, // #DFDE94 brand-lime family
-    { at: 0.7, lch: { L: 0.865, C: 0.095, H: 75 } }, // #F8CA8B warm sand
-    { at: 1.0, lch: { L: 0.78, C: 0.104, H: 35 } }, // #F29F8A soft terracotta
+    { at: 0.0, lch: { L: 0.86, C: 0.1, H: 150 } }, // #A1E4AE brand green
+    { at: 0.35, lch: { L: 0.845, C: 0.115, H: 106 } }, // #D6D175 brand-lime family
+    { at: 0.7, lch: { L: 0.82, C: 0.115, H: 72 } }, // #F2B86C warm amber
+    { at: 1.0, lch: { L: 0.7, C: 0.13, H: 33 } }, // #E37E68 terracotta
 ];
 
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
@@ -87,8 +88,8 @@ export function spectrumTileGradient(p: number): string {
     const L = lo.lch.L + (hi.lch.L - lo.lch.L) * t;
     const C = lo.lch.C + (hi.lch.C - lo.lch.C) * t;
     const H = lo.lch.H + (hi.lch.H - lo.lch.H) * t;
-    const top = oklchToHex({ L: Math.min(0.96, L + 0.04), C: Math.max(0.03, C - 0.02), H });
-    const bottom = oklchToHex({ L: L - 0.03, C: C + 0.012, H: H - 4 });
+    const top = oklchToHex({ L: Math.min(0.96, L + 0.025), C: Math.max(0.03, C - 0.01), H });
+    const bottom = oklchToHex({ L: L - 0.045, C: C + 0.015, H: H - 4 });
     return `linear-gradient(180deg, ${top} 0%, ${bottom} 100%)`;
 }
 

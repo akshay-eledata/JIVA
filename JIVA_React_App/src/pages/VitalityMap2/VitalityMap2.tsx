@@ -110,7 +110,7 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#F3F9F3', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#E6EFE7', borderRadius: '40px', p: 5, border: '1px solid #D3E2D5' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 1 }}>{VITALITY_MAP2_LABELS.RECOMMENDED_TITLE}</Typography>
             <Typography sx={{ textAlign: 'left', fontSize: '15px', color: '#667085', mb: 4 }}>Your plan now shifts toward maintaining the gains you've made.</Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 3, alignItems: 'stretch' }}>
@@ -253,7 +253,8 @@ const VitalityMap2: React.FC = () => {
     }
 
     return (
-        <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto' }}>
+        <Box sx={{ width: '100%', backgroundColor: '#EFF4EF', pb: 8 }}>
+        <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto', px: { xs: 2, xl: 0 } }}>
             {/* Bio age detail dialog */}
             <Dialog open={bioAgeOpen} onClose={() => setBioAgeOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
                 <Box sx={{ p: 4, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
@@ -499,6 +500,7 @@ const VitalityMap2: React.FC = () => {
 
             {/* Updated plan */}
             <PlanSection report={report} />
+        </Box>
         </Box>
     );
 };
