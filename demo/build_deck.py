@@ -5,7 +5,7 @@ Usage:
     .venv/bin/python build_deck.py
 
 Reads  ./stills/*.png  (produced by capture-stills.mjs)
-Writes ./JIVA_Overview.pptx
+Writes ../Data/JIVA_Overview.pptx
 """
 
 import os
@@ -19,7 +19,7 @@ from pptx.util import Emu, Inches, Pt
 DIR = os.path.dirname(os.path.abspath(__file__))
 STILLS = os.path.join(DIR, "stills")
 JPG = os.path.join(STILLS, "_jpg")
-OUT = os.path.join(DIR, "JIVA_Overview.pptx")
+OUT = os.path.join(os.path.dirname(DIR), "Data", "JIVA_Overview.pptx")
 
 GREEN = RGBColor(0x2A, 0x61, 0x30)   # Jiva Green
 LIME = RGBColor(0xD5, 0xE2, 0x74)    # Jiva Lime

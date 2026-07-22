@@ -50,7 +50,7 @@ Slide copy follows the brand voice rules in section 5. Headline font: Inter bold
 ### Build steps
 
 1. `node demo/capture-stills.mjs` against a freshly seeded `docker compose up` stack → `demo/stills/`.
-2. `python demo/build_deck.py` → `demo/JIVA_Overview.pptx` (slide masters, brand colors, stills placed).
+2. `python demo/build_deck.py` → `Data/JIVA_Overview.pptx` (slide masters, brand colors, stills placed).
 3. Review pass: tighten copy by hand if needed; confirm screens are on-brand.
 
 Effort: about 1 day, after the shared polish audit.
