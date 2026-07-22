@@ -299,8 +299,8 @@ const VitalityMap2: React.FC = () => {
             </Box>
 
             {/* Retest banner */}
-            <Box sx={{ backgroundColor: '#ECFDF3', borderRadius: '24px', p: '24px 32px', display: 'flex', alignItems: 'center', gap: 3, border: '1px solid #ABEFC6', mb: 4 }}>
-                <Box sx={{ width: 56, height: 56, borderRadius: '14px', backgroundColor: '#FFFFFF', border: '1px solid #D1FADF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: '24px', p: '24px 32px', display: 'flex', alignItems: 'center', gap: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', mb: 4 }}>
+                <Box sx={{ width: 56, height: 56, borderRadius: '14px', backgroundColor: '#E7F2E8', border: '1px solid #C9E2CC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Box component="img" src={BiomarkerIcon} sx={{ width: 26, height: 26 }} />
                 </Box>
                 <Box sx={{ textAlign: 'left' }}>
@@ -314,10 +314,10 @@ const VitalityMap2: React.FC = () => {
                 <Box sx={{ mb: 5 }}>
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 2, textAlign: 'left' }}>{VITALITY_MAP2_LABELS.PROGRESS_TITLE}</Typography>
                     <Box sx={{ display: 'flex', gap: 3 }}>
-                        <StatTile label="Biomarkers Improved" value={headline.improved} sub={`${headline.enteredRange} moved back into range`} accent="#027A48" bg="#F6FEF9" />
-                        <StatTile label="Biomarkers Declined" value={headline.worsened} sub={headline.leftRange ? `${headline.leftRange} moved out of range` : 'need a closer look'} accent="#D92D20" bg="#FEF3F2" />
+                        <StatTile label="Biomarkers Improved" value={headline.improved} sub={`${headline.enteredRange} moved back into range`} accent="#027A48" bg="#FFFFFF" />
+                        <StatTile label="Biomarkers Declined" value={headline.worsened} sub={headline.leftRange ? `${headline.leftRange} moved out of range` : 'need a closer look'} accent="#D92D20" bg="#FFFFFF" />
                         <StatTile label="Out Of Range" value={outPrev != null && outNow != null ? <>{outPrev}<span style={{ color: '#98A2B3', fontWeight: 700 }}> to </span>{outNow}</> : (outNow ?? '—')} sub={outPrev != null && outNow != null ? (outNow < outPrev ? `${outPrev - outNow} fewer flagged markers` : outNow > outPrev ? `${outNow - outPrev} more flagged markers` : 'no change in flagged markers') : 'flagged markers'} accent="#1A212B" bg="#FFFFFF" />
-                        <StatTile label="Biological Age" value={bioAge != null ? <>{bioAge}</> : '—'} sub={bioAgeChange != null ? `${bioAgeChange < 0 ? '▼' : bioAgeChange > 0 ? '▲' : ''} ${Math.abs(bioAgeChange)} yrs vs first test` : ''} accent={bioAgeChange != null && bioAgeChange < 0 ? '#027A48' : '#D92D20'} bg="#F6FEF9" />
+                        <StatTile label="Biological Age" value={bioAge != null ? <>{bioAge}</> : '—'} sub={bioAgeChange != null ? `${bioAgeChange < 0 ? '▼' : bioAgeChange > 0 ? '▲' : ''} ${Math.abs(bioAgeChange)} yrs vs first test` : ''} accent={bioAgeChange != null && bioAgeChange < 0 ? '#027A48' : '#D92D20'} bg="#FFFFFF" />
                     </Box>
                 </Box>
             )}
