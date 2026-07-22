@@ -8,12 +8,12 @@ import ForkPlateIcon from '../../assets/fork-plate.svg';
 import NoFoodIcon from '../../assets/No-food.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
-import StarIcon from '../../assets/Star.svg';
 import { apiUrl } from '../../config';
-import { spectrumColor, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
+import { spectrumColor, spectrumTileGradient, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
 import SystemCompare, { ComparePayload } from '../../Component/SystemCompare/SystemCompare';
 import { VITALITY_MAP2_LABELS } from './labels';
 import NextDraw from '../../Component/NextDraw/NextDraw';
+import SystemIcon from '../../Component/SystemIcon/SystemIcon';
 
 const CARD_RADIUS = '32px';
 const CARD_HEIGHT = '340px';
@@ -38,7 +38,23 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
     const exercise = (report?.exercise_recommendations || []).slice(0, 2);
     const supplements = (report?.supplement_recommendations || []).slice(0, 3);
     const [selected, setSelected] = useState<{ kind: string; data: any } | null>(null);
-    const mkIcon = (src: string) => <Box component="img" src={src} sx={{ width: 18, height: 18 }} />;
+    // Monochrome SVG through a CSS mask so it takes the category accent color.
+    // The url() MUST be quoted: Vite inlines small SVGs as data: URIs containing
+    // single quotes, and an unquoted url() with quotes in it is invalid CSS —
+    // the browser silently drops mask-image and the icon renders as a square.
+    const mkIcon = (src: string, color: string, size: number = 18) => (
+        <Box
+            style={{
+                width: size,
+                height: size,
+                backgroundColor: color,
+                maskImage: `url("${src}")`,
+                maskSize: 'contain',
+                maskPosition: 'center',
+                maskRepeat: 'no-repeat',
+            }}
+        />
+    );
 
     const rawName = (kind: string, d: any): string =>
         kind === 'exercise' ? d.exerciseType : kind === 'supplement' ? d.supplementName : d.food;
@@ -58,26 +74,29 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
         return rows.filter((r) => r.value);
     };
 
+    // Same brand-family category accents as VitalityMap's recommendations.
     const cards = [
-        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, iconColor: '#006045' },
-        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, iconColor: '#4A3AFF' },
-        { id: 'exercise', title: 'Movement', kind: 'exercise', data: exercise, icon: AlignIcon, iconColor: '#2E90FA' },
-        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, iconColor: '#E08A4A' },
+        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, accent: '#2A6130', tint: '#E7F2E8', headerTint: '#F0F7F0' },
+        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, accent: '#B0492C', tint: '#FAE8E2', headerTint: '#FBF1ED' },
+        { id: 'exercise', title: 'Exercise', kind: 'exercise', data: exercise, icon: AlignIcon, accent: '#1F5C50', tint: '#E3EFEB', headerTint: '#EFF6F4' },
+        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, accent: '#A16B15', tint: '#F9F0DC', headerTint: '#FBF6EA' },
     ];
 
     const renderCard = (card: (typeof cards)[number], noContainer = false) => {
         const content = (
             <>
-                <Box sx={{ p: '20px 24px', backgroundColor: '#F7FAFD', position: 'relative', borderBottom: '0.5px solid #B1C2DC' }}>
+                <Box sx={{ p: '16px 24px', backgroundColor: card.headerTint, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, borderBottom: '1px solid #DCE7DD' }}>
                     <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#1A212B', textAlign: 'left' }}>{card.title}</Typography>
-                    <Box component="img" src={StarIcon} alt="star" sx={{ position: 'absolute', right: 16, top: 12, width: '70px', height: '70px', opacity: 0.7, transform: 'rotate(-15deg)', pointerEvents: 'none' }} />
+                    <Box sx={{ width: '36px', height: '36px', borderRadius: '12px', backgroundColor: card.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        {mkIcon(card.icon, card.accent, 18)}
+                    </Box>
                 </Box>
                 <Box sx={{ p: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {card.data.map((d: any, i: number) => (
                         <Box key={i} onClick={() => setSelected({ kind: card.kind, data: d })}
-                            sx={{ display: 'flex', alignItems: 'center', gap: '12px', p: '12px', borderRadius: '36px', backgroundColor: '#FFFFFF', border: '1px solid #F2F4F7', cursor: 'pointer', transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(0,0,0,0.08)' } }}>
-                            <Box sx={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#F0F0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: card.iconColor, flexShrink: 0 }}>
-                                {mkIcon(card.icon)}
+                            sx={{ display: 'flex', alignItems: 'center', gap: '12px', p: '12px', borderRadius: '36px', backgroundColor: '#F6FAF6', border: '1px solid #E4EDE5', cursor: 'pointer', transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(23,48,27,0.10)' } }}>
+                            <Box sx={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: card.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                {mkIcon(card.icon, card.accent, 16)}
                             </Box>
                             <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#1A212B', textAlign: 'left', minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                 {nameFor(card.kind, d)}
@@ -88,19 +107,19 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
             </>
         );
         if (noContainer) return content;
-        return <Box sx={{ borderRadius: '24px', backgroundColor: '#F7FAFD', border: '0.5px solid #B1C2DC', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>{content}</Box>;
+        return <Box sx={{ borderRadius: '24px', backgroundColor: '#FFFFFF', border: '1px solid #DCE7DD', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>{content}</Box>;
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#F1F5F9', borderRadius: '40px', p: 5, border: '1px solid #E2E8F0' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD', boxShadow: '0px 2px 12px rgba(23,48,27,0.07)' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 1 }}>{VITALITY_MAP2_LABELS.RECOMMENDED_TITLE}</Typography>
             <Typography sx={{ textAlign: 'left', fontSize: '15px', color: '#667085', mb: 4 }}>Your plan now shifts toward maintaining the gains you've made.</Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 3, alignItems: 'stretch' }}>
                 <Box sx={{ minWidth: 0 }}>{renderCard(cards[0])}</Box>
                 <Box sx={{ minWidth: 0 }}>{renderCard(cards[1])}</Box>
-                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '0.5px solid #B1C2DC', overflow: 'hidden', backgroundColor: '#F7FAFD' }}>
+                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '1px solid #DCE7DD', overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
                     {renderCard(cards[2], true)}
-                    <Box sx={{ height: '0.5px', backgroundColor: '#B1C2DC' }} />
+                    <Box sx={{ height: '0.5px', backgroundColor: '#DCE7DD' }} />
                     {renderCard(cards[3], true)}
                 </Box>
             </Box>
@@ -133,7 +152,7 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
 
 /* ── Small stat tile for the progress strip ───────────────────────────────── */
 const StatTile: React.FC<{ label: string; value: React.ReactNode; sub?: string; accent: string; bg: string }> = ({ label, value, sub, accent, bg }) => (
-    <Box sx={{ flex: 1, backgroundColor: bg, borderRadius: '20px', p: '20px 22px', border: '1px solid #E2E8F0', textAlign: 'left' }}>
+    <Box sx={{ flex: 1, backgroundColor: bg, borderRadius: '20px', p: '20px 22px', border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', textAlign: 'left' }}>
         <Typography sx={{ fontSize: '12px', fontWeight: 700, color: '#667085', textTransform: 'uppercase', letterSpacing: '0.05em', mb: 1 }}>{label}</Typography>
         <Typography sx={{ fontSize: '32px', fontWeight: 800, color: accent, lineHeight: 1.05, fontFamily: 'Source Sans Pro' }}>{value}</Typography>
         {sub && <Typography sx={{ fontSize: '13px', color: '#667085', mt: 0.5 }}>{sub}</Typography>}
@@ -185,6 +204,7 @@ const VitalityMap2: React.FC = () => {
         counts: s.counts,
         statusText: `${s.counts.inRange}/${s.counts.total} in Range`,
         color: spectrumColor(s.spectrumP),
+        gradient: spectrumTileGradient(s.spectrumP),
         biomarkers: s.biomarkers || [],
     }));
     const selectedSystem = selectedSys != null ? activeSystems[selectedSys] : null;
@@ -234,7 +254,8 @@ const VitalityMap2: React.FC = () => {
     }
 
     return (
-        <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto' }}>
+        <Box sx={{ width: '100%', backgroundColor: '#EFF4EF', pb: 8 }}>
+        <Box sx={{ width: '100%', maxWidth: '1300px', margin: '0 auto', px: { xs: 2, xl: 0 } }}>
             {/* Bio age detail dialog */}
             <Dialog open={bioAgeOpen} onClose={() => setBioAgeOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px' } }}>
                 <Box sx={{ p: 4, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
@@ -278,8 +299,8 @@ const VitalityMap2: React.FC = () => {
             </Box>
 
             {/* Retest banner */}
-            <Box sx={{ backgroundColor: '#ECFDF3', borderRadius: '24px', p: '24px 32px', display: 'flex', alignItems: 'center', gap: 3, border: '1px solid #ABEFC6', mb: 4 }}>
-                <Box sx={{ width: 56, height: 56, borderRadius: '14px', backgroundColor: '#FFFFFF', border: '1px solid #D1FADF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: '24px', p: '24px 32px', display: 'flex', alignItems: 'center', gap: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', mb: 4 }}>
+                <Box sx={{ width: 56, height: 56, borderRadius: '14px', backgroundColor: '#E7F2E8', border: '1px solid #C9E2CC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Box component="img" src={BiomarkerIcon} sx={{ width: 26, height: 26 }} />
                 </Box>
                 <Box sx={{ textAlign: 'left' }}>
@@ -293,17 +314,17 @@ const VitalityMap2: React.FC = () => {
                 <Box sx={{ mb: 5 }}>
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 2, textAlign: 'left' }}>{VITALITY_MAP2_LABELS.PROGRESS_TITLE}</Typography>
                     <Box sx={{ display: 'flex', gap: 3 }}>
-                        <StatTile label="Biomarkers Improved" value={headline.improved} sub={`${headline.enteredRange} moved back into range`} accent="#027A48" bg="#F6FEF9" />
-                        <StatTile label="Biomarkers Declined" value={headline.worsened} sub={headline.leftRange ? `${headline.leftRange} moved out of range` : 'need a closer look'} accent="#D92D20" bg="#FEF3F2" />
+                        <StatTile label="Biomarkers Improved" value={headline.improved} sub={`${headline.enteredRange} moved back into range`} accent="#027A48" bg="#FFFFFF" />
+                        <StatTile label="Biomarkers Declined" value={headline.worsened} sub={headline.leftRange ? `${headline.leftRange} moved out of range` : 'need a closer look'} accent="#D92D20" bg="#FFFFFF" />
                         <StatTile label="Out Of Range" value={outPrev != null && outNow != null ? <>{outPrev}<span style={{ color: '#98A2B3', fontWeight: 700 }}> to </span>{outNow}</> : (outNow ?? '—')} sub={outPrev != null && outNow != null ? (outNow < outPrev ? `${outPrev - outNow} fewer flagged markers` : outNow > outPrev ? `${outNow - outPrev} more flagged markers` : 'no change in flagged markers') : 'flagged markers'} accent="#1A212B" bg="#FFFFFF" />
-                        <StatTile label="Biological Age" value={bioAge != null ? <>{bioAge}</> : '—'} sub={bioAgeChange != null ? `${bioAgeChange < 0 ? '▼' : bioAgeChange > 0 ? '▲' : ''} ${Math.abs(bioAgeChange)} yrs vs first test` : ''} accent={bioAgeChange != null && bioAgeChange < 0 ? '#027A48' : '#D92D20'} bg="#F6FEF9" />
+                        <StatTile label="Biological Age" value={bioAge != null ? <>{bioAge}</> : '—'} sub={bioAgeChange != null ? `${bioAgeChange < 0 ? '▼' : bioAgeChange > 0 ? '▲' : ''} ${Math.abs(bioAgeChange)} yrs vs first test` : ''} accent={bioAgeChange != null && bioAgeChange < 0 ? '#027A48' : '#D92D20'} bg="#FFFFFF" />
                     </Box>
                 </Box>
             )}
 
             {/* Follow-up test CTA — surfaced when markers have declined */}
             {declinedCount > 0 && (
-                <Box sx={{ mb: 5, borderRadius: '20px', p: { xs: '16px 18px', md: '18px 24px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)' }}>
+                <Box sx={{ mb: 5, borderRadius: '20px', p: { xs: '16px 18px', md: '18px 24px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap', backgroundColor: '#FFFFFF', border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1, minWidth: '280px' }}>
                         <Box sx={{ width: 42, height: 42, borderRadius: '12px', backgroundColor: '#FFFAEB', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             <Box component="img" src={BiomarkerIcon} sx={{ width: 20, height: 20 }} />
@@ -321,7 +342,7 @@ const VitalityMap2: React.FC = () => {
                     </Box>
                     <Button
                         onClick={() => navigate('/select-packages?mode=addon&basis=change&visit=2')}
-                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
+                        sx={{ backgroundColor: '#2A6130', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#1F4A24' } }}
                     >
                         Add targeted tests
                     </Button>
@@ -331,13 +352,13 @@ const VitalityMap2: React.FC = () => {
             {/* Three cards: bio age / range / clinical */}
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3 }}>
                 {/* Biological Age */}
-                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', alignItems: 'center', height: CARD_HEIGHT }}>
+                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', display: 'flex', flexDirection: 'column', alignItems: 'center', height: CARD_HEIGHT }}>
                     <Box sx={{ position: 'relative', width: '200px', height: '100px', mt: 2, mb: 3, display: 'flex', justifyContent: 'center' }}>
                         <Chart
                             options={{
                                 chart: { type: 'radialBar', offsetY: -30, sparkline: { enabled: true } },
                                 plotOptions: { radialBar: { startAngle: -85, endAngle: 85, hollow: { size: '65%' }, track: { background: 'rgba(242, 244, 247, 1)', strokeWidth: '100%' }, dataLabels: { show: false } } },
-                                fill: { type: 'gradient', gradient: { shade: 'dark', type: 'vertical', gradientToColors: ['rgba(114, 226, 180, 0.85)'], stops: [0, 36], colorStops: [{ offset: 0, color: 'rgba(84, 173, 136, 0.9)', opacity: 1 }, { offset: 36, color: 'rgba(114, 226, 180, 0.9)', opacity: 1 }] } },
+                                fill: { type: 'gradient', gradient: { shade: 'dark', type: 'vertical', gradientToColors: ['rgba(139, 199, 152, 0.85)'], stops: [0, 36], colorStops: [{ offset: 0, color: 'rgba(42, 97, 48, 0.75)', opacity: 1 }, { offset: 36, color: 'rgba(139, 199, 152, 0.85)', opacity: 1 }] } },
                                 stroke: { lineCap: 'round' },
                             }}
                             series={[bioAge != null ? 78 : 0]}
@@ -366,16 +387,16 @@ const VitalityMap2: React.FC = () => {
                 </Box>
 
                 {/* Range card */}
-                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #E2E8F0', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
-                    <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>Your New Ranges</Typography>
+                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+                    <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>Range Breakdown</Typography>
                     <Typography sx={{ fontSize: '13px', color: '#667085', textAlign: 'left' }}>{selectedSystem ? selectedSystem.name : 'All systems'} · retest</Typography>
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 1, width: '100%' }}>
                         {(() => {
                             const bars = [
-                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#81FDCA', c2: '#54AD88' },
-                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#FFC48A', c2: '#F0955A' },
-                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#FDE68A', c2: '#E8B14C' },
-                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#FDA4A4', c2: '#EF5C5C' },
+                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#A1E4AE', c2: '#67B373' },
+                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#ED9564', c2: '#C9683A' },
+                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#F2B86C', c2: '#C6811C' },
+                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#E37E68', c2: '#B54534' },
                             ];
                             const maxV = Math.max(1, ...bars.map((b) => b.count));
                             const MAX_H = 140, MIN_H = 20;
@@ -387,10 +408,9 @@ const VitalityMap2: React.FC = () => {
                                         const h = Math.max(MIN_H, (b.count / maxV) * MAX_H);
                                         return (
                                             <Box key={b.label} sx={{ position: 'relative', width: '34px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                <Box sx={{ width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative', background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`, transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)', '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(0,0,0,0.14) 0, rgba(0,0,0,0.14) 3px, transparent 3px, transparent 6px)' } }}>
+                                                <Box sx={{ width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative', background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`, transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)', '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(23,48,27,0.16) 0, rgba(23,48,27,0.16) 3px, transparent 3px, transparent 6px)' } }}>
                                                     <Typography sx={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', fontSize: '11px', fontWeight: 600, color: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</Typography>
-                                                    <Box sx={{ position: 'absolute', top: '9px', left: '50%', transform: 'translateX(-50%)', width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#4B5563', border: '1.5px solid #FFFFFF' }} />
-                                                </Box>
+                                                                                                    </Box>
                                                 <Typography sx={{ position: 'absolute', bottom: '-30px', left: '50%', transform: 'translateX(-50%)', fontSize: '8px', fontWeight: 600, color: '#475467', whiteSpace: 'nowrap', letterSpacing: '0.02em', fontFamily: 'Source Sans Pro' }}>{b.label}</Typography>
                                             </Box>
                                         );
@@ -402,22 +422,22 @@ const VitalityMap2: React.FC = () => {
                 </Box>
 
                 {/* Clinical notes */}
-                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #E2E8F0', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
+                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 3 }}>{clinicalTitle}</Typography>
                     <Typography sx={{ fontSize: '14px', color: '#475467', lineHeight: '24px', mb: 'auto', display: '-webkit-box', WebkitLineClamp: 6, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {clinicalBody || 'Your clinical notes will appear here.'}
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 3, borderTop: '1px solid #F2F4F7' }}>
-                        <Button variant="outlined" onClick={() => setClinicalOpen(true)} disabled={!clinicalBody} sx={{ textTransform: 'none', borderRadius: '12px', fontFamily: 'lexend', borderColor: '#256111', color: '#256111', fontWeight: 600, px: 4, height: '44px', '&:hover': { borderColor: '#004d35', backgroundColor: '#F3FAF7' } }}>Read More</Button>
+                        <Button variant="outlined" onClick={() => setClinicalOpen(true)} disabled={!clinicalBody} sx={{ textTransform: 'none', borderRadius: '12px', fontFamily: 'lexend', borderColor: '#2A6130', color: '#2A6130', fontWeight: 600, px: 4, height: '44px', '&:hover': { borderColor: '#1F4A24', backgroundColor: '#F0F7F0' } }}>Read More</Button>
                     </Box>
                 </Box>
             </Box>
 
             {/* Compare Biomarkers section */}
-            <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 4.5, border: '1px solid #E2E8F0', boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)' }}>
+            <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 4.5, border: '1px solid #DCE7DD', boxShadow: '0px 2px 12px rgba(23,48,27,0.07)' }}>
                 <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
                     <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', fontFamily: 'Source Sans Pro' }}>{VITALITY_MAP2_LABELS.COMPARE_TITLE}</Typography>
-                    <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#C8D0DB' }}>
+                    <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#D5E0D6' }}>
                         <Box onClick={() => setMode('compare')} sx={{ px: 3, py: '6px', borderRadius: '10px', backgroundColor: mode === 'compare' ? '#F9FAFB' : 'transparent', cursor: 'pointer' }}>
                             <Typography sx={{ fontSize: '12px', fontFamily: 'Lexend', color: '#1A212B' }}>Compare</Typography>
                         </Box>
@@ -435,14 +455,14 @@ const VitalityMap2: React.FC = () => {
                             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px' }}>
                                 {activeSystems.map((item, index) => (
                                     <Box key={index} onClick={() => setSelectedSys(selectedSys === index ? null : index)}
-                                        sx={{ backgroundColor: item.color, borderRadius: '16px', p: '16px', height: '90px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: selectedSys === index ? '0px 10px 20px rgba(0,0,0,0.15)' : 'none', border: selectedSys === index ? '1.5px solid rgba(0,0,0,0.35)' : '1px solid rgba(0,0,0,0.15)', '&:hover': { transform: 'translateY(-2px)' } }}>
+                                        sx={{ background: item.gradient, borderRadius: '22px', p: '16px 18px', height: '96px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.25s cubic-bezier(0.22, 1, 0.36, 1)', border: 'none', boxShadow: selectedSys === index ? '0px 16px 28px rgba(23,48,27,0.26), 0px 4px 8px rgba(23,48,27,0.14), inset 0 0 0 1.5px rgba(23,48,27,0.30)' : '0px 6px 16px rgba(23,48,27,0.10), 0px 1px 3px rgba(23,48,27,0.06)', transform: selectedSys === index ? 'translateY(-3px)' : 'none', '&:hover': { transform: 'translateY(-3px)', boxShadow: selectedSys === index ? '0px 16px 28px rgba(23,48,27,0.26), 0px 4px 8px rgba(23,48,27,0.14), inset 0 0 0 1.5px rgba(23,48,27,0.30)' : '0px 12px 24px rgba(23,48,27,0.16), 0px 3px 6px rgba(23,48,27,0.08)' } }}>
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <Box sx={{ minWidth: 0, flex: 1, pr: 1 }}>
                                                 <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</Typography>
                                                 <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467', textAlign: 'left' }}>{item.statusText}</Typography>
                                             </Box>
-                                            <Box sx={{ width: '28px', height: '28px', backgroundColor: '#FFFFFF33', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                                <Box component="img" src={BiomarkerIcon} alt="biomarker" sx={{ width: '16px', height: '16px' }} />
+                                            <Box sx={{ width: '30px', height: '30px', backgroundColor: 'rgba(255,255,255,0.85)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0px 2px 6px rgba(23,48,27,0.10)' }}>
+                                                <SystemIcon system={item.systemName} size={16} />
                                             </Box>
                                         </Box>
                                     </Box>
@@ -456,8 +476,8 @@ const VitalityMap2: React.FC = () => {
                                 {(isExpanded ? displayedBiomarkers : displayedBiomarkers.slice(0, 4)).map((item: any, idx: number) => {
                                     const isIn = item.status === 'in_range';
                                     const isBord = item.status === 'borderline';
-                                    const barColor = isIn ? '#BAEBD7' : isBord ? '#FCE4B0' : '#FFD2C2';
-                                    const txtColor = isIn ? '#006045' : isBord ? '#B7791F' : '#D92D20';
+                                    const barColor = isIn ? '#A1E4AE' : isBord ? '#F2B86C' : '#ED8A70';
+                                    const txtColor = isIn ? '#2A6130' : isBord ? '#A16B15' : '#C24C3D';
                                     const label = isIn ? 'In Range' : isBord ? 'Borderline' : 'Out of range';
                                     return (
                                         <Box key={idx} onClick={() => openBiomarker(item.testName)} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', cursor: 'pointer', borderRadius: '8px', py: 0.5, '&:hover': { backgroundColor: '#F8FAFC' } }}>
@@ -471,7 +491,7 @@ const VitalityMap2: React.FC = () => {
                                 })}
                             </Box>
                             {displayedBiomarkers.length > 4 && (
-                                <Button variant="outlined" onClick={() => setIsExpanded(!isExpanded)} sx={{ mt: 3, textTransform: 'none', borderRadius: '14px', fontFamily: 'lexend', borderColor: '#256111', color: '#256111', fontWeight: 500, px: 4, height: '46px' }}>{isExpanded ? 'View Less' : 'Read More'}</Button>
+                                <Button variant="outlined" onClick={() => setIsExpanded(!isExpanded)} sx={{ mt: 3, textTransform: 'none', borderRadius: '14px', fontFamily: 'lexend', borderColor: '#2A6130', color: '#2A6130', fontWeight: 500, px: 4, height: '46px' }}>{isExpanded ? 'View Less' : 'Read More'}</Button>
                             )}
                         </Box>
                     </Box>
@@ -480,6 +500,7 @@ const VitalityMap2: React.FC = () => {
 
             {/* Updated plan */}
             <PlanSection report={report} />
+        </Box>
         </Box>
     );
 };
