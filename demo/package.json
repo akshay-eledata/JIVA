@@ -1,0 +1,11 @@
+{
+  "name": "jiva-demo-capture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "stills": "node capture-stills.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.61.1"
+  }
+}
