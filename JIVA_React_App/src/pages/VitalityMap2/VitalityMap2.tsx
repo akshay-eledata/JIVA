@@ -93,7 +93,7 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
                 <Box sx={{ p: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {card.data.map((d: any, i: number) => (
                         <Box key={i} onClick={() => setSelected({ kind: card.kind, data: d })}
-                            sx={{ display: 'flex', alignItems: 'center', gap: '12px', p: '12px', borderRadius: '36px', backgroundColor: '#FFFFFF', border: '1px solid #EEF4EE', cursor: 'pointer', transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(23,48,27,0.10)' } }}>
+                            sx={{ display: 'flex', alignItems: 'center', gap: '12px', p: '12px', borderRadius: '36px', backgroundColor: '#F6FAF6', border: '1px solid #E4EDE5', cursor: 'pointer', transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(23,48,27,0.10)' } }}>
                             <Box sx={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: card.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                 {mkIcon(card.icon, card.accent, 16)}
                             </Box>
@@ -110,7 +110,7 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#E6EFE7', borderRadius: '40px', p: 5, border: '1px solid #D3E2D5' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD', boxShadow: '0px 2px 12px rgba(23,48,27,0.07)' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 1 }}>{VITALITY_MAP2_LABELS.RECOMMENDED_TITLE}</Typography>
             <Typography sx={{ textAlign: 'left', fontSize: '15px', color: '#667085', mb: 4 }}>Your plan now shifts toward maintaining the gains you've made.</Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 3, alignItems: 'stretch' }}>

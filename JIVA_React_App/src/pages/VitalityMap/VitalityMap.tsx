@@ -180,8 +180,8 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
                                 gap: '12px',
                                 p: '12px',
                                 borderRadius: '36px',
-                                backgroundColor: '#FFFFFF',
-                                border: '1px solid #EEF4EE',
+                                backgroundColor: '#F6FAF6',
+                                border: '1px solid #E4EDE5',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s ease',
                                 '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(23,48,27,0.10)' },
@@ -214,7 +214,7 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#E6EFE7', borderRadius: '40px', p: 5, border: '1px solid #D3E2D5' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD', boxShadow: '0px 2px 12px rgba(23,48,27,0.07)' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 4 }}>
                 {VITALITY_MAP_LABELS.RECOMMENDED_TITLE}
             </Typography>
