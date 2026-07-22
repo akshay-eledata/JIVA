@@ -78,7 +78,7 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
     const cards = [
         { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, accent: '#2A6130', tint: '#E7F2E8', headerTint: '#F0F7F0' },
         { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, accent: '#B0492C', tint: '#FAE8E2', headerTint: '#FBF1ED' },
-        { id: 'exercise', title: 'Movement', kind: 'exercise', data: exercise, icon: AlignIcon, accent: '#1F5C50', tint: '#E3EFEB', headerTint: '#EFF6F4' },
+        { id: 'exercise', title: 'Exercise', kind: 'exercise', data: exercise, icon: AlignIcon, accent: '#1F5C50', tint: '#E3EFEB', headerTint: '#EFF6F4' },
         { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, accent: '#A16B15', tint: '#F9F0DC', headerTint: '#FBF6EA' },
     ];
 
@@ -152,7 +152,7 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
 
 /* ── Small stat tile for the progress strip ───────────────────────────────── */
 const StatTile: React.FC<{ label: string; value: React.ReactNode; sub?: string; accent: string; bg: string }> = ({ label, value, sub, accent, bg }) => (
-    <Box sx={{ flex: 1, backgroundColor: bg, borderRadius: '20px', p: '20px 22px', border: '1px solid #E2E8F0', textAlign: 'left' }}>
+    <Box sx={{ flex: 1, backgroundColor: bg, borderRadius: '20px', p: '20px 22px', border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', textAlign: 'left' }}>
         <Typography sx={{ fontSize: '12px', fontWeight: 700, color: '#667085', textTransform: 'uppercase', letterSpacing: '0.05em', mb: 1 }}>{label}</Typography>
         <Typography sx={{ fontSize: '32px', fontWeight: 800, color: accent, lineHeight: 1.05, fontFamily: 'Source Sans Pro' }}>{value}</Typography>
         {sub && <Typography sx={{ fontSize: '13px', color: '#667085', mt: 0.5 }}>{sub}</Typography>}
@@ -324,7 +324,7 @@ const VitalityMap2: React.FC = () => {
 
             {/* Follow-up test CTA — surfaced when markers have declined */}
             {declinedCount > 0 && (
-                <Box sx={{ mb: 5, borderRadius: '20px', p: { xs: '16px 18px', md: '18px 24px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)' }}>
+                <Box sx={{ mb: 5, borderRadius: '20px', p: { xs: '16px 18px', md: '18px 24px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap', backgroundColor: '#FFFFFF', border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1, minWidth: '280px' }}>
                         <Box sx={{ width: 42, height: 42, borderRadius: '12px', backgroundColor: '#FFFAEB', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             <Box component="img" src={BiomarkerIcon} sx={{ width: 20, height: 20 }} />
@@ -342,7 +342,7 @@ const VitalityMap2: React.FC = () => {
                     </Box>
                     <Button
                         onClick={() => navigate('/select-packages?mode=addon&basis=change&visit=2')}
-                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
+                        sx={{ backgroundColor: '#2A6130', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#1F4A24' } }}
                     >
                         Add targeted tests
                     </Button>
@@ -352,13 +352,13 @@ const VitalityMap2: React.FC = () => {
             {/* Three cards: bio age / range / clinical */}
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3 }}>
                 {/* Biological Age */}
-                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', alignItems: 'center', height: CARD_HEIGHT }}>
+                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', display: 'flex', flexDirection: 'column', alignItems: 'center', height: CARD_HEIGHT }}>
                     <Box sx={{ position: 'relative', width: '200px', height: '100px', mt: 2, mb: 3, display: 'flex', justifyContent: 'center' }}>
                         <Chart
                             options={{
                                 chart: { type: 'radialBar', offsetY: -30, sparkline: { enabled: true } },
                                 plotOptions: { radialBar: { startAngle: -85, endAngle: 85, hollow: { size: '65%' }, track: { background: 'rgba(242, 244, 247, 1)', strokeWidth: '100%' }, dataLabels: { show: false } } },
-                                fill: { type: 'gradient', gradient: { shade: 'dark', type: 'vertical', gradientToColors: ['rgba(114, 226, 180, 0.85)'], stops: [0, 36], colorStops: [{ offset: 0, color: 'rgba(84, 173, 136, 0.9)', opacity: 1 }, { offset: 36, color: 'rgba(114, 226, 180, 0.9)', opacity: 1 }] } },
+                                fill: { type: 'gradient', gradient: { shade: 'dark', type: 'vertical', gradientToColors: ['rgba(139, 199, 152, 0.85)'], stops: [0, 36], colorStops: [{ offset: 0, color: 'rgba(42, 97, 48, 0.75)', opacity: 1 }, { offset: 36, color: 'rgba(139, 199, 152, 0.85)', opacity: 1 }] } },
                                 stroke: { lineCap: 'round' },
                             }}
                             series={[bioAge != null ? 78 : 0]}
@@ -387,16 +387,16 @@ const VitalityMap2: React.FC = () => {
                 </Box>
 
                 {/* Range card */}
-                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #E2E8F0', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
-                    <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>Your New Ranges</Typography>
+                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+                    <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', fontFamily: 'Source Sans Pro' }}>Range Breakdown</Typography>
                     <Typography sx={{ fontSize: '13px', color: '#667085', textAlign: 'left' }}>{selectedSystem ? selectedSystem.name : 'All systems'} · retest</Typography>
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 1, width: '100%' }}>
                         {(() => {
                             const bars = [
-                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#81FDCA', c2: '#54AD88' },
-                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#FFC48A', c2: '#F0955A' },
-                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#FDE68A', c2: '#E8B14C' },
-                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#FDA4A4', c2: '#EF5C5C' },
+                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#A1E4AE', c2: '#67B373' },
+                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#ED9564', c2: '#C9683A' },
+                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#F2B86C', c2: '#C6811C' },
+                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#E37E68', c2: '#B54534' },
                             ];
                             const maxV = Math.max(1, ...bars.map((b) => b.count));
                             const MAX_H = 140, MIN_H = 20;
@@ -408,10 +408,9 @@ const VitalityMap2: React.FC = () => {
                                         const h = Math.max(MIN_H, (b.count / maxV) * MAX_H);
                                         return (
                                             <Box key={b.label} sx={{ position: 'relative', width: '34px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                <Box sx={{ width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative', background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`, transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)', '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(0,0,0,0.14) 0, rgba(0,0,0,0.14) 3px, transparent 3px, transparent 6px)' } }}>
+                                                <Box sx={{ width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative', background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`, transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)', '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(23,48,27,0.16) 0, rgba(23,48,27,0.16) 3px, transparent 3px, transparent 6px)' } }}>
                                                     <Typography sx={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', fontSize: '11px', fontWeight: 600, color: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</Typography>
-                                                    <Box sx={{ position: 'absolute', top: '9px', left: '50%', transform: 'translateX(-50%)', width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#4B5563', border: '1.5px solid #FFFFFF' }} />
-                                                </Box>
+                                                                                                    </Box>
                                                 <Typography sx={{ position: 'absolute', bottom: '-30px', left: '50%', transform: 'translateX(-50%)', fontSize: '8px', fontWeight: 600, color: '#475467', whiteSpace: 'nowrap', letterSpacing: '0.02em', fontFamily: 'Source Sans Pro' }}>{b.label}</Typography>
                                             </Box>
                                         );
@@ -423,22 +422,22 @@ const VitalityMap2: React.FC = () => {
                 </Box>
 
                 {/* Clinical notes */}
-                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #E2E8F0', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
+                <Box sx={{ backgroundColor: '#FFFFFF', borderRadius: CARD_RADIUS, p: 3, border: '1px solid #DCE7DD', boxShadow: '0px 2px 10px rgba(23,48,27,0.07)', height: CARD_HEIGHT, display: 'flex', flexDirection: 'column', textAlign: 'left', fontFamily: 'Source Sans Pro' }}>
                     <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#1A212B', mb: 3 }}>{clinicalTitle}</Typography>
                     <Typography sx={{ fontSize: '14px', color: '#475467', lineHeight: '24px', mb: 'auto', display: '-webkit-box', WebkitLineClamp: 6, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {clinicalBody || 'Your clinical notes will appear here.'}
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 3, borderTop: '1px solid #F2F4F7' }}>
-                        <Button variant="outlined" onClick={() => setClinicalOpen(true)} disabled={!clinicalBody} sx={{ textTransform: 'none', borderRadius: '12px', fontFamily: 'lexend', borderColor: '#256111', color: '#256111', fontWeight: 600, px: 4, height: '44px', '&:hover': { borderColor: '#004d35', backgroundColor: '#F3FAF7' } }}>Read More</Button>
+                        <Button variant="outlined" onClick={() => setClinicalOpen(true)} disabled={!clinicalBody} sx={{ textTransform: 'none', borderRadius: '12px', fontFamily: 'lexend', borderColor: '#2A6130', color: '#2A6130', fontWeight: 600, px: 4, height: '44px', '&:hover': { borderColor: '#1F4A24', backgroundColor: '#F0F7F0' } }}>Read More</Button>
                     </Box>
                 </Box>
             </Box>
 
             {/* Compare Biomarkers section */}
-            <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 4.5, border: '1px solid #E2E8F0', boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)' }}>
+            <Box sx={{ mt: 6, backgroundColor: '#FFFFFF', borderRadius: '40px', p: 4.5, border: '1px solid #DCE7DD', boxShadow: '0px 2px 12px rgba(23,48,27,0.07)' }}>
                 <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
                     <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', fontFamily: 'Source Sans Pro' }}>{VITALITY_MAP2_LABELS.COMPARE_TITLE}</Typography>
-                    <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#C8D0DB' }}>
+                    <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#D5E0D6' }}>
                         <Box onClick={() => setMode('compare')} sx={{ px: 3, py: '6px', borderRadius: '10px', backgroundColor: mode === 'compare' ? '#F9FAFB' : 'transparent', cursor: 'pointer' }}>
                             <Typography sx={{ fontSize: '12px', fontFamily: 'Lexend', color: '#1A212B' }}>Compare</Typography>
                         </Box>
@@ -477,8 +476,8 @@ const VitalityMap2: React.FC = () => {
                                 {(isExpanded ? displayedBiomarkers : displayedBiomarkers.slice(0, 4)).map((item: any, idx: number) => {
                                     const isIn = item.status === 'in_range';
                                     const isBord = item.status === 'borderline';
-                                    const barColor = isIn ? '#BAEBD7' : isBord ? '#FCE4B0' : '#FFD2C2';
-                                    const txtColor = isIn ? '#006045' : isBord ? '#B7791F' : '#D92D20';
+                                    const barColor = isIn ? '#A1E4AE' : isBord ? '#F2B86C' : '#ED8A70';
+                                    const txtColor = isIn ? '#2A6130' : isBord ? '#A16B15' : '#C24C3D';
                                     const label = isIn ? 'In Range' : isBord ? 'Borderline' : 'Out of range';
                                     return (
                                         <Box key={idx} onClick={() => openBiomarker(item.testName)} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', cursor: 'pointer', borderRadius: '8px', py: 0.5, '&:hover': { backgroundColor: '#F8FAFC' } }}>
@@ -492,7 +491,7 @@ const VitalityMap2: React.FC = () => {
                                 })}
                             </Box>
                             {displayedBiomarkers.length > 4 && (
-                                <Button variant="outlined" onClick={() => setIsExpanded(!isExpanded)} sx={{ mt: 3, textTransform: 'none', borderRadius: '14px', fontFamily: 'lexend', borderColor: '#256111', color: '#256111', fontWeight: 500, px: 4, height: '46px' }}>{isExpanded ? 'View Less' : 'Read More'}</Button>
+                                <Button variant="outlined" onClick={() => setIsExpanded(!isExpanded)} sx={{ mt: 3, textTransform: 'none', borderRadius: '14px', fontFamily: 'lexend', borderColor: '#2A6130', color: '#2A6130', fontWeight: 500, px: 4, height: '46px' }}>{isExpanded ? 'View Less' : 'Read More'}</Button>
                             )}
                         </Box>
                     </Box>
