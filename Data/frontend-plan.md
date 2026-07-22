@@ -383,3 +383,91 @@ One continuous surface whose color, skew, and depth all answer to scroll physics
 - All motion respects `prefers-reduced-motion` via framer-motion's `useReducedMotion`.
 - Fonts and colors defined per option in that option's `constants.ts`; brand tokens
   shared from `src/pages/Welcome/brand.ts`.
+
+---
+
+# In-App UX/UI Upgrade — Phase 1: Vitality Map
+
+The homepage rounds covered the marketing surface; this phase starts on the
+authenticated app. First target: the Vitality Map (`/vitality-map`), the primary
+results dashboard. The layout stays — the upgrade is color, texture, and cohesion.
+
+## Findings (July 2026 audit)
+
+- **Two disconnected color systems.** The Welcome/marketing side uses the official
+  brand palette (`brand.ts`: Jiva Green #2A6130, Lime #D5E274, Saga #DDEEDE,
+  Dewdrop #F3F9F3). The in-app screens never reference it — they standardize on a
+  separate teal-green `#006045` plus dozens of ad-hoc hexes (steel-blue borders
+  #B1C2DC, slate panels #F1F5F9/#F7FAFD, arbitrary icon colors #4A3AFF/#2E90FA).
+- **Heatmap spectrum** (`src/utils/spectrumColor.ts`): 3 stops
+  #A6E4D0 → #FFD08A → #FF8A65 interpolated in raw RGB. The green end reads *teal*
+  (hue 173, not brand green ~146), RGB interpolation collapses chroma mid-ramp so
+  tiles around p≈0.25 come out muddy olive (visible on Liver/Electrolytes tiles),
+  and the "bad" end is a loud salmon-orange that doesn't clearly read as red.
+- **Recommendation cards**: each header has a 70px peach 8-point burst
+  (`Star.svg`, opacity 0.7, rotated -15°, clipped by the header) that reads as a
+  random symbol — the client complaint. Same watermark is reused in VitalityMap2
+  plan cards. The section sits on cool blue-slate neutrals that clash with the
+  warm-green brand, item icon circles are flat gray #F0F0F0, and the four
+  category accent colors are arbitrary (incl. an off-brand purple and blue).
+
+## Plan
+
+### A. Rebuild the severity spectrum (brand-anchored, perceptually smooth)
+
+Rewrite `spectrumColor.ts` to interpolate in **OKLCH** (small self-contained
+conversion, no new deps) over 4 brand-anchored stops:
+
+| p | OKLCH | hex | meaning |
+|---|---|---|---|
+| 0.0 | 0.90 / 0.076 / 150° | `#BBEDC4` | brand-green tint (all in range) |
+| 0.35 | 0.884 / 0.095 / 108° | `#DFDE94` | brand-lime family |
+| 0.7 | 0.865 / 0.095 / 75° | `#F8CA8B` | warm sand/amber |
+| 1.0 | 0.78 / 0.104 / 35° | `#F29F8A` | soft terracotta (none in range) |
+
+Why this works: hue travels green → lime → amber → terracotta while **chroma is
+held** (no muddy midpoints) and **lightness falls monotonically** (0.90 → 0.78),
+so severity is still readable in grayscale and under red-green color-vision
+deficiency — the hue axis alone would be invisible to protanopes. Ink text
+contrast verified 7.8:1–12.4:1 across the whole ramp (≥4.5:1 required for the
+tile's 11–13px text). `SPECTRUM_GRADIENT` (the legend) samples the same stops, so
+it updates automatically; `spectrumP` math is unchanged. Tile borders soften to a
+warm ink tint (`rgba(23,48,27,0.10)`) instead of pure black alphas; the selected
+tile gets a Jiva-green ring instead of the black one.
+
+### B. Recommendations section restyle
+
+1. **Delete the Star.svg watermark** from the four card headers (and from
+   VitalityMap2's plan cards — same asset, same complaint).
+2. **Warm the neutrals**: section panel #F1F5F9 → Dewdrop `#F3F9F3`; card/header
+   fills #F7FAFD → white with a per-category tinted header; steel-blue borders
+   #B1C2DC/#E2E8F0 → soft green-gray (`#DCE7DD`-family).
+3. **On-brand category accents** replacing the arbitrary set: Eat = Jiva green,
+   Avoid = terracotta (matches the spectrum's bad end), Exercise = deep
+   teal-green, Supplements = amber. Applied consistently: tinted icon chip
+   (10–14% tint bg + full-strength icon), a slim accent rule or tinted wash in
+   the header, and the item icon circles lose the flat gray.
+4. Header decoration, if any: the category's own icon at large size, very low
+   opacity, properly masked inside the header — or nothing. No more asterisks.
+5. Item pills and the detail dialog keep their layout/behavior.
+
+### C. Cohesion pass on the same screen (small, optional-but-cheap)
+
+- Range Breakdown bars and the biomarker status rails/text currently use yet
+  another green/amber/red set (#81FDCA…, #BAEBD7/#FCE4B0/#FFD2C2) — re-derive
+  them from the same four spectrum anchors so the whole screen tells one color
+  story. Also drop the odd dot + diagonal hatch overlay on the bars.
+- Normalize the three competing greens (#006045 button green, #256111 outlined
+  buttons, brand #2A6130) to brand green + one hover shade, on this screen only.
+- Radial bio-age gauge gradient re-tinted to the brand green family.
+
+Out of scope for phase 1: layout changes, other screens (Dashboard, ActionPlan,
+BiomarkerDetail get their own passes later), MUI theme-level refactor — though
+the long-term fix is promoting `brand.ts` tokens into the shared theme.
+
+### Verification
+
+`npx tsc --noEmit` + `npm run build`, then headless-Chrome before/after
+screenshots of the seeded demo account (test@jiva.com) at the heatmap and
+recommendations sections; contrast re-checked programmatically for every ramp
+sample and status color.
