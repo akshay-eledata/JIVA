@@ -628,7 +628,7 @@ const VitalityMap: React.FC = () => {
                             >
                                 {VITALITY_MAP_LABELS.BIOLOGICAL_AGE_HEADER}
                             </Typography>
-                            <Typography sx={{ fontSize: '28px', fontWeight: 700, color: '#6B7280', lineHeight: 1, fontFamily: 'Source Sans Pro' }}>
+                            <Typography sx={{ fontSize: '28px', fontWeight: 700, color: '#1A212B', lineHeight: 1, fontFamily: 'Source Sans Pro' }}>
                                 {bioAge != null ? bioAge : '—'}
                             </Typography>
                         </Box>
@@ -700,6 +700,7 @@ const VitalityMap: React.FC = () => {
                                                     width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative',
                                                     background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`,
                                                     transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
+                                                    '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(23,48,27,0.16) 0, rgba(23,48,27,0.16) 3px, transparent 3px, transparent 6px)' },
                                                 }}>
                                                     <Typography sx={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', fontSize: '11px', fontWeight: 600, color: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</Typography>
                                                 </Box>
