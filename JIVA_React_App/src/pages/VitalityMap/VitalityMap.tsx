@@ -31,7 +31,7 @@ import KitIcon from '../../assets/Kit.svg';
 import { VITALITY_MAP_CONSTANTS } from './constants';
 import { VITALITY_MAP_LABELS } from './labels';
 import { apiUrl } from '../../config';
-import { spectrumColor, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
+import { spectrumColor, spectrumTileGradient, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
 
 interface RecommendationItem {
     id: string;
@@ -308,6 +308,7 @@ const VitalityMap: React.FC = () => {
         counts: s.counts,
         statusText: `${s.counts.inRange}/${s.counts.total} in Range`,
         color: spectrumColor(s.spectrumP),
+        gradient: spectrumTileGradient(s.spectrumP),
         biomarkers: s.biomarkers || [],
     }));
 
@@ -832,22 +833,29 @@ const VitalityMap: React.FC = () => {
                                         key={index}
                                         onClick={() => setSelectedBiomarker(selectedBiomarker === index ? null : index)}
                                         sx={{
-                                            backgroundColor: item.color,
-                                            borderRadius: '16px',
-                                            p: '16px',
-                                            height: '90px',
+                                            // Figma treatment: soft vertical gradient of the
+                                            // severity color, no hard border, floating shadow.
+                                            background: item.gradient,
+                                            borderRadius: '22px',
+                                            p: '16px 18px',
+                                            height: '96px',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             justifyContent: 'space-between',
                                             cursor: 'pointer',
-                                            transition: 'all 0.2s ease',
+                                            transition: 'all 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
                                             position: 'relative',
-                                            boxShadow: selectedBiomarker === index ? '0px 10px 20px rgba(23,48,27,0.16), 0px 4px 6px rgba(23,48,27,0.10)' : 'none',
-                                            border: selectedBiomarker === index ? '1.5px solid #2A6130' : '1px solid rgba(23,48,27,0.10)',
+                                            border: 'none',
+                                            boxShadow: selectedBiomarker === index
+                                                ? '0px 16px 28px rgba(23,48,27,0.26), 0px 4px 8px rgba(23,48,27,0.14), inset 0 0 0 1.5px rgba(23,48,27,0.30)'
+                                                : '0px 6px 16px rgba(23,48,27,0.10), 0px 1px 3px rgba(23,48,27,0.06)',
+                                            transform: selectedBiomarker === index ? 'translateY(-3px)' : 'none',
                                             zIndex: selectedBiomarker === index ? 1 : 0,
                                             '&:hover': {
-                                                transform: 'translateY(-2px)',
-                                                boxShadow: '0px 6px 16px rgba(23,48,27,0.14)'
+                                                transform: 'translateY(-3px)',
+                                                boxShadow: selectedBiomarker === index
+                                                    ? '0px 16px 28px rgba(23,48,27,0.26), 0px 4px 8px rgba(23,48,27,0.14), inset 0 0 0 1.5px rgba(23,48,27,0.30)'
+                                                    : '0px 12px 24px rgba(23,48,27,0.16), 0px 3px 6px rgba(23,48,27,0.08)'
                                             }
                                         }}
                                     >
@@ -865,14 +873,15 @@ const VitalityMap: React.FC = () => {
                                             </Box>
                                             <Box
                                                 sx={{
-                                                    width: '28px',
-                                                    height: '28px',
-                                                    backgroundColor: '#FFFFFF33',
+                                                    width: '30px',
+                                                    height: '30px',
+                                                    backgroundColor: 'rgba(255,255,255,0.85)',
                                                     borderRadius: '50%',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
-                                                    flexShrink: 0
+                                                    flexShrink: 0,
+                                                    boxShadow: '0px 2px 6px rgba(23,48,27,0.10)'
                                                 }}
                                             >
                                                 <Box
