@@ -8,7 +8,6 @@ import ForkPlateIcon from '../../assets/fork-plate.svg';
 import NoFoodIcon from '../../assets/No-food.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
-import StarIcon from '../../assets/Star.svg';
 import { apiUrl } from '../../config';
 import { spectrumColor, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
 import SystemCompare, { ComparePayload } from '../../Component/SystemCompare/SystemCompare';
@@ -38,7 +37,23 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
     const exercise = (report?.exercise_recommendations || []).slice(0, 2);
     const supplements = (report?.supplement_recommendations || []).slice(0, 3);
     const [selected, setSelected] = useState<{ kind: string; data: any } | null>(null);
-    const mkIcon = (src: string) => <Box component="img" src={src} sx={{ width: 18, height: 18 }} />;
+    // Monochrome SVG through a CSS mask so it takes the category accent color.
+    // The url() MUST be quoted: Vite inlines small SVGs as data: URIs containing
+    // single quotes, and an unquoted url() with quotes in it is invalid CSS —
+    // the browser silently drops mask-image and the icon renders as a square.
+    const mkIcon = (src: string, color: string, size: number = 18) => (
+        <Box
+            style={{
+                width: size,
+                height: size,
+                backgroundColor: color,
+                maskImage: `url("${src}")`,
+                maskSize: 'contain',
+                maskPosition: 'center',
+                maskRepeat: 'no-repeat',
+            }}
+        />
+    );
 
     const rawName = (kind: string, d: any): string =>
         kind === 'exercise' ? d.exerciseType : kind === 'supplement' ? d.supplementName : d.food;
@@ -58,26 +73,29 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
         return rows.filter((r) => r.value);
     };
 
+    // Same brand-family category accents as VitalityMap's recommendations.
     const cards = [
-        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, iconColor: '#006045' },
-        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, iconColor: '#4A3AFF' },
-        { id: 'exercise', title: 'Movement', kind: 'exercise', data: exercise, icon: AlignIcon, iconColor: '#2E90FA' },
-        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, iconColor: '#E08A4A' },
+        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, accent: '#2A6130', tint: '#E7F2E8', headerTint: '#F0F7F0' },
+        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, accent: '#B0492C', tint: '#FAE8E2', headerTint: '#FBF1ED' },
+        { id: 'exercise', title: 'Movement', kind: 'exercise', data: exercise, icon: AlignIcon, accent: '#1F5C50', tint: '#E3EFEB', headerTint: '#EFF6F4' },
+        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, accent: '#A16B15', tint: '#F9F0DC', headerTint: '#FBF6EA' },
     ];
 
     const renderCard = (card: (typeof cards)[number], noContainer = false) => {
         const content = (
             <>
-                <Box sx={{ p: '20px 24px', backgroundColor: '#F7FAFD', position: 'relative', borderBottom: '0.5px solid #B1C2DC' }}>
+                <Box sx={{ p: '16px 24px', backgroundColor: card.headerTint, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, borderBottom: '1px solid #DCE7DD' }}>
                     <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#1A212B', textAlign: 'left' }}>{card.title}</Typography>
-                    <Box component="img" src={StarIcon} alt="star" sx={{ position: 'absolute', right: 16, top: 12, width: '70px', height: '70px', opacity: 0.7, transform: 'rotate(-15deg)', pointerEvents: 'none' }} />
+                    <Box sx={{ width: '36px', height: '36px', borderRadius: '12px', backgroundColor: card.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        {mkIcon(card.icon, card.accent, 18)}
+                    </Box>
                 </Box>
                 <Box sx={{ p: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {card.data.map((d: any, i: number) => (
                         <Box key={i} onClick={() => setSelected({ kind: card.kind, data: d })}
-                            sx={{ display: 'flex', alignItems: 'center', gap: '12px', p: '12px', borderRadius: '36px', backgroundColor: '#FFFFFF', border: '1px solid #F2F4F7', cursor: 'pointer', transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(0,0,0,0.08)' } }}>
-                            <Box sx={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#F0F0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: card.iconColor, flexShrink: 0 }}>
-                                {mkIcon(card.icon)}
+                            sx={{ display: 'flex', alignItems: 'center', gap: '12px', p: '12px', borderRadius: '36px', backgroundColor: '#FFFFFF', border: '1px solid #EEF4EE', cursor: 'pointer', transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(23,48,27,0.10)' } }}>
+                            <Box sx={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: card.tint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                {mkIcon(card.icon, card.accent, 16)}
                             </Box>
                             <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#1A212B', textAlign: 'left', minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                 {nameFor(card.kind, d)}
@@ -88,19 +106,19 @@ const PlanSection: React.FC<{ report: any }> = ({ report }) => {
             </>
         );
         if (noContainer) return content;
-        return <Box sx={{ borderRadius: '24px', backgroundColor: '#F7FAFD', border: '0.5px solid #B1C2DC', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>{content}</Box>;
+        return <Box sx={{ borderRadius: '24px', backgroundColor: '#FFFFFF', border: '1px solid #DCE7DD', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>{content}</Box>;
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#F1F5F9', borderRadius: '40px', p: 5, border: '1px solid #E2E8F0' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#F3F9F3', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 1 }}>{VITALITY_MAP2_LABELS.RECOMMENDED_TITLE}</Typography>
             <Typography sx={{ textAlign: 'left', fontSize: '15px', color: '#667085', mb: 4 }}>Your plan now shifts toward maintaining the gains you've made.</Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 3, alignItems: 'stretch' }}>
                 <Box sx={{ minWidth: 0 }}>{renderCard(cards[0])}</Box>
                 <Box sx={{ minWidth: 0 }}>{renderCard(cards[1])}</Box>
-                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '0.5px solid #B1C2DC', overflow: 'hidden', backgroundColor: '#F7FAFD' }}>
+                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '1px solid #DCE7DD', overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
                     {renderCard(cards[2], true)}
-                    <Box sx={{ height: '0.5px', backgroundColor: '#B1C2DC' }} />
+                    <Box sx={{ height: '0.5px', backgroundColor: '#DCE7DD' }} />
                     {renderCard(cards[3], true)}
                 </Box>
             </Box>
