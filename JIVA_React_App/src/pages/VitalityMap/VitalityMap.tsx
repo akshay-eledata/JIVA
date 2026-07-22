@@ -23,7 +23,6 @@ import NotesIcon from '../../assets/notes.svg';
 import CancelIcon from '../../assets/cancel.svg';
 import NoFoodIcon from '../../assets/No-food.svg';
 import ForkPlateIcon from '../../assets/fork-plate.svg';
-import StarIcon from '../../assets/Star.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
 import NextDraw from '../../Component/NextDraw/NextDraw';
@@ -75,7 +74,24 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
     const supplements = (report?.supplement_recommendations || []).slice(0, 3);
 
     const [selected, setSelected] = useState<{ kind: string; data: any } | null>(null);
-    const mkIcon = (src: string) => <Box component="img" src={src} sx={{ width: 18, height: 18 }} />;
+    // Monochrome SVG rendered through a CSS mask so it takes the category accent
+    // color (an <img> keeps the asset's own baked-in green).
+    // The url() MUST be quoted: Vite inlines small SVGs as data: URIs containing
+    // single quotes, and an unquoted url() with quotes in it is invalid CSS —
+    // the browser silently drops mask-image and the icon renders as a square.
+    const mkIcon = (src: string, color: string, size: number = 18) => (
+        <Box
+            style={{
+                width: size,
+                height: size,
+                backgroundColor: color,
+                maskImage: `url("${src}")`,
+                maskSize: 'contain',
+                maskPosition: 'center',
+                maskRepeat: 'no-repeat',
+            }}
+        />
+    );
 
     // Raw label per kind, and the concise pill name derived from it.
     const rawName = (kind: string, d: any): string =>
@@ -108,34 +124,48 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
         return rows.filter((r) => r.value);
     };
 
+    // Category accents from the brand family: Eat = Jiva green, Avoid =
+    // terracotta (matches the spectrum's out-of-range end), Exercise = deep
+    // teal-green, Supplements = amber. `accent` colors the icon, `tint` its chip.
     const cards = [
-        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, iconColor: '#006045' },
-        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, iconColor: '#4A3AFF' },
-        { id: 'exercise', title: 'Exercise', kind: 'exercise', data: exercise, icon: AlignIcon, iconColor: '#2E90FA' },
-        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, iconColor: '#E08A4A' },
+        { id: 'food-eat', title: 'Food to Eat', kind: 'eat', data: eat, icon: ForkPlateIcon, accent: '#2A6130', tint: '#E7F2E8', headerTint: '#F0F7F0' },
+        { id: 'food-avoid', title: 'Food to Avoid', kind: 'avoid', data: avoid, icon: NoFoodIcon, accent: '#B0492C', tint: '#FAE8E2', headerTint: '#FBF1ED' },
+        { id: 'exercise', title: 'Exercise', kind: 'exercise', data: exercise, icon: AlignIcon, accent: '#1F5C50', tint: '#E3EFEB', headerTint: '#EFF6F4' },
+        { id: 'supplements', title: 'Supplements', kind: 'supplement', data: supplements, icon: MedicineBottleIcon, accent: '#A16B15', tint: '#F9F0DC', headerTint: '#FBF6EA' },
     ];
 
     const renderCard = (card: (typeof cards)[number], noContainer: boolean = false) => {
         const content = (
             <>
-                {/* Card Header */}
+                {/* Card Header — category-tinted, with the category's own icon */}
                 <Box
                     sx={{
-                        p: '20px 24px',
-                        backgroundColor: '#F7FAFD',
-                        position: 'relative',
-                        borderBottom: '0.5px solid #B1C2DC',
+                        p: '16px 24px',
+                        backgroundColor: card.headerTint,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 2,
+                        borderBottom: '1px solid #DCE7DD',
                     }}
                 >
                     <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#1A212B', textAlign: 'left' }}>
                         {card.title}
                     </Typography>
                     <Box
-                        component="img"
-                        src={StarIcon}
-                        alt="star"
-                        sx={{ position: 'absolute', right: 16, top: 12, width: '70px', height: '70px', opacity: 0.7, transform: 'rotate(-15deg)', pointerEvents: 'none' }}
-                    />
+                        sx={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '12px',
+                            backgroundColor: card.tint,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                        }}
+                    >
+                        {mkIcon(card.icon, card.accent, 18)}
+                    </Box>
                 </Box>
 
                 {/* Items — name only; click for full details */}
@@ -151,19 +181,19 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
                                 p: '12px',
                                 borderRadius: '36px',
                                 backgroundColor: '#FFFFFF',
-                                border: '1px solid #F2F4F7',
+                                border: '1px solid #EEF4EE',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s ease',
-                                '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(0,0,0,0.08)' },
+                                '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 4px 12px rgba(23,48,27,0.10)' },
                             }}
                         >
                             <Box
                                 sx={{
-                                    width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#F0F0F0',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: card.iconColor, flexShrink: 0,
+                                    width: '32px', height: '32px', borderRadius: '50%', backgroundColor: card.tint,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                                 }}
                             >
-                                {mkIcon(card.icon)}
+                                {mkIcon(card.icon, card.accent, 16)}
                             </Box>
                             <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#1A212B', textAlign: 'left', minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                 {nameFor(card.kind, d)}
@@ -177,14 +207,14 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
         if (noContainer) return content;
 
         return (
-            <Box sx={{ borderRadius: '24px', backgroundColor: '#F7FAFD', border: '0.5px solid #B1C2DC', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Box sx={{ borderRadius: '24px', backgroundColor: '#FFFFFF', border: '1px solid #DCE7DD', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
                 {content}
             </Box>
         );
     };
 
     return (
-        <Box sx={{ mt: 6, backgroundColor: '#F1F5F9', borderRadius: '40px', p: 5, border: '1px solid #E2E8F0' }}>
+        <Box sx={{ mt: 6, backgroundColor: '#F3F9F3', borderRadius: '40px', p: 5, border: '1px solid #DCE7DD' }}>
             <Typography sx={{ textAlign: 'left', fontSize: '28px', fontWeight: 700, color: '#000000', mb: 4 }}>
                 {VITALITY_MAP_LABELS.RECOMMENDED_TITLE}
             </Typography>
@@ -192,9 +222,9 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 3, alignItems: 'stretch' }}>
                 <Box sx={{ minWidth: 0 }}>{renderCard(cards[0])}</Box>
                 <Box sx={{ minWidth: 0 }}>{renderCard(cards[1])}</Box>
-                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '0.5px solid #B1C2DC', overflow: 'hidden', backgroundColor: '#F7FAFD' }}>
+                <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', borderRadius: '24px', border: '1px solid #DCE7DD', overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
                     {renderCard(cards[2], true)}
-                    <Box sx={{ height: '0.5px', backgroundColor: '#B1C2DC' }} />
+                    <Box sx={{ height: '1px', backgroundColor: '#DCE7DD' }} />
                     {renderCard(cards[3], true)}
                 </Box>
             </Box>
@@ -469,7 +499,7 @@ const VitalityMap: React.FC = () => {
                     </Box>
                     <Button
                         onClick={() => navigate('/select-packages?mode=addon')}
-                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
+                        sx={{ backgroundColor: '#2A6130', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#1F4A24' } }}
                     >
                         Add targeted tests
                     </Button>
@@ -527,11 +557,11 @@ const VitalityMap: React.FC = () => {
                                     gradient: {
                                         shade: 'dark',
                                         type: 'vertical',
-                                        gradientToColors: ['rgba(114, 226, 180, 0.7)'],
+                                        gradientToColors: ['rgba(139, 199, 152, 0.85)'],
                                         stops: [0, 36],
                                         colorStops: [
-                                            { offset: 0, color: 'rgba(96, 164, 151, 0.7)', opacity: 1 },
-                                            { offset: 36, color: 'rgba(114, 226, 180, 0.7)', opacity: 1 }
+                                            { offset: 0, color: 'rgba(42, 97, 48, 0.75)', opacity: 1 },
+                                            { offset: 36, color: 'rgba(139, 199, 152, 0.85)', opacity: 1 }
                                         ]
                                     }
                                 },
@@ -639,11 +669,13 @@ const VitalityMap: React.FC = () => {
 
                     <Box sx={{ flexGrow: 1, position: 'relative', mt: 3, width: '100%' }}>
                         {(() => {
+                            // Derived from the heatmap spectrum's anchors so the
+                            // whole screen shares one severity palette.
                             const bars = [
-                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#81FDCA', c2: '#54AD88' },
-                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#FFC48A', c2: '#F0955A' },
-                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#FDE68A', c2: '#E8B14C' },
-                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#FDA4A4', c2: '#EF5C5C' },
+                                { label: 'IN RANGE', count: rangeCounts.inRange, c1: '#BBEDC4', c2: '#5FAE74' },
+                                { label: 'OUT OF RANGE', count: rangeCounts.out, c1: '#F5B79E', c2: '#D97A55' },
+                                { label: 'BORDERLINE', count: rangeCounts.borderline, c1: '#F8CA8B', c2: '#DCA854' },
+                                { label: 'CRITICAL', count: rangeCounts.critical, c1: '#F0968B', c2: '#C24C3D' },
                             ];
                             const maxV = Math.max(1, ...bars.map((b) => b.count));
                             const MAX_H = 150, MIN_H = 20;
@@ -661,10 +693,8 @@ const VitalityMap: React.FC = () => {
                                                     width: '34px', height: `${h}px`, borderRadius: '8px', position: 'relative',
                                                     background: `linear-gradient(180deg, ${b.c1} 0%, ${b.c2} 100%)`,
                                                     transition: 'height 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
-                                                    '&::after': { content: '""', position: 'absolute', top: '6px', left: '6px', right: '6px', bottom: '4px', borderRadius: '4px', backgroundImage: 'repeating-linear-gradient(-45deg, rgba(0,0,0,0.14) 0, rgba(0,0,0,0.14) 3px, transparent 3px, transparent 6px)' },
                                                 }}>
                                                     <Typography sx={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', fontSize: '11px', fontWeight: 600, color: '#6B7280', fontFamily: 'Source Sans Pro' }}>{b.count}</Typography>
-                                                    <Box sx={{ position: 'absolute', top: '9px', left: '50%', transform: 'translateX(-50%)', width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#4B5563', border: '1.5px solid #FFFFFF' }} />
                                                 </Box>
                                                 <Typography sx={{ position: 'absolute', bottom: '-30px', left: '50%', transform: 'translateX(-50%)', fontSize: '8px', fontWeight: 600, color: '#475467', whiteSpace: 'nowrap', letterSpacing: '0.02em', fontFamily: 'Source Sans Pro' }}>{b.label}</Typography>
                                             </Box>
@@ -707,14 +737,14 @@ const VitalityMap: React.FC = () => {
                                 textTransform: 'none',
                                 borderRadius: '12px',
                                 fontFamily: 'lexend',
-                                borderColor: '#256111',
-                                color: '#256111',
+                                borderColor: '#2A6130',
+                                color: '#2A6130',
                                 fontWeight: 600,
                                 px: 4,
                                 height: '44px',
                                 '&:hover': {
-                                    borderColor: '#004d35',
-                                    backgroundColor: '#F3FAF7',
+                                    borderColor: '#1F4A24',
+                                    backgroundColor: '#F0F7F0',
                                 }
                             }}
                         >
@@ -812,12 +842,12 @@ const VitalityMap: React.FC = () => {
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease',
                                             position: 'relative',
-                                            boxShadow: selectedBiomarker === index ? '0px 10px 20px rgba(0,0,0,0.15), 0px 4px 6px rgba(0,0,0,0.1)' : 'none',
-                                            border: selectedBiomarker === index ? '1.5px solid rgba(0,0,0,0.35)' : '1px solid rgba(0,0,0,0.15)',
+                                            boxShadow: selectedBiomarker === index ? '0px 10px 20px rgba(23,48,27,0.16), 0px 4px 6px rgba(23,48,27,0.10)' : 'none',
+                                            border: selectedBiomarker === index ? '1.5px solid #2A6130' : '1px solid rgba(23,48,27,0.10)',
                                             zIndex: selectedBiomarker === index ? 1 : 0,
                                             '&:hover': {
                                                 transform: 'translateY(-2px)',
-                                                boxShadow: '0px 6px 16px rgba(0,0,0,0.14)'
+                                                boxShadow: '0px 6px 16px rgba(23,48,27,0.14)'
                                             }
                                         }}
                                     >
@@ -885,8 +915,8 @@ const VitalityMap: React.FC = () => {
                                     {(isExpanded ? displayedBiomarkers : displayedBiomarkers.slice(0, 3)).map((item: any, idx: number) => {
                                         const isIn = item.status === 'in_range';
                                         const isBord = item.status === 'borderline';
-                                        const barColor = isIn ? '#BAEBD7' : isBord ? '#FCE4B0' : '#FFD2C2';
-                                        const txtColor = isIn ? '#006045' : isBord ? '#B7791F' : '#D92D20';
+                                        const barColor = isIn ? '#BBEDC4' : isBord ? '#F8CA8B' : '#F5B7A8';
+                                        const txtColor = isIn ? '#2A6130' : isBord ? '#A16B15' : '#C24C3D';
                                         const label = isIn ? 'In Range' : isBord ? 'Borderline' : 'Out of range';
                                         return (
                                             <Box key={idx}
@@ -926,15 +956,15 @@ const VitalityMap: React.FC = () => {
                                             textTransform: 'none',
                                             borderRadius: '14px',
                                             fontFamily: 'lexend',
-                                            borderColor: '#256111',
-                                            color: '#256111',
+                                            borderColor: '#2A6130',
+                                            color: '#2A6130',
                                             fontWeight: 500,
                                             px: 4,
                                             height: '50px',
                                             fontSize: '16px',
                                             '&:hover': {
-                                                borderColor: '#004d35',
-                                                backgroundColor: '#F3FAF7',
+                                                borderColor: '#1F4A24',
+                                                backgroundColor: '#F0F7F0',
                                             }
                                         }}
                                     >
