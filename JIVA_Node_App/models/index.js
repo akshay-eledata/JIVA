@@ -20,6 +20,7 @@ const ReferenceRange = require('./ReferenceRange');
 const User = require('./User');
 const Order = require('./Order');
 const Subscription = require('./Subscription');
+const Appointment = require('./Appointment');
 
 // Patient data
 const PatientProfile = require('./PatientProfile');
@@ -57,6 +58,10 @@ User.hasMany(Subscription, { foreignKey: 'userId', onDelete: 'CASCADE' });
 Subscription.belongsTo(User, { foreignKey: 'userId' });
 Panel.hasMany(Subscription, { foreignKey: 'panelId' });
 Subscription.belongsTo(Panel, { foreignKey: 'panelId' });
+
+// User → Appointment (the retest loop, F1)
+User.hasMany(Appointment, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Appointment.belongsTo(User, { foreignKey: 'userId' });
 
 // User → PatientProfile (one-to-one)
 User.hasOne(PatientProfile, { foreignKey: 'userId', onDelete: 'CASCADE' });
@@ -110,6 +115,7 @@ module.exports = {
   User,
   Order,
   Subscription,
+  Appointment,
   PatientProfile,
   Questionnaire,
   LabReport,

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Breadcrumbs, Link as MuiLink, CircularProgress } from '@mui/material';
+import { Box, Typography, Breadcrumbs, Link as MuiLink, CircularProgress, Button } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { apiUrl } from '../../config';
 import { getBiomarkerContent, normalizeKey } from './content';
@@ -80,6 +80,8 @@ const BiomarkerDetail: React.FC = () => {
     const title = marker?.biomarkerName || history?.biomarkerName || decodedName;
     const content = getBiomarkerContent(decodedName);
     const st = statusOf(marker?.status || 'unknown');
+    // Borderline and worse are worth re-testing; in-range markers are not.
+    const isFlagged = ['borderline', 'out_of_range', 'critical', 'abnormal'].includes(marker?.status || '');
 
     // Position of the value within (padded) reference range for the single-test bar.
     const num = marker ? (typeof marker.value === 'number' ? marker.value : parseFloat(String(marker.value))) : NaN;
@@ -211,6 +213,39 @@ const BiomarkerDetail: React.FC = () => {
                                         <Typography sx={{ position: 'absolute', left: `${barLeft + barWidth}%`, transform: 'translateX(-50%)', fontSize: '12px', color: '#667085' }}>{marker.refHigh}</Typography>
                                     </Box>
                                     <Typography sx={{ fontSize: '11px', color: '#98A2B3', textAlign: 'center', mt: 1, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Healthy range shaded green</Typography>
+                                </Box>
+                            )}
+
+                            {/* A flagged marker is the moment someone most wants
+                                to go deeper, so offer the panels that re-test it. */}
+                            {isFlagged && (
+                                <Box
+                                    sx={{
+                                        mt: 3, borderRadius: '16px', p: '18px 20px',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                        gap: 2, flexWrap: 'wrap',
+                                        background: 'linear-gradient(90deg, #FFFAEB 0%, #FEF3F2 100%)',
+                                        border: '1px solid #FEDF89',
+                                    }}
+                                >
+                                    <Box sx={{ flex: 1, minWidth: '240px' }}>
+                                        <Typography sx={{ fontSize: '15px', fontWeight: 700, color: '#B54708', mb: 0.25 }}>
+                                            Go deeper on {title}
+                                        </Typography>
+                                        <Typography sx={{ fontSize: '13.5px', color: '#7A4B12', lineHeight: '19px' }}>
+                                            This marker came back {st.label.toLowerCase()}. Targeted panels re-test it alongside related markers at your next lab visit.
+                                        </Typography>
+                                    </Box>
+                                    <Button
+                                        onClick={() => navigate(`/select-packages?mode=addon&focus=${encodeURIComponent(marker.biomarkerName || decodedName)}`)}
+                                        sx={{
+                                            backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px',
+                                            textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, py: 1,
+                                            whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' },
+                                        }}
+                                    >
+                                        See targeted panels
+                                    </Button>
                                 </Box>
                             )}
                         </>

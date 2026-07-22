@@ -27,4 +27,13 @@ export const SCHEDULE_LABS_LABELS = {
   CONFIRM: 'Confirm appointment',
   CONFIRM_HINT: 'Choose a location and a time to continue.',
   MILES_AWAY: 'miles away',
+
+  // Retest mode: the same screen, booking a follow up draw instead of the first.
+  RETEST_TITLE: 'Book your next lab visit',
+  RETEST_SUBTITLE: 'Your next draw is what turns a single snapshot into a trend. Pick a day and a draw site and we will take it from there.',
+  RETEST_DATE_HELPER: 'Most people retest about every six months, which is long enough for changes to show up in your markers.',
+  RETEST_AGAIN_TITLE: 'Book where you went last time',
+  RETEST_AGAIN_BODY: 'Your last draw was at',
+  RETEST_AGAIN_BUTTON: 'Use this lab',
+  RETEST_BACK: 'Back to dashboard',
 } as const;

@@ -37,7 +37,10 @@ const App: React.FC = () => {
   // until the user is through it.
   const pagesWithoutNavbar = ['/', '/signin', '/signup', '/verify-phone', '/success', '/welcome', '/select-packages', '/intake', '/schedule-labs'];
   const authPages = pagesWithoutNavbar;
-  const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath);
+  // Booking a retest reuses the scheduling screen but happens from inside the
+  // app, so that case keeps the navbar (F1).
+  const isRetestBooking = currentPath === '/schedule-labs' && new URLSearchParams(location.search).get('retest') === '1';
+  const shouldShowNavbar = !pagesWithoutNavbar.includes(currentPath) || isRetestBooking;
   const shouldShowAuthLeftSide = authPages.includes(currentPath);
 
   return (
