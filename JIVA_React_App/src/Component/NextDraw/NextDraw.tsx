@@ -241,7 +241,9 @@ const NextDraw: React.FC<NextDrawProps> = ({ onResolved, afterVisit }) => {
         <ScienceOutlinedIcon sx={{ fontSize: '22px', color: GREEN }} />
       </Box>
 
-      <Box sx={{ flex: 1, minWidth: '240px' }}>
+      {/* textAlign is pinned because pages that centre their content (Vitality
+          Map 2) would otherwise centre the body line under a left-aligned title. */}
+      <Box sx={{ flex: 1, minWidth: '240px', textAlign: 'left' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
           <Typography sx={titleSx}>{prompt.title}</Typography>
           {prompt.pill && (
