@@ -1,11 +1,14 @@
-// Final onboarding step: pick the day for the first blood draw, then pick a
-// draw site near a typed address. The lab network is placeholder data (see
-// labs.ts) until the partner integration is connected. The confirmed
-// appointment is kept in localStorage so the success screen and the dashboard
-// can show it back.
+// Booking a blood draw: pick the day, then pick a draw site near a typed
+// address. The lab network is placeholder data (see labs.ts) until the partner
+// integration is connected.
+//
+// The same screen serves two jobs. Without a query param it is the last step of
+// onboarding and books the baseline draw. With `?retest=1` it books a follow up
+// draw from the dashboard (F1), which swaps the copy, offers a one tap rebook at
+// the previous lab, and returns the patient to the dashboard afterwards.
 
-import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Typography, Button, TextField, InputAdornment, Fade } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -13,12 +16,14 @@ import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import NoFoodOutlinedIcon from '@mui/icons-material/NoFoodOutlined';
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ReplayIcon from '@mui/icons-material/Replay';
 import DemoSkip from '../../Component/DemoSkip/DemoSkip';
 import { COLORS, FONTS, FONT_WEIGHTS } from '../../constants/constants';
 import { SCHEDULE_LABS_LABELS as L } from './labels';
-import { labsNear, DemoLab } from './labs';
+import { labsNear, DemoLab, labFromPrevious } from './labs';
 import { nextStepAfter } from '../../onboarding/steps';
-import { saveAppointment } from '../../onboarding/appointment';
+import { bookAppointment, fetchRetestStatus } from '../../onboarding/appointment';
 
 const NEXT = nextStepAfter('/schedule-labs');
 const GREEN = COLORS.PRIMARY;
@@ -54,7 +59,13 @@ const cardSx = {
 
 const ScheduleLabs: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const dates = useMemo(upcomingDates, []);
+
+  // Retest mode books a follow up draw from the dashboard rather than the
+  // baseline draw at the end of onboarding.
+  const isRetest = searchParams.get('retest') === '1';
+  const destination = isRetest ? '/dashboard' : NEXT;
 
   const [selectedDate, setSelectedDate] = useState<Date>(dates[0]);
   const [address, setAddress] = useState('');
@@ -62,6 +73,18 @@ const ScheduleLabs: React.FC = () => {
   const [results, setResults] = useState<DemoLab[] | null>(null);
   const [selectedLabId, setSelectedLabId] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [previousLab, setPreviousLab] = useState<{ name: string; address: string | null } | null>(null);
+
+  // Offer the previous draw site so a retest is one tap rather than a search.
+  useEffect(() => {
+    if (!isRetest) return;
+    let live = true;
+    fetchRetestStatus().then((status) => {
+      if (live && status?.lastLab) setPreviousLab(status.lastLab);
+    });
+    return () => { live = false; };
+  }, [isRetest]);
 
   const selectedLab = results?.find((l) => l.id === selectedLabId) || null;
   const ready = Boolean(selectedLab && selectedSlot);
@@ -78,17 +101,26 @@ const ScheduleLabs: React.FC = () => {
     }, 450);
   };
 
-  const confirm = () => {
-    if (selectedLab && selectedSlot) {
-      saveAppointment({
-        date: toInputValue(selectedDate),
-        dateLabel: longDate(selectedDate),
-        time: selectedSlot,
-        labName: selectedLab.name,
-        labAddress: selectedLab.street,
-      });
-    }
-    navigate(NEXT);
+  const usePreviousLab = () => {
+    if (!previousLab) return;
+    const lab = labFromPrevious(previousLab.name, previousLab.address);
+    setResults([lab]);
+    setSelectedLabId(lab.id);
+    setSelectedSlot(null);
+  };
+
+  const confirm = async () => {
+    if (!selectedLab || !selectedSlot) return;
+    setSaving(true);
+    await bookAppointment({
+      date: toInputValue(selectedDate),
+      dateLabel: longDate(selectedDate),
+      time: selectedSlot,
+      labName: selectedLab.name,
+      labAddress: selectedLab.street,
+    });
+    setSaving(false);
+    navigate(destination);
   };
 
   return (
@@ -105,15 +137,84 @@ const ScheduleLabs: React.FC = () => {
           textAlign: 'left',
         }}
       >
+        {/* Retest mode is reached from inside the app, so it needs a way back. */}
+        {isRetest && (
+          <Button
+            onClick={() => navigate('/dashboard')}
+            startIcon={<ArrowBackIcon sx={{ fontSize: '18px' }} />}
+            sx={{
+              mb: 2,
+              px: 0,
+              color: '#667085',
+              fontFamily: FONT,
+              fontSize: '14px',
+              fontWeight: FONT_WEIGHTS.MEDIUM,
+              textTransform: 'none',
+              '&:hover': { backgroundColor: 'transparent', color: GREEN },
+            }}
+          >
+            {L.RETEST_BACK}
+          </Button>
+        )}
+
         {/* Header */}
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: { xs: '28px', md: '36px' }, color: '#1A212B', letterSpacing: '-0.02em', mb: 1 }}>
-            {L.TITLE}
+            {isRetest ? L.RETEST_TITLE : L.TITLE}
           </Typography>
           <Typography sx={{ fontFamily: FONT, fontSize: { xs: '15px', md: '16px' }, color: '#667085', maxWidth: '620px', mx: 'auto', lineHeight: 1.5 }}>
-            {L.SUBTITLE}
+            {isRetest ? L.RETEST_SUBTITLE : L.SUBTITLE}
           </Typography>
         </Box>
+
+        {/* One tap rebooking at the previous draw site */}
+        {isRetest && previousLab && (
+          <Box sx={{ ...cardSx, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+              <Box
+                sx={{
+                  width: '40px',
+                  height: '40px',
+                  flexShrink: 0,
+                  borderRadius: '12px',
+                  backgroundColor: '#DCFAE6',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ReplayIcon sx={{ fontSize: '20px', color: GREEN }} />
+              </Box>
+              <Box>
+                <Typography sx={{ fontFamily: FONT, fontWeight: FONT_WEIGHTS.BOLD, fontSize: '15px', color: '#1A212B' }}>
+                  {L.RETEST_AGAIN_TITLE}
+                </Typography>
+                <Typography sx={{ fontFamily: FONT, fontSize: '13.5px', color: '#667085' }}>
+                  {L.RETEST_AGAIN_BODY} {previousLab.name}
+                  {previousLab.address ? `, ${previousLab.address}` : ''}
+                </Typography>
+              </Box>
+            </Box>
+            <Button
+              onClick={usePreviousLab}
+              sx={{
+                flexShrink: 0,
+                height: '42px',
+                px: 3,
+                borderRadius: '12px',
+                border: `1.5px solid ${GREEN}`,
+                color: GREEN,
+                fontFamily: FONT,
+                fontWeight: FONT_WEIGHTS.BOLD,
+                fontSize: '14px',
+                textTransform: 'none',
+                '&:hover': { backgroundColor: 'rgba(0, 96, 69, 0.06)' },
+              }}
+            >
+              {L.RETEST_AGAIN_BUTTON}
+            </Button>
+          </Box>
+        )}
 
         {/* Preparation guidance */}
         <Box
@@ -166,7 +267,7 @@ const ScheduleLabs: React.FC = () => {
             {L.DATE_TITLE}
           </Typography>
           <Typography sx={{ fontFamily: FONT, fontSize: '13.5px', color: '#667085', mb: 2.5 }}>
-            {L.DATE_HELPER}
+            {isRetest ? L.RETEST_DATE_HELPER : L.DATE_HELPER}
           </Typography>
 
           <Box sx={{ display: 'flex', gap: '10px', overflowX: 'auto', pb: 1, mb: 2.5 }}>
@@ -410,7 +511,7 @@ const ScheduleLabs: React.FC = () => {
           )}
           <Button
             onClick={confirm}
-            disabled={!ready}
+            disabled={!ready || saving}
             sx={{
               minWidth: '260px',
               height: '48px',
@@ -435,7 +536,7 @@ const ScheduleLabs: React.FC = () => {
         </Box>
       </Box>
 
-      <DemoSkip to={NEXT} label="Skip scheduling" />
+      <DemoSkip to={destination} label="Skip scheduling" />
     </>
   );
 };

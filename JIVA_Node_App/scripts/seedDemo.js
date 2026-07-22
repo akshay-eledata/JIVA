@@ -17,7 +17,7 @@ const bcrypt = require('bcryptjs');
 
 const db = require('../models');
 const {
-  sequelize, User, PatientProfile, Questionnaire, LabReport, TestResult,
+  sequelize, User, PatientProfile, Questionnaire, LabReport, TestResult, Appointment,
   Diagnosis, FoodRecommendation, ExerciseRecommendation, SupplementRecommendation, SystemSummary,
 } = db;
 const XLSX = require('xlsx');
@@ -225,10 +225,25 @@ async function run() {
       data: v.input.questionnaire || {},
     });
     const { report, matched, unmatched, tierTally } = await ingestVisit(user, ref, v);
+
+    // Back-fill the appointment that produced this draw (F1). A draw dated in
+    // the past is completed; one dated ahead of today is still booked, which is
+    // what puts a live countdown on the dashboard for the demo user.
+    const drawDate = report.dateProcessed;
+    const appointment = await Appointment.create({
+      userId: user.id,
+      scheduledDate: drawDate,
+      timeSlot: '7:30 AM',
+      labName: 'Northgate Diagnostics',
+      labAddress: '412 Northgate Way, Suite 120',
+      visit: v.visit,
+      status: drawDate <= new Date().toISOString().slice(0, 10) ? 'completed' : 'scheduled',
+    });
+
     console.log(
       `  visit ${v.visit}: report ${report.id} | labs ${matched} matched/${unmatched} unmatched | ` +
       `in=${tierTally.in_range} borderline=${tierTally.borderline} out=${tierTally.out_of_range} crit=${tierTally.critical} | ` +
-      `bioAge=${v.output.biological_age}`
+      `bioAge=${v.output.biological_age} | appointment ${drawDate} (${appointment.status})`
     );
   }
 

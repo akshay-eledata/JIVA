@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Typography, Button, CircularProgress, Collapse } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -54,13 +54,48 @@ const TwoVisitPill: React.FC = () => (
   </Box>
 );
 
+/** Per-panel targeting info from /api/me/recommended-panels. */
+interface PanelMatch {
+  matchCount: number;
+  matchedBiomarkers: string[];
+  declinedCount: number;
+  declinedBiomarkers: string[];
+  coversFocus: boolean;
+}
+
+interface Targeting {
+  /** 'change' ranks by markers that declined since the previous draw. */
+  basis: 'flagged' | 'change';
+  flaggedCount: number;
+  declinedCount: number;
+  flaggedSystems: { name: string; count: number }[];
+  declinedSystems: { name: string; count: number }[];
+  focusMatched: boolean;
+  byPanelId: Record<string, PanelMatch>;
+}
+
+const joinNames = (arr: string[]) =>
+  arr.length <= 1 ? arr[0] || '' : `${arr.slice(0, -1).join(', ')} and ${arr[arr.length - 1]}`;
+
 const SelectPackages: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Add-on mode is reached from inside the app, after the basic panel is
+  // already bought. It targets panels at whatever is currently flagged rather
+  // than rebuilding the whole panel from scratch.
+  const isAddonMode = searchParams.get('mode') === 'addon';
+  const focusMarker = searchParams.get('focus') || '';
+  // Arriving from the retest view: target what has changed, not just what is
+  // currently out of range.
+  const basis = searchParams.get('basis') === 'change' ? 'change' : 'flagged';
+  const visitParam = searchParams.get('visit') || '';
+
   const [packages, setPackages] = useState<PackageInfo[]>([]);
   const [basicPanel, setBasicPanel] = useState<PackageInfo | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState<boolean>(true);
+  const [targeting, setTargeting] = useState<Targeting | null>(null);
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -92,6 +127,44 @@ const SelectPackages: React.FC = () => {
     fetchPackages();
   }, []);
 
+  // Which panels actually cover the patient's flagged markers. Only needed in
+  // add-on mode; during onboarding there are no results to target yet.
+  useEffect(() => {
+    if (!isAddonMode) return;
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const params = new URLSearchParams();
+    if (focusMarker) params.set('biomarker', focusMarker);
+    if (basis === 'change') params.set('basis', 'change');
+    if (visitParam) params.set('visit', visitParam);
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    fetch(apiUrl(`/api/me/recommended-panels${qs}`), { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!d) return;
+        const byPanelId: Record<string, PanelMatch> = {};
+        for (const p of d.panels || []) {
+          byPanelId[p.id] = {
+            matchCount: p.matchCount,
+            matchedBiomarkers: p.matchedBiomarkers || [],
+            declinedCount: p.declinedCount || 0,
+            declinedBiomarkers: p.declinedBiomarkers || [],
+            coversFocus: p.coversFocus,
+          };
+        }
+        setTargeting({
+          basis: d.basis === 'change' ? 'change' : 'flagged',
+          flaggedCount: d.flaggedCount || 0,
+          declinedCount: d.declinedCount || 0,
+          flaggedSystems: d.flaggedSystems || [],
+          declinedSystems: d.declinedSystems || [],
+          focusMatched: Boolean(d.focusMatched),
+          byPanelId,
+        });
+      })
+      .catch(() => { /* Targeting is an enhancement; the plain list still works. */ });
+  }, [isAddonMode, focusMarker, basis, visitParam]);
+
   const toggleSelect = (id: string) => {
     setSelectedAddons((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
@@ -102,14 +175,32 @@ const SelectPackages: React.FC = () => {
 
   const basePrice = basicPanel ? basicPanel.price : BASE_PRICE;
   const addonCount = selectedAddons.length;
-  const totalPrice = basePrice + addonCount * ADDON_PRICE;
+  // In add-on mode the basic panel is already paid for, so only the new panels
+  // are charged.
+  const totalPrice = (isAddonMode ? 0 : basePrice) + addonCount * ADDON_PRICE;
+
+  // Best-targeted panels first, so the most relevant add-ons are seen first.
+  const orderedPackages = React.useMemo(() => {
+    if (!targeting) return packages;
+    return [...packages].sort((a, b) => {
+      const ma = targeting.byPanelId[a.id];
+      const mb = targeting.byPanelId[b.id];
+      return (
+        (mb?.coversFocus ? 1 : 0) - (ma?.coversFocus ? 1 : 0) ||
+        (mb?.declinedCount || 0) - (ma?.declinedCount || 0) ||
+        (mb?.matchCount || 0) - (ma?.matchCount || 0)
+      );
+    });
+  }, [packages, targeting]);
 
   const handleProceedToCheckout = () => {
     const chosen = packages.filter((p) => selectedAddons.includes(p.id));
     navigate('/payment', {
       state: {
         selectedAddons: chosen.map((a) => ({ id: a.id, name: a.name, displayName: a.displayName, price: a.price })),
-        totalPrice, hasBasic: true, basicPrice: basePrice,
+        totalPrice,
+        hasBasic: !isAddonMode,
+        basicPrice: isAddonMode ? 0 : basePrice,
       },
     });
   };
@@ -129,15 +220,43 @@ const SelectPackages: React.FC = () => {
       {/* Header */}
       <Box sx={{ textAlign: 'center', mb: 3.5 }}>
         <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: { xs: '30px', md: '38px' }, color: '#1A212B', lineHeight: 1.12, mb: 1, letterSpacing: '-0.02em' }}>
-          Build your panel
+          {isAddonMode ? 'Add panels to your next test' : 'Build your panel'}
         </Typography>
         <Typography sx={{ fontFamily: FONT, fontSize: { xs: '15px', md: '16.5px' }, color: '#667085', maxWidth: '640px', mx: 'auto', lineHeight: 1.5 }}>
-          Everyone starts with the Basic Panel. Layer on any specialized panels you'd like. Every panel includes both of your lab visits.
+          {isAddonMode
+            ? (basis === 'change'
+              ? 'These panels go deeper on what changed between your last two tests. Anything you add is drawn at your next lab visit.'
+              : 'These panels go deeper on the markers flagged in your results. Anything you add is drawn at your next lab visit.')
+            : "Everyone starts with the Basic Panel. Layer on any specialized panels you'd like. Every panel includes both of your lab visits."}
         </Typography>
-        <Box sx={{ mt: 2 }}><TwoVisitPill /></Box>
+        {!isAddonMode && <Box sx={{ mt: 2 }}><TwoVisitPill /></Box>}
       </Box>
 
-      {/* BASIC PANEL — hero with tests always visible */}
+      {/* Add-on mode: what we are targeting and why. */}
+      {isAddonMode && targeting && targeting.flaggedCount > 0 && (
+        <Box sx={{ mb: 4, borderRadius: '18px', p: { xs: 2.25, md: '22px 26px' }, background: 'linear-gradient(90deg, #FFFAEB 0%, #FEF3F2 100%)', border: '1px solid #FEDF89', textAlign: 'left' }}>
+          <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '17px', color: '#B54708', mb: 0.5 }}>
+            {focusMarker && targeting.focusMatched
+              ? `Panels covering ${focusMarker}`
+              : targeting.basis === 'change' && targeting.declinedCount > 0
+                ? `${targeting.declinedCount} biomarker${targeting.declinedCount === 1 ? '' : 's'} declined since your last test`
+                : `${targeting.flaggedCount} of your biomarkers need a closer look`}
+          </Typography>
+          <Typography sx={{ fontFamily: FONT, fontSize: '14px', color: '#7A4B12', lineHeight: 1.5 }}>
+            {focusMarker && targeting.focusMatched
+              ? `The panels listed first re-test ${focusMarker} along with related markers. Everything else you have flagged is covered by the panels below.`
+              : targeting.basis === 'change' && targeting.declinedSystems.length > 0
+                ? `The declines are concentrated in your ${joinNames(targeting.declinedSystems.slice(0, 3).map((s) => s.name))} ${targeting.declinedSystems.length === 1 ? 'system' : 'systems'}. Panels covering those markers are listed first, followed by ones covering the ${targeting.flaggedCount} markers still outside range.`
+                : targeting.flaggedSystems.length > 0
+                  ? `Most of the flagged markers sit in your ${joinNames(targeting.flaggedSystems.slice(0, 3).map((s) => s.name))} ${targeting.flaggedSystems.length === 1 ? 'system' : 'systems'}. The panels marked below test those areas in more depth.`
+                  : 'The panels marked below test the flagged areas in more depth.'}
+          </Typography>
+        </Box>
+      )}
+
+      {/* BASIC PANEL — hero with tests always visible. Hidden in add-on mode:
+          it is already paid for and is not being bought again. */}
+      {!isAddonMode && (
       <Box
         sx={{
           position: 'relative', borderRadius: '24px', overflow: 'hidden', mb: 4, color: '#FFFFFF',
@@ -187,19 +306,26 @@ const SelectPackages: React.FC = () => {
           </Box>
         </Box>
       </Box>
+      )}
 
       {/* ADD-ONS header */}
       <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 2, flexWrap: 'wrap' }}>
-        <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '20px', color: '#1A212B', letterSpacing: '-0.01em' }}>Add specialized panels</Typography>
-        <Typography sx={{ fontFamily: FONT, fontSize: '14px', color: '#98A2B3' }}>$99 each · optional · each includes both visits</Typography>
+        <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '20px', color: '#1A212B', letterSpacing: '-0.01em' }}>
+          {isAddonMode ? 'Available panels' : 'Add specialized panels'}
+        </Typography>
+        <Typography sx={{ fontFamily: FONT, fontSize: '14px', color: '#98A2B3' }}>
+          {isAddonMode ? '$99 each · added to your next lab visit' : '$99 each · optional · each includes both visits'}
+        </Typography>
       </Box>
 
       {/* ADD-ON card grid. alignItems 'start' keeps each card at its natural
           height — otherwise expanding one card stretches its row neighbor. */}
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2, alignItems: 'start' }}>
-        {packages.map((addon) => {
+        {orderedPackages.map((addon) => {
           const isSel = selectedAddons.includes(addon.id);
           const isOpen = expanded.has(addon.id);
+          const match = targeting?.byPanelId[addon.id];
+          const isRecommended = Boolean(match && (match.matchCount > 0 || match.declinedCount > 0));
           const cat = catFor(addon.name);
           const Icon = cat.icon;
           const preview = addon.tests.slice(0, 3);
@@ -210,8 +336,8 @@ const SelectPackages: React.FC = () => {
               onClick={() => toggleSelect(addon.id)}
               sx={{
                 position: 'relative', cursor: 'pointer', borderRadius: '18px', p: { xs: 2, md: 2.25 },
-                backgroundColor: isSel ? '#F6FEF9' : '#FFFFFF',
-                border: `1.5px solid ${isSel ? GREEN : '#E7EAEE'}`,
+                backgroundColor: isSel ? '#F6FEF9' : isRecommended ? '#FFFCF5' : '#FFFFFF',
+                border: `1.5px solid ${isSel ? GREEN : isRecommended ? '#FEC84B' : '#E7EAEE'}`,
                 boxShadow: isSel ? '0px 8px 24px rgba(0,96,69,0.12)' : '0px 2px 10px rgba(16,24,40,0.04)',
                 transition: 'all 0.18s ease',
                 '&:hover': { boxShadow: '0px 10px 26px rgba(16,24,40,0.10)', transform: 'translateY(-2px)', borderColor: isSel ? GREEN : '#D0D5DD' },
@@ -220,6 +346,26 @@ const SelectPackages: React.FC = () => {
               {/* selected check badge */}
               {isSel && (
                 <CheckCircleRoundedIcon sx={{ position: 'absolute', top: 12, right: 12, fontSize: 22, color: GREEN, backgroundColor: '#FFFFFF', borderRadius: '50%' }} />
+              )}
+
+              {/* Why this panel is recommended: the flagged markers it covers. */}
+              {isRecommended && (
+                <Box sx={{ mb: 1.25, pr: isSel ? 3 : 0, textAlign: 'left' }}>
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, px: 1, py: '3px', borderRadius: '999px', backgroundColor: '#FEF0C7', border: '1px solid #FEC84B', mb: 0.5 }}>
+                    <Typography sx={{ fontFamily: FONT, fontWeight: 800, fontSize: '10.5px', letterSpacing: '0.04em', color: '#B54708' }}>
+                      {match!.coversFocus
+                        ? 'COVERS THIS MARKER'
+                        : match!.declinedCount > 0
+                          ? 'TRACKS YOUR DECLINES'
+                          : 'RECOMMENDED FOR YOU'}
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ fontFamily: FONT, fontSize: '12px', color: '#7A4B12', lineHeight: 1.4 }}>
+                    {match!.declinedCount > 0
+                      ? `Re-tests ${match!.declinedCount} marker${match!.declinedCount === 1 ? '' : 's'} that declined since your last test${match!.declinedBiomarkers.length > 0 ? `: ${match!.declinedBiomarkers.join(', ')}` : ''}`
+                      : `Re-tests ${match!.matchCount} of your flagged marker${match!.matchCount === 1 ? '' : 's'}${match!.matchedBiomarkers.length > 0 ? `: ${match!.matchedBiomarkers.join(', ')}` : ''}`}
+                  </Typography>
+                </Box>
               )}
 
               {/* Top: icon + name + price */}
@@ -280,12 +426,16 @@ const SelectPackages: React.FC = () => {
         <Box sx={{ maxWidth: '1080px', mx: 'auto', px: { xs: 2.5, md: 4 }, py: 1.75, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap' }}>
           <Box sx={{ textAlign: 'left' }}>
             <Typography sx={{ fontFamily: FONT, fontWeight: 700, fontSize: '15px', color: '#1A212B' }}>
-              Basic Panel{addonCount > 0 ? ` + ${addonCount} panel${addonCount === 1 ? '' : 's'}` : ''}
+              {isAddonMode
+                ? (addonCount > 0 ? `${addonCount} panel${addonCount === 1 ? '' : 's'} added` : 'No panels added yet')
+                : `Basic Panel${addonCount > 0 ? ` + ${addonCount} panel${addonCount === 1 ? '' : 's'}` : ''}`}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25 }}>
               <AutorenewRoundedIcon sx={{ fontSize: 14, color: GREEN }} />
               <Typography sx={{ fontFamily: FONT, fontSize: '12px', color: '#667085' }}>
-                2 lab visits (baseline + 6-month retest) included for every panel
+                {isAddonMode
+                  ? 'Drawn at your next lab visit'
+                  : '2 lab visits (baseline + 6-month retest) included for every panel'}
               </Typography>
             </Box>
           </Box>
@@ -296,6 +446,7 @@ const SelectPackages: React.FC = () => {
             </Box>
             <Button
               onClick={handleProceedToCheckout}
+              disabled={isAddonMode && addonCount === 0}
               endIcon={<ArrowForwardIcon />}
               sx={{
                 backgroundColor: GREEN, color: '#FFFFFF', fontWeight: 700, fontSize: '15px', fontFamily: FONT,
@@ -303,15 +454,16 @@ const SelectPackages: React.FC = () => {
                 boxShadow: '0px 4px 12px rgba(0,96,69,0.22)', '&:hover': { backgroundColor: GREEN_HOVER },
               }}
             >
-              Checkout
+              {isAddonMode ? 'Add to my next test' : 'Checkout'}
             </Button>
           </Box>
         </Box>
       </Box>
     </Box>
 
-    {/* Sits above the sticky checkout bar. */}
-    <DemoSkip to={NEXT} label="Skip panel selection" bottomOffset="112px" />
+    {/* Sits above the sticky checkout bar. Onboarding only: add-on mode is
+        entered from inside the app and has its own way back. */}
+    {!isAddonMode && <DemoSkip to={NEXT} label="Skip panel selection" bottomOffset="112px" />}
     </>
   );
 };

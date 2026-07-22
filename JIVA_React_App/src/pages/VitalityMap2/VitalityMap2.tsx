@@ -13,6 +13,7 @@ import { apiUrl } from '../../config';
 import { spectrumColor, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
 import SystemCompare, { ComparePayload } from '../../Component/SystemCompare/SystemCompare';
 import { VITALITY_MAP2_LABELS } from './labels';
+import NextDraw from '../../Component/NextDraw/NextDraw';
 
 const CARD_RADIUS = '32px';
 const CARD_HEIGHT = '340px';
@@ -269,6 +270,13 @@ const VitalityMap2: React.FC = () => {
                 <Typography sx={{ fontSize: '16px', color: '#667085', mt: 0.5, fontWeight: 500, textAlign: 'left' }}>{todayStr}</Typography>
             </Box>
 
+            {/* Next blood draw, scoped to this visit. The first Vitality Map
+                shows the second draw as booked; here the third has not been
+                scheduled yet, so this shows the countdown to when it is due. */}
+            <Box sx={{ mb: 4 }}>
+                <NextDraw afterVisit={2} />
+            </Box>
+
             {/* Retest banner */}
             <Box sx={{ backgroundColor: '#ECFDF3', borderRadius: '24px', p: '24px 32px', display: 'flex', alignItems: 'center', gap: 3, border: '1px solid #ABEFC6', mb: 4 }}>
                 <Box sx={{ width: 56, height: 56, borderRadius: '14px', backgroundColor: '#FFFFFF', border: '1px solid #D1FADF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -295,16 +303,16 @@ const VitalityMap2: React.FC = () => {
 
             {/* Follow-up test CTA — surfaced when markers have declined */}
             {declinedCount > 0 && (
-                <Box sx={{ mb: 5, borderRadius: '24px', p: '22px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, background: 'linear-gradient(90deg, #FFFAEB 0%, #FEF3F2 100%)', border: '1px solid #FEDF89' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
-                        <Box sx={{ width: 52, height: 52, borderRadius: '14px', backgroundColor: '#FFFFFF', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <Box component="img" src={BiomarkerIcon} sx={{ width: 24, height: 24 }} />
+                <Box sx={{ mb: 5, borderRadius: '20px', p: { xs: '16px 18px', md: '18px 24px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1, minWidth: '280px' }}>
+                        <Box sx={{ width: 42, height: 42, borderRadius: '12px', backgroundColor: '#FFFAEB', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Box component="img" src={BiomarkerIcon} sx={{ width: 20, height: 20 }} />
                         </Box>
                         <Box sx={{ textAlign: 'left' }}>
-                            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#B54708', mb: 0.5 }}>
+                            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#B54708', mb: 0.25 }}>
                                 {declinedCount} biomarker{declinedCount === 1 ? '' : 's'} moved out of range, worth a closer look
                             </Typography>
-                            <Typography sx={{ fontSize: '14px', color: '#7A4B12', lineHeight: '20px', maxWidth: '660px' }}>
+                            <Typography sx={{ fontSize: '13.5px', color: '#667085', lineHeight: '19px', maxWidth: '700px' }}>
                                 {decliningSystemNames.length > 0
                                     ? `Your ${joinNames(decliningSystemNames)} ${decliningSystemNames.length === 1 ? 'system' : 'systems'} declined since your first test. A targeted follow-up test confirms these findings and tracks whether they're resolving.`
                                     : `Some markers declined since your first test. A targeted follow-up test confirms these findings and tracks whether they're resolving.`}
@@ -312,10 +320,10 @@ const VitalityMap2: React.FC = () => {
                         </Box>
                     </Box>
                     <Button
-                        onClick={() => navigate('/select-packages')}
-                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '15px', px: 3.5, py: 1.25, whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
+                        onClick={() => navigate('/select-packages?mode=addon&basis=change&visit=2')}
+                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
                     >
-                        Order follow-up test
+                        Add targeted tests
                     </Button>
                 </Box>
             )}

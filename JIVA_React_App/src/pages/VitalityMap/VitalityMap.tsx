@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSchedule } from '../../context/ScheduleContext';
 import ReadingPaperIcon from '../../assets/reading-paper.svg';
 import Chart from 'react-apexcharts';
 import {
@@ -17,7 +16,6 @@ import {
     Dialog,
 } from '@mui/material';
 import ConsultationModal from '../../Component/ConsultationModal/ConsultationModal';
-import BiomarkerCompare from '../../Component/BiomarkerCompare/BiomarkerCompare';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import BiomarkerIcon from '../../assets/Biomarker.svg';
@@ -28,8 +26,8 @@ import ForkPlateIcon from '../../assets/fork-plate.svg';
 import StarIcon from '../../assets/Star.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
+import NextDraw from '../../Component/NextDraw/NextDraw';
 import LabSamples from '../../assets/lab-samples.svg';
-import CheckCircleIcon from '../../assets/Check-circle.svg';
 import KitIcon from '../../assets/Kit.svg';
 import { VITALITY_MAP_CONSTANTS } from './constants';
 import { VITALITY_MAP_LABELS } from './labels';
@@ -236,14 +234,10 @@ const RecommendationSection: React.FC<{ report: any }> = ({ report }) => {
 const VitalityMap: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { isRescheduled } = useSchedule();
-    const rescheduleIntent = location.state?.rescheduleIntent || false;
-    const [showAlert, setShowAlert] = useState(!rescheduleIntent);
     const [selectedBiomarker, setSelectedBiomarker] = useState<number | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBiologicalAgeTooltip, setShowBiologicalAgeTooltip] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isCompareMode, setIsCompareMode] = useState(false);
     const [clinicalOpen, setClinicalOpen] = useState(false);
     const [bioAgeOpen, setBioAgeOpen] = useState(false);
 
@@ -316,6 +310,22 @@ const VitalityMap: React.FC = () => {
             borderline: la?.borderlineCount || 0,
             critical: la?.criticalCount || 0,
         };
+    // Targeted add-on upsell. A patient can top up their next draw at any time,
+    // so this is driven off the first test rather than waiting for a retest.
+    // Counts come from the report we already loaded, no extra request needed.
+    const flaggedTotal = (la?.outOfRangeCount || 0) + (la?.borderlineCount || 0);
+    const flaggedSystemNames = activeSystems
+        .map((s: any) => ({
+            name: s.name,
+            flagged: (s.counts?.outOfRange || 0) + (s.counts?.borderline || 0) + (s.counts?.critical || 0),
+        }))
+        .filter((s: any) => s.flagged > 0)
+        .sort((a: any, b: any) => b.flagged - a.flagged)
+        .slice(0, 3)
+        .map((s: any) => s.name);
+    const joinNames = (arr: string[]) =>
+        arr.length <= 1 ? arr[0] || '' : `${arr.slice(0, -1).join(', ')} and ${arr[arr.length - 1]}`;
+
     // Biological age (PhenoAge) from the engine.
     const bioAge = report?.biological_age != null ? report.biological_age : null;
     const bioAgeExplanation = report?.biological_age_explanation || '';
@@ -413,261 +423,59 @@ const VitalityMap: React.FC = () => {
                 </Box>
             </Box>
 
-            {/* Notification Alert, Retest Banner, or Post-Reschedule Scheduled Card */}
-            {isRescheduled ? (
+            {/* Next blood draw (F1). Replaces the old results-ready alert:
+                people check the Vitality Map more often than the dashboard, so
+                the next draw belongs here too. One draw is booked at a time, so
+                this shows either the booked visit or a prompt with the countdown
+                to when the next one is due. */}
+            <Box sx={{ mb: 4 }}>
+                <NextDraw />
+            </Box>
+
+            {/* Targeted add-on upsell. Add-ons are not gated behind the retest:
+                anything bought here is drawn at the next visit. */}
+            {flaggedTotal > 0 && (
                 <Box
                     sx={{
-                        width: '100%',
-                        minHeight: VITALITY_MAP_CONSTANTS.BANNER_MIN_HEIGHT,
-                        background: 'linear-gradient(90deg, #F1F5F9 0%, rgba(249, 249, 249, 0.75) 75.48%, #F9F9F9 100%)',
-                        borderRadius: VITALITY_MAP_CONSTANTS.BANNER_RADIUS,
-                        padding: VITALITY_MAP_CONSTANTS.BANNER_PADDING,
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
                         mb: 4,
-                        boxSizing: 'border-box',
-                        position: 'relative',
-                        overflow: 'visible',
-                    }}
-                >
-                    <Box sx={{ width: '60%' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px', mb: 4 }}>
-                            <Box
-                                sx={{
-                                    width: '48px',
-                                    height: '48px',
-                                    borderRadius: '8px',
-                                    backgroundColor: '#FFFFFF',
-                                    border: '1px solid #EAECF0',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexShrink: 0,
-                                }}
-                            >
-                                <img src={CheckCircleIcon} alt="Scheduled" style={{ width: '24px', height: '24px' }} />
-                            </Box>
-                            <Box>
-                                <Typography sx={{ fontSize: '18px', fontWeight: 600, color: '#101828', lineHeight: '28px', textAlign: 'left' }}>
-                                    {VITALITY_MAP_LABELS.SCHEDULED_LAB_VISIT}
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', mt: '4px' }}>
-                                    <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#1447E6', cursor: 'pointer' }}>
-                                        {VITALITY_MAP_LABELS.VISIT_1}
-                                    </Typography>
-                                    <Typography sx={{ fontSize: '14px', fontWeight: 400, color: '#475467' }}>
-                                        {VITALITY_MAP_LABELS.VISIT_TIME}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{ width: '2px', height: '43px', backgroundColor: '#B1C2DC80' }} />
-                            <Button
-                                onClick={() => navigate('/vitality-map', { state: { rescheduleIntent: true } })}
-                                sx={{
-                                    ml: 2,
-                                    backgroundColor: '#006045',
-                                    color: '#FFFFFF',
-                                    border: '1px solid #256111',
-                                    borderRadius: '8px',
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    fontSize: '14px',
-                                    height: '36px',
-                                    '&:hover': { backgroundColor: '#004d35' },
-                                }}
-                            >
-                                {VITALITY_MAP_LABELS.BUTTON_RESCHEDULE}
-                            </Button>
-                        </Box>
-
-                        {/* Steps Timeline */}
-                        <Box sx={{ display: 'flex', alignItems: 'center', width: VITALITY_MAP_CONSTANTS.STEPS_TIMELINE_WIDTH, position: 'relative' }}>
-                            <Box sx={{ position: 'absolute', width: '100%', top: '8.5px', left: '0', right: '0', height: '3px', background: 'linear-gradient(90deg, #484848 0%, rgba(72, 72, 72, 0.5) 25.96%, rgba(72, 72, 72, 0.25) 100%)', zIndex: 0 }} />
-                            <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
-                                <Box sx={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#FFFFFF', border: '4px solid #98A2B3' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>{VITALITY_MAP_LABELS.STEPS_VISIT_1}</Typography>
-                            </Box>
-                            <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
-                                <Box sx={{ width: '14px', height: '14px', mt: '3px', borderRadius: '50%', backgroundColor: '#667085' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>{VITALITY_MAP_LABELS.STEPS_RESULTS}</Typography>
-                            </Box>
-                            <Box sx={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
-                                <Box sx={{ width: '14px', height: '14px', mt: '3px', borderRadius: '50%', backgroundColor: '#667085' }} />
-                                <Typography sx={{ fontSize: '12px', fontWeight: 500, color: '#344054' }}>{VITALITY_MAP_LABELS.STEPS_SUMMARY}</Typography>
-                            </Box>
-                        </Box>
-                    </Box>
-
-                    <Box
-                        component="img"
-                        src={ReadingPaperIcon}
-                        alt="Reading Paper"
-                        sx={{
-                            position: 'absolute',
-                            right: '30px',
-                            top: '-20px',
-                            height: '280px',
-                            width: 'auto',
-                            objectFit: 'contain',
-                            pointerEvents: 'none',
-                        }}
-                    />
-                </Box>
-            ) : rescheduleIntent ? (
-                <Box
-                    sx={{
-                        background: 'linear-gradient(90deg, #F2F2F2 36.27%, #F1F5F9 100%)',
-                        borderRadius: VITALITY_MAP_CONSTANTS.RETEST_BANNER_RADIUS,
-                        p: '0',
+                        borderRadius: '20px',
+                        p: { xs: '16px 18px', md: '18px 24px' },
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        mb: 4,
-                        border: '1px solid #7281971A',
-                        boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
-                        position: 'relative',
-                        minHeight: VITALITY_MAP_CONSTANTS.RETEST_BANNER_MIN_HEIGHT,
-                        overflow: 'hidden'
+                        gap: 2,
+                        flexWrap: 'wrap',
+                        // Matches the cards below it; the amber is kept as an
+                        // accent on the icon and heading rather than a wash.
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
+                        boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', gap: 0, flex: 1 }}>
-                        <Box sx={{ width: VITALITY_MAP_CONSTANTS.RETEST_IMAGE_WIDTH, height: '200px', flexShrink: 0 }}>
-                            <Box
-                                component="img"
-                                src={LabSamples}
-                                alt="Lab Samples"
-                                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1, minWidth: '280px' }}>
+                        <Box sx={{ width: 42, height: 42, borderRadius: '12px', backgroundColor: '#FFFAEB', border: '1px solid #FEDF89', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Box component="img" src={BiomarkerIcon} sx={{ width: 20, height: 20 }} />
                         </Box>
-                        <Box sx={{ textAlign: 'left', pl: 10, flex: 1 }}>
-                            <Typography sx={{ fontSize: '36px', fontWeight: 600, color: '#525E6F', fontFamily: 'Source Sans Pro', mb: 1 }}>
-                                {VITALITY_MAP_LABELS.RETEST_TITLE}
+                        <Box sx={{ textAlign: 'left' }}>
+                            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#B54708', mb: 0.25 }}>
+                                {flaggedTotal} biomarker{flaggedTotal === 1 ? '' : 's'} outside your optimal range
                             </Typography>
-                            <Typography sx={{ fontSize: '16px', color: '#202020', fontFamily: 'Source Sans Pro', fontWeight: 400 }}>
-                                {VITALITY_MAP_LABELS.RETEST_SUBTITLE}
+                            <Typography sx={{ fontSize: '13.5px', color: '#667085', lineHeight: '19px', maxWidth: '700px' }}>
+                                {flaggedSystemNames.length > 0
+                                    ? `Most of these sit in your ${joinNames(flaggedSystemNames)} ${flaggedSystemNames.length === 1 ? 'system' : 'systems'}. Targeted panels go deeper on those areas and are drawn at your next lab visit.`
+                                    : 'Targeted panels go deeper on the flagged areas and are drawn at your next lab visit.'}
                             </Typography>
                         </Box>
                     </Box>
-
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2.5, pr: 8, borderLeft: '1.5px solid #EAECF0', pl: 6, py: 2 }}>
-                        <Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
-                                <Box component="img" src={CheckCircleIcon} sx={{ width: 18, height: 18 }} />
-                                <Typography sx={{ fontSize: '16px', fontWeight: 400, color: '#1A212B', fontFamily: 'Source Sans Pro' }}>
-                                    {VITALITY_MAP_LABELS.READY_RETEST}
-                                </Typography>
-                            </Box>
-                            <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
-                                {['Luteinzing Harmone', 'Prostate specific Antigen (PSA)', 'Lipase'].map((item, idx) => (
-                                    <Box component="li" key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-                                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#101828' }} />
-                                        <Typography sx={{ fontSize: '12px', color: '#1A212B', fontFamily: 'Source Sans Pro', fontWeight: 400 }}>{item}</Typography>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </Box>
-
-                        <Button
-                            variant="outlined"
-                            startIcon={<Box component="img" src={KitIcon} sx={{ width: 18, height: 16 }} />}
-                            onClick={() => navigate('/personal-info', { state: { isReschedule: true } })}
-                            sx={{
-                                border: '1px solid #256111',
-                                borderRadius: '8px',
-                                bgcolor: '#FFFFFF',
-                                color: '#256111',
-                                textTransform: 'none',
-                                fontWeight: 700,
-                                px: 2.5,
-                                py: '4px',
-                                fontSize: '14px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 0.5,
-                            }}
-                        >
-                            {VITALITY_MAP_LABELS.BUTTON_GET_TEST}
-                        </Button>
-                    </Box>
-                </Box>
-            ) : (
-                showAlert && (
-                    <Box
-                        sx={{
-                            backgroundColor: '#F1F5F9',
-                            borderRadius: VITALITY_MAP_CONSTANTS.ALERT_BORDER_RADIUS,
-                            p: VITALITY_MAP_CONSTANTS.ALERT_PADDING,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            border: '1px solid #7281971A',
-                            boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
-                        }}
+                    <Button
+                        onClick={() => navigate('/select-packages?mode=addon')}
+                        sx={{ backgroundColor: '#006045', color: '#FFFFFF', borderRadius: '10px', textTransform: 'none', fontWeight: 700, fontSize: '14px', px: 3, height: '38px', whiteSpace: 'nowrap', flexShrink: 0, '&:hover': { backgroundColor: '#004d35' } }}
                     >
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                            <Box
-                                sx={{
-                                    width: VITALITY_MAP_CONSTANTS.ALERT_ICON_SIZE,
-                                    height: '50px',
-                                    backgroundColor: '#E2E8F0',
-                                    borderRadius: VITALITY_MAP_CONSTANTS.ALERT_ICON_BG_RADIUS,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexShrink: 0,
-                                    p: VITALITY_MAP_CONSTANTS.ALERT_ICON_PADDING,
-                                    boxSizing: 'border-box'
-                                }}
-                            >
-                                <Box
-                                    component="img"
-                                    src={NotesIcon}
-                                    alt="Notes"
-                                    sx={{ width: '100%', height: '100%' }}
-                                />
-                            </Box>
-
-                            <Box sx={{ textAlign: 'left' }}>
-                                <Typography
-                                    sx={{
-                                        fontSize: '14px',
-                                        fontWeight: 700,
-                                        color: '#003366',
-                                        mb: 0.5,
-                                        letterSpacing: '0.05em',
-                                        textTransform: 'uppercase'
-                                    }}
-                                >
-                                    {VITALITY_MAP_LABELS.ALERT_HEADER}
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        fontSize: '13px',
-                                        color: '#475467',
-                                        fontWeight: 400,
-                                        lineHeight: '20px'
-                                    }}
-                                >
-                                    {VITALITY_MAP_LABELS.ALERT_BODY}
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <IconButton
-                            onClick={() => setShowAlert(false)}
-                            sx={{ p: 0, color: '#98A2B3' }}
-                        >
-                            <Box
-                                component="img"
-                                src={CancelIcon}
-                                alt="Close"
-                                sx={{ width: '20px', height: '20px' }}
-                            />
-                        </IconButton>
-                    </Box>
-                )
+                        Add targeted tests
+                    </Button>
+                </Box>
             )}
+
             {/* Health Info Cards Grid */}
             <Box
                 sx={{
@@ -925,13 +733,13 @@ const VitalityMap: React.FC = () => {
                     pt: 4.5,
                     pb: 4.5,
                     pl: 4.5,
-                    pr: isCompareMode ? 4.5 : 0,
+                    pr: 0,
                     border: '1px solid #E2E8F0',
                     boxShadow: '0px 1px 3px rgba(16, 24, 40, 0.05)',
                 }}
             >
                 {/* Header for Biomarker Section */}
-                <Box sx={{ mb: 5, display: 'flex', gap: isCompareMode ? 0 : 5, pr: isCompareMode ? 0 : 4.5, alignItems: 'flex-start' }}>
+                <Box sx={{ mb: 5, display: 'flex', gap: 5, pr: 4.5, alignItems: 'flex-start' }}>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                             <Typography
@@ -946,37 +754,10 @@ const VitalityMap: React.FC = () => {
                                 {VITALITY_MAP_LABELS.COMPARE_TITLE}
                             </Typography>
 
-                            {/* Toggle */}
-                            <Box sx={{ display: 'flex', borderRadius: '10px', p: '2px', alignItems: 'center', backgroundColor: '#C8D0DB' }}>
-                                <Box
-                                    onClick={() => setIsCompareMode(false)}
-                                    sx={{
-                                        px: 3, py: '6px',
-                                        borderRadius: '10px',
-                                        backgroundColor: !isCompareMode ? '#F9FAFB' : 'transparent',
-                                        cursor: 'pointer',
-                                    }}>
-                                    <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
-                                        Heat Map
-                                    </Typography>
-                                </Box>
-                                <Box
-                                    onClick={() => setIsCompareMode(true)}
-                                    sx={{
-                                        px: 3, py: '6px',
-                                        borderRadius: '10px',
-                                        backgroundColor: isCompareMode ? '#F9FAFB' : 'transparent',
-                                        cursor: 'pointer'
-                                    }}>
-                                    <Typography sx={{ fontSize: '12px', fontWeight: 400, fontFamily: 'Lexend', color: '#1A212B' }}>
-                                        Compare
-                                    </Typography>
-                                </Box>
-                            </Box>
                         </Box>
 
                         {/* Legend */}
-                        {!isCompareMode && (
+                        {(
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mr: 2 }}>
                                 <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#98A2B3', letterSpacing: '0.05em' }}>IN</Typography>
                                 <Box
@@ -993,7 +774,7 @@ const VitalityMap: React.FC = () => {
                     </Box>
 
                     {/* Selected Category Header aligned with Biomarker */}
-                    {!isCompareMode && (
+                    {(
                         <Box sx={{ width: '420px', display: 'flex', flexDirection: 'column', pt: 0.5 }}>
                             <Typography sx={{ fontSize: '24px', fontWeight: 600, color: '#1A212B', mb: 0.5, textAlign: 'left', pr: 4.5, lineHeight: 1.2 }}>
                                 {selectedSystem ? selectedSystem.name : 'All Biomarkers'}
@@ -1005,9 +786,6 @@ const VitalityMap: React.FC = () => {
                     )}
                 </Box>
 
-                {isCompareMode ? (
-                    <BiomarkerCompare />
-                ) : (
                     <Box sx={{ display: 'flex', gap: 5 }}>
                         {/* Left Column */}
                         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -1167,7 +945,6 @@ const VitalityMap: React.FC = () => {
                             </Box>
                         </Box>
                     </Box>
-                )}
             </Box>
 
             {/* Biomarker Section Container */}

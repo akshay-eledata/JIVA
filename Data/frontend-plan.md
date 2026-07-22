@@ -248,6 +248,132 @@ graphic density, opposite mood.
 - **Motion language:** identical to Option 5; only the surfaces change.
 - **Libraries:** framer-motion, react-apexcharts, MUI.
 
+> Note (round 3): the client direction is Option 7's combination of light theme +
+> heavy animation and graphics. Options 8-10 push that direction further, each with
+> a distinct personality and a set of modern interaction patterns not yet used in
+> the showcase. (Options 1 and 6 were swapped so the original page is Option 1,
+> the default.)
+
+### Option 8 — "The Glasshouse" (light, interactive depth)
+
+The page responds to the cursor, not just the scroll. Everything has depth.
+
+- **Palette:** Dewdrop canvas, frosted glass cards, Jiva Green ink, lime energy.
+- **Type:** Plus Jakarta Sans display, Inter body.
+- **Signature elements:**
+  1. **Mouse-parallax hero** — layered lime/saga blobs, floating biomarker chips,
+     and the central gauge card all drift at different rates as the cursor moves
+     (spring-smoothed), over a shimmering gradient headline.
+  2. **Magnetic CTA** — the Get Started button leans toward the cursor.
+  3. **3D tilt cards** — the four service cards tilt in perspective under the
+     pointer with a moving glare highlight.
+  4. **Scan-beam systems section** — a sticky scroll scene where a lime beam
+     sweeps down the list of ten systems, lighting each up with its marker count.
+  5. Biomarker marquee, count-up stats, green CTA banner.
+- **Libraries:** framer-motion (springs, pointer tracking), react-apexcharts, MUI.
+
+### Option 9 — "Bloom" (light, organic, calm motion)
+
+Health as a living thing: soft, breathing, continuous motion. The calmest of the
+high-animation options — nothing snaps, everything breathes.
+
+- **Palette:** warm Dewdrop + Saga washes, Jiva Green, lime blossoms.
+- **Type:** Alegreya Sans display (300/800 contrast), Inter body.
+- **Signature elements:**
+  1. **Morphing blob hero** — an organic SVG blob continuously morphs behind the
+     headline; breathing rings pulse around a floating vitality badge.
+  2. **Activity rings** — three concentric rings (systems in range, plan
+     adherence, retest progress) draw themselves on scroll, Apple-Watch style.
+  3. **Draw-on timeline** — the four-step journey on a vertical line that draws
+     with scroll while milestones bloom in.
+  4. **Flip cards** — services flip in 3D on hover to reveal detail.
+  5. **Auto-advancing pull-quote** with soft crossfade, breathing CTA button.
+- **Libraries:** framer-motion (SVG path morph, scroll-linked strokeDashoffset,
+  3D flips), MUI. No charts — rings and lines are hand-drawn SVG.
+
+### Option 10 — "The Guided Tour" (light, product-led)
+
+Show, don't tell: the homepage demos the actual product while you scroll.
+
+- **Palette:** Dewdrop canvas, white app frames with green chrome, lime accents.
+- **Type:** Lexend display (matches the product options), Inter body.
+- **Signature elements:**
+  1. **Typewriter headline** — "Know your **heart.**" where the last word types,
+     deletes, and retypes through heart / thyroid / hormones / kidneys / future.
+  2. **Product-tour scroll scene** — a sticky browser-style app frame on the
+     right rebuilds itself three times (Vitality Map view → biomarker trend view
+     → action-plan view) as tour steps scroll past on the left.
+  3. **Cursor-spotlight grid** — six capability cards where a radial glow follows
+     the pointer inside each card.
+  4. **Animated tab switcher** — Heart / Metabolic / Hormones tabs with a sliding
+     lime underline that swap a live-drawing chart.
+  5. Count-up stats, quote marquee, green CTA banner.
+- **Libraries:** framer-motion (layout animation for tabs, scroll-linked frame
+  swaps, pointer tracking), react-apexcharts, MUI.
+
+> Note (round 4): Options 11-13 are the boundary-pushers. Each is built around a
+> different animation engine at full power: GSAP + ScrollTrigger, anime.js v4, and
+> framer-motion. `gsap` and `animejs` are now real dependencies.
+
+### Option 11 — "Sequence" (GSAP + ScrollTrigger, dark, cinematic)
+
+The page is a film and the scrollbar is the timeline. Almost nothing animates on
+its own clock; the scroll position drives everything, scrubbed and pinned.
+
+- **Palette:** near-black greens (Options 2/5 lineage), lime highlights, white logo.
+- **Type:** Lexend display, oversized.
+- **Signature scenes (all ScrollTrigger):**
+  1. **Title card** — "LISTEN" fills the viewport at 9x scale and scrubs down to
+     size as you scroll, while the tagline's characters stagger in.
+  2. **Four acts, sideways** — a pinned viewport translates a 4-panel horizontal
+     strip (Test / Analyze / Plan / Retest) as vertical scroll continues.
+  3. **The countdown** — a pinned scene where biological age scrubs 41 → 34 tied
+     directly to scroll progress, with a conic progress ring filling behind it.
+  4. **Card stack** — testimonial cards pin and stack, each scaling back as the
+     next slides over it.
+  5. **Magnetic CTA** — gsap.quickTo cursor-follow on the final button.
+- **Library:** gsap (ScrollTrigger, quickTo). No framer-motion in this option.
+
+### Option 12 — "Pulse Grid" (anime.js v4, light, playful precision)
+
+Anime.js is the staggering engine: hundreds of tiny elements moving as one
+organism. Light theme, toy-like, tactile.
+
+- **Palette:** Dewdrop canvas, Saga surfaces, green ink, lime energy.
+- **Type:** Manrope display.
+- **Signature elements:**
+  1. **Ripple dot grid hero** — a 220-dot grid ripples outward from the center
+     on load (grid stagger, elastic ease) and re-ripples from wherever you click.
+  2. **Letter cascade headline** — characters drop in with overshoot, per-letter.
+  3. **One-line ECG draw** — an SVG pulse line draws itself via
+     `svg.createDrawable` when it enters the viewport.
+  4. **Elastic cards** — service cards squash and rebound (outElastic) on hover.
+  5. **Staggered system chips** — the ten systems pop in as a wave; clicking a
+     chip makes the whole row shiver outward from it.
+- **Library:** animejs v4 (`animate`, `stagger`, `svg`) + IntersectionObserver
+  triggers. No framer-motion in this option.
+
+### Option 13 — "Chroma Flow" (framer-motion at full power)
+
+One continuous surface whose color, skew, and depth all answer to scroll physics.
+
+- **Palette:** the page itself morphs — Dewdrop → Saga → lime wash → deep green —
+  as one scroll-linked background interpolation; content stays green-ink/white.
+- **Type:** Plus Jakarta Sans display.
+- **Signature elements:**
+  1. **Scroll-morphing background** — the whole page's color interpolates through
+     four brand hues via useScroll + useTransform.
+  2. **Velocity-skewed marquee** — a giant outlined-text marquee that shears and
+     accelerates with your scroll velocity, springing back at rest.
+  3. **Draggable story deck** — a stack of member-story cards you throw aside;
+     each flies off with your gesture's velocity and the stack springs forward.
+  4. **Shared-element expansion** — capability chips that expand in place into
+     full panels (layoutId shared-element transition with a scrim).
+  5. **Center-zoom panels** — sections scale from 0.9 to 1 and un-blur as they
+     cross the viewport center.
+- **Library:** framer-motion only, pushed hard (useScroll, useVelocity, springs,
+  drag with momentum, AnimatePresence + layoutId).
+
 ## Implementation notes
 
 - Routes: `/` renders `Welcome` which now hosts the switcher + the three options at

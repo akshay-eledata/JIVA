@@ -13,6 +13,7 @@ import { DASHBOARD_CONSTANTS } from './constants';
 import { DASHBOARD_LABELS } from './labels';
 
 import { useSchedule } from '../../context/ScheduleContext';
+import NextDraw from '../../Component/NextDraw/NextDraw';
 import ReadingPaper from '../../assets/reading-paper.svg';
 import PlusIcon from '../../assets/plus.svg';
 
@@ -20,6 +21,9 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { isScheduled } = useSchedule();
   const [showBanner, setShowBanner] = useState(true);
+  // Set once the next-draw card resolves, so the legacy scheduling block below
+  // it can stand down (F1).
+  const [hasNextDraw, setHasNextDraw] = useState(false);
 
   const handleCloseBanner = () => {
     setShowBanner(false);
@@ -110,8 +114,14 @@ const Dashboard: React.FC = () => {
         </Box>
       )}
 
-      {/* Schedule Test to Discover Health Section */}
-      {!isScheduled ? (
+      {/* Next blood draw: the retest loop (F1) */}
+      <NextDraw onResolved={setHasNextDraw} />
+
+      {/* Legacy scheduling section: a static "book a visit" prompt and an
+          equally static "scheduled visit" card. Both are superseded by the
+          next-draw card above once it has real appointment data, so the whole
+          block stands down rather than contradicting it (F1). */}
+      {hasNextDraw ? null : !isScheduled ? (
         <Box
           sx={{
             width: DASHBOARD_CONSTANTS.SCHEDULE_SECTION_WIDTH,

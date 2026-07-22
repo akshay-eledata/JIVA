@@ -58,6 +58,21 @@ export function labsNear(address: string): DemoLab[] {
   }).sort((a, b) => a.distanceMiles - b.distanceMiles);
 }
 
+/**
+ * Rebuilds a draw site from a previous booking so a retest can be booked in one
+ * tap without searching again (F1). Distance is unknown here, since we only
+ * kept the lab, so the card omits it.
+ */
+export function labFromPrevious(name: string, address: string | null): DemoLab {
+  return {
+    id: 'lab-previous',
+    name,
+    street: address || '',
+    distanceMiles: 0,
+    slots: SLOT_SETS[0],
+  };
+}
+
 /** Pulls a city/state style tail off a typed address so the results look local. */
 function cityFrom(address: string): string {
   const parts = address.split(',').map((p) => p.trim()).filter(Boolean);
