@@ -65,6 +65,33 @@ export function spectrumColor(p: number): string {
     });
 }
 
+/**
+ * Soft vertical gradient for a heatmap tile at position `p` — a slightly
+ * lighter/airier shade at the top falling to a slightly deeper, warmer one at
+ * the bottom (per the Figma treatment). Both ends stay on the OKLCH ramp's hue,
+ * so text contrast is within ±0.04 L of the flat spectrumColor(p).
+ */
+export function spectrumTileGradient(p: number): string {
+    const x = clamp01(p);
+    let lo = STOPS[0];
+    let hi = STOPS[STOPS.length - 1];
+    for (let i = 0; i < STOPS.length - 1; i++) {
+        if (x >= STOPS[i].at && x <= STOPS[i + 1].at) {
+            lo = STOPS[i];
+            hi = STOPS[i + 1];
+            break;
+        }
+    }
+    const span = hi.at - lo.at || 1;
+    const t = (x - lo.at) / span;
+    const L = lo.lch.L + (hi.lch.L - lo.lch.L) * t;
+    const C = lo.lch.C + (hi.lch.C - lo.lch.C) * t;
+    const H = lo.lch.H + (hi.lch.H - lo.lch.H) * t;
+    const top = oklchToHex({ L: Math.min(0.96, L + 0.04), C: Math.max(0.03, C - 0.02), H });
+    const bottom = oklchToHex({ L: L - 0.03, C: C + 0.012, H: H - 4 });
+    return `linear-gradient(180deg, ${top} 0%, ${bottom} 100%)`;
+}
+
 /** Out-of-range position from counts (borderline = half in range). */
 export function spectrumP(counts: { total: number; inRange: number; borderline: number }): number {
     if (!counts.total) return 0;

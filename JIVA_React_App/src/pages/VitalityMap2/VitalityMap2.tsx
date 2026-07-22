@@ -9,7 +9,7 @@ import NoFoodIcon from '../../assets/No-food.svg';
 import AlignIcon from '../../assets/Align.svg';
 import MedicineBottleIcon from '../../assets/Medicine-Bottle.svg';
 import { apiUrl } from '../../config';
-import { spectrumColor, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
+import { spectrumColor, spectrumTileGradient, SPECTRUM_GRADIENT } from '../../utils/spectrumColor';
 import SystemCompare, { ComparePayload } from '../../Component/SystemCompare/SystemCompare';
 import { VITALITY_MAP2_LABELS } from './labels';
 import NextDraw from '../../Component/NextDraw/NextDraw';
@@ -203,6 +203,7 @@ const VitalityMap2: React.FC = () => {
         counts: s.counts,
         statusText: `${s.counts.inRange}/${s.counts.total} in Range`,
         color: spectrumColor(s.spectrumP),
+        gradient: spectrumTileGradient(s.spectrumP),
         biomarkers: s.biomarkers || [],
     }));
     const selectedSystem = selectedSys != null ? activeSystems[selectedSys] : null;
@@ -453,13 +454,13 @@ const VitalityMap2: React.FC = () => {
                             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px' }}>
                                 {activeSystems.map((item, index) => (
                                     <Box key={index} onClick={() => setSelectedSys(selectedSys === index ? null : index)}
-                                        sx={{ backgroundColor: item.color, borderRadius: '16px', p: '16px', height: '90px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: selectedSys === index ? '0px 10px 20px rgba(0,0,0,0.15)' : 'none', border: selectedSys === index ? '1.5px solid rgba(0,0,0,0.35)' : '1px solid rgba(0,0,0,0.15)', '&:hover': { transform: 'translateY(-2px)' } }}>
+                                        sx={{ background: item.gradient, borderRadius: '22px', p: '16px 18px', height: '96px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.25s cubic-bezier(0.22, 1, 0.36, 1)', border: 'none', boxShadow: selectedSys === index ? '0px 16px 28px rgba(23,48,27,0.26), 0px 4px 8px rgba(23,48,27,0.14), inset 0 0 0 1.5px rgba(23,48,27,0.30)' : '0px 6px 16px rgba(23,48,27,0.10), 0px 1px 3px rgba(23,48,27,0.06)', transform: selectedSys === index ? 'translateY(-3px)' : 'none', '&:hover': { transform: 'translateY(-3px)', boxShadow: selectedSys === index ? '0px 16px 28px rgba(23,48,27,0.26), 0px 4px 8px rgba(23,48,27,0.14), inset 0 0 0 1.5px rgba(23,48,27,0.30)' : '0px 12px 24px rgba(23,48,27,0.16), 0px 3px 6px rgba(23,48,27,0.08)' } }}>
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <Box sx={{ minWidth: 0, flex: 1, pr: 1 }}>
                                                 <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1A212B', mb: 0.5, textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</Typography>
                                                 <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#475467', textAlign: 'left' }}>{item.statusText}</Typography>
                                             </Box>
-                                            <Box sx={{ width: '28px', height: '28px', backgroundColor: '#FFFFFF33', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                            <Box sx={{ width: '30px', height: '30px', backgroundColor: 'rgba(255,255,255,0.85)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0px 2px 6px rgba(23,48,27,0.10)' }}>
                                                 <Box component="img" src={BiomarkerIcon} alt="biomarker" sx={{ width: '16px', height: '16px' }} />
                                             </Box>
                                         </Box>
