@@ -471,3 +471,23 @@ the long-term fix is promoting `brand.ts` tokens into the shared theme.
 screenshots of the seeded demo account (test@jiva.com) at the heatmap and
 recommendations sections; contrast re-checked programmatically for every ramp
 sample and status color.
+
+---
+
+## Decision (2026-07-23): Option 5 locked in
+
+Option 5, "Mission control for your biology" (dark, orbital biomarker hero,
+counters and kinetic type), is the chosen homepage. `/` with no query string
+renders it; `LIVE_OPTION` in `src/pages/Welcome/Welcome.tsx` is the single place
+that changes if we pick differently later.
+
+The other twelve designs stay available for review. The old fixed pill bar sat
+across the top of every hero, so it was replaced with a discreet tab pinned to
+the right edge at mid height that opens a dropdown listing all thirteen, with
+the live one tagged. Non-live designs still carry `?option=n` and remain
+shareable by URL; the live design keeps the clean `/` URL.
+
+The switcher is a review tool and should come out before launch. Note that this
+takes the public homepage dark, while the in-app screens (Vitality Map,
+Dashboard, Action Plan) are light on `#EFF4EF`, so the signed-in transition is
+a deliberate shift rather than a continuation.

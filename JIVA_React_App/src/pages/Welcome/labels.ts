@@ -1,3 +1,12 @@
+// Copy for the homepage design switcher. This is a review tool, not a patient
+// facing control, so it should come out before launch.
+export const WELCOME_SWITCHER_LABELS = {
+  TRIGGER_PREFIX: 'Design',
+  MENU_TITLE: 'Homepage design',
+  LIVE_TAG: 'Live',
+  ARIA_LABEL: 'Switch homepage design',
+} as const;
+
 // Welcome Page Labels
 export const WELCOME_LABELS = {
   WE_ARE: "We are",
