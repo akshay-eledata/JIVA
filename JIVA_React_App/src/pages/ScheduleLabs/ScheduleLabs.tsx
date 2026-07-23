@@ -455,7 +455,7 @@ const ScheduleLabs: React.FC = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
                           <LocationOnIcon sx={{ fontSize: '16px', color: '#667085' }} />
                           <Typography sx={{ fontFamily: FONT, fontSize: '13px', fontWeight: FONT_WEIGHTS.MEDIUM, color: '#667085', whiteSpace: 'nowrap' }}>
-                            {lab.distanceMiles} {L.MILES_AWAY}
+                            {lab.distanceKm} {L.KM_AWAY}
                           </Typography>
                         </Box>
                       </Box>

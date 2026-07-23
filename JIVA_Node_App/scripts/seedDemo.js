@@ -234,8 +234,10 @@ async function run() {
       userId: user.id,
       scheduledDate: drawDate,
       timeSlot: '7:30 AM',
-      labName: 'Northgate Diagnostics',
-      labAddress: '412 Northgate Way, Suite 120',
+      // Matches a branch in the frontend Labin network so the dashboard, the
+      // retest card and the scheduling search all name the same partner.
+      labName: 'Labin Escazu',
+      labAddress: 'Centro Comercial Paco, San Rafael de Escazu',
       visit: v.visit,
       status: drawDate <= new Date().toISOString().slice(0, 10) ? 'completed' : 'scheduled',
     });
