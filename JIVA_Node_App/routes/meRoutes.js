@@ -9,6 +9,7 @@ const {
   createAppointment, listAppointments, getRetestStatus, cancelAppointment,
 } = require('../controllers/appointmentController');
 const { getRecommendedPanels } = require('../controllers/recommendationController');
+const { getReportStatus } = require('../controllers/reportStatusController');
 
 // All /api/me/* routes require a valid token.
 router.get('/profile', protect, getProfile);
@@ -28,5 +29,8 @@ router.patch('/appointments/:id/cancel', protect, cancelAppointment);
 
 // Targeted add-on panels for whatever is currently flagged.
 router.get('/recommended-panels', protect, getRecommendedPanels);
+
+// What the engine has produced, or what it will produce. Powers the dashboard.
+router.get('/report-status', protect, getReportStatus);
 
 module.exports = router;

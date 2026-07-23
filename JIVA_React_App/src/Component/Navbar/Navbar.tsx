@@ -18,7 +18,6 @@ const Navbar: React.FC = () => {
     { label: NAVBAR_LABELS.VITALITY_MAP, path: '/vitality-map' },
     { label: NAVBAR_LABELS.VITALITY_MAP_2, path: '/vitality-map-2' },
     { label: NAVBAR_LABELS.WELLNESS_PLAN, path: '/action-plan' },
-    { label: NAVBAR_LABELS.SCHEDULE, path: '/personal-info' },
   ];
 
 
@@ -142,32 +141,9 @@ const Navbar: React.FC = () => {
             {NAVBAR_LABELS.QUESTIONER}
           </Button>
 
-          {/* Schedule Button */}
-          <Button
-            component={Link}
-            to="/personal-info"
-            sx={{
-              fontFamily: NAVBAR_CONSTANTS.BUTTON_FONT_FAMILY,
-              fontWeight: NAVBAR_CONSTANTS.BUTTON_FONT_WEIGHT,
-              fontSize: NAVBAR_CONSTANTS.BUTTON_FONT_SIZE,
-              lineHeight: NAVBAR_CONSTANTS.BUTTON_LINE_HEIGHT,
-              letterSpacing: NAVBAR_CONSTANTS.BUTTON_LETTER_SPACING,
-              color: NAVBAR_CONSTANTS.SCHEDULE_TEXT_COLOR,
-              backgroundColor: NAVBAR_CONSTANTS.SCHEDULE_BACKGROUND_COLOR,
-              border: `${NAVBAR_CONSTANTS.BUTTON_BORDER_WIDTH} solid ${NAVBAR_CONSTANTS.SCHEDULE_BACKGROUND_COLOR}`,
-              borderRadius: NAVBAR_CONSTANTS.BUTTON_BORDER_RADIUS,
-              padding: NAVBAR_CONSTANTS.BUTTON_PADDING,
-              width: NAVBAR_CONSTANTS.BUTTON_WIDTH,
-              height: NAVBAR_CONSTANTS.BUTTON_HEIGHT,
-              textTransform: 'none',
-              '&:hover': {
-                backgroundColor: NAVBAR_CONSTANTS.SCHEDULE_BACKGROUND_COLOR,
-                borderColor: NAVBAR_CONSTANTS.SCHEDULE_BACKGROUND_COLOR,
-              },
-            }}
-          >
-            {NAVBAR_LABELS.SCHEDULE}
-          </Button>
+          {/* The Schedule button that used to sit here pointed at the legacy
+              /personal-info form rather than the live booking flow, so it was
+              removed. Booking is reached from the dashboard draw card. */}
         </Box>
       </Toolbar>
     </AppBar>

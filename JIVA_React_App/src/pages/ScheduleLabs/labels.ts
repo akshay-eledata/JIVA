@@ -14,19 +14,19 @@ export const SCHEDULE_LABS_LABELS = {
   DATE_OTHER: 'Or pick another date',
 
   ADDRESS_TITLE: 'Where should we look?',
-  ADDRESS_HELPER: 'A street address, neighborhood, or ZIP code is enough.',
-  ADDRESS_PLACEHOLDER: 'e.g. 240 Elm Street, Austin, TX',
+  ADDRESS_HELPER: 'A street address, neighborhood, or district is enough.',
+  ADDRESS_PLACEHOLDER: 'e.g. San Rafael de Escazu, San Jose',
   ADDRESS_BUTTON: 'Find nearby labs',
   ADDRESS_SEARCHING: 'Searching...',
 
-  RESULTS_TITLE: 'Draw sites near you',
-  RESULTS_DEMO_NOTE: 'Demo build: these are sample locations. Real availability appears once our lab partner is connected.',
+  RESULTS_TITLE: 'Labin draw sites near you',
+  RESULTS_DEMO_NOTE: 'Demo build: sample Labin branches and times. Live locations and availability appear once the Labin integration is connected.',
   RESULTS_SLOTS: 'Available times',
   RESULTS_EMPTY: 'Enter an address above to see the draw sites closest to you.',
 
   CONFIRM: 'Confirm appointment',
   CONFIRM_HINT: 'Choose a location and a time to continue.',
-  MILES_AWAY: 'miles away',
+  KM_AWAY: 'km away',
 
   // Retest mode: the same screen, booking a follow up draw instead of the first.
   RETEST_TITLE: 'Book your next lab visit',

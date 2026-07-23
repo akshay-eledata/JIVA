@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 JIVA_AI/
+
+# Generated from Data/Deployment_Security_Compliance.md by build_compliance_doc.mjs
+Data/Deployment_Security_Compliance.html
